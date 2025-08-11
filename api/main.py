@@ -26,6 +26,14 @@ class AdviseRequest(BaseModel):
     jobspec: JobSpec
     message: str | None = None
 
+@app.get("/")
+def root():
+    return {"status": "ok", "service": "printssistant", "docs": "/docs"}
+
+@app.get("/healthz")
+def healthz():
+    return {"ok": True}
+
 @app.post("/parse_xml")
 async def parse_xml(xml: UploadFile = File(...), mapping_path: str = Form(...)):
     with tempfile.TemporaryDirectory() as td:
