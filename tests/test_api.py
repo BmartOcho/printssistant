@@ -4,9 +4,9 @@ import json
 import pytest
 from fastapi.testclient import TestClient
 
-import api.main as api
+from api.main import app  # <-- now that api/ is a package, this works
 
-client = TestClient(api.app)
+client = TestClient(app)
 
 def test_advise_endpoint_basic():
     jobspec = {
@@ -20,11 +20,16 @@ def test_advise_endpoint_basic():
     resp = client.post("/advise", json=payload)
     assert resp.status_code == 200, resp.text
     data = resp.json()
-    assert "color_policy" in data["intents"] or any("rich black" in t.lower() for t in data["tips"])
     assert "scripts" in data and isinstance(data["scripts"], dict)
+    # either the intent was detected or the tips mention rich black
+    assert ("color_policy" in data.get("intents", [])) or any(
+        "rich black" in t.lower() for t in data.get("tips", [])
+    )
 
-@pytest.mark.skipif(not (Path("samples/J208819.xml").exists() and Path("config/xml_map.yml").exists()),
-                    reason="sample XML/mapping not present")
+@pytest.mark.skipif(
+    not (Path("samples/J208819.xml").exists() and Path("config/xml_map.yml").exists()),
+    reason="sample XML/mapping not present",
+)
 def test_parse_xml_endpoint_roundtrip():
     files = {"xml": ("J208819.xml", Path("samples/J208819.xml").read_bytes(), "application/xml")}
     data = {"mapping_path": "config/xml_map.yml"}
