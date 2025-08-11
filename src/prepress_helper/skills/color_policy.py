@@ -3,53 +3,41 @@ from typing import List, Dict
 from ..jobspec import JobSpec
 
 def tips(job: JobSpec) -> List[str]:
-    rb = "60C/40M/40Y/100K"
     return [
         "Work in CMYK; avoid placing RGB assets directly.",
-        f"Use rich black ({rb}) for large solids/headlines; body text ≤18 pt should be 100K only and overprint.",
-        "Check placed images’ effective PPI ≥300 for print (≥150 for wide-format).",
+        "Rich black for large solids/headlines: 60C/40M/40Y/100K.",
+        "Body text ≤ 18 pt: 100K only and set to overprint.",
+        "Aim for effective 300 PPI on placed images (150+ for wide-format).",
     ]
 
 def scripts(job: JobSpec) -> Dict[str, str]:
-    jsx_ai = f"""
+    jsx_ai = """
 // color_policies.jsx (Illustrator)
-// 1) Ensure CMYK doc; 2) Add Rich Black swatch; 3) Set small 100K text to overprint
-(function(){{
-  function ensureCMYK(){{
-    if (app.documents.length===0) return;
-    app.executeMenuCommand("doc-color-cmyk");
-  }}
-  function addRichBlack(){{
-    var doc = app.activeDocument;
-    var sw = doc.swatches.getByName("Rich Black {job.special.get('rb','60/40/40/100')}");
-    if (!sw){{
-      var c = new CMYKColor(); c.cyan=60; c.magenta=40; c.yellow=40; c.black=100;
-      var s = doc.swatches.add(); s.name = "Rich Black 60/40/40/100"; s.color = c;
-    }}
-  }}
-  function overprintSmallBlackText(pt){{
-    var doc = app.activeDocument;
-    for (var i=0; i<doc.textFrames.length; i++) {{
-      var tf = doc.textFrames[i];
-      var r = tf.textRange;
-      var ca = r.characterAttributes;
-      if (ca.size <= pt) {{
-        var c = ca.fillColor;
-        if (c.typename === "CMYKColor" && c.cyan===0 && c.magenta===0 && c.yellow===0 && c.black===100) {{
-          ca.overprintFill = true;
-        }}
-      }}
-    }}
-  }}
-  if (app.documents.length>0) {{
-    ensureCMYK(); addRichBlack(); overprintSmallBlackText(18);
-  }}
-}})();
+(function(){
+  if (app.documents.length===0) return;
+  app.executeMenuCommand("doc-color-cmyk"); // ensure CMYK
+  // Add Rich Black swatch if missing
+  var doc = app.activeDocument;
+  function has(name){ try{ doc.swatches.getByName(name); return true;}catch(e){return false;} }
+  if (!has("Rich Black 60/40/40/100")){
+    var c = new CMYKColor(); c.cyan=60; c.magenta=40; c.yellow=40; c.black=100;
+    var s = doc.swatches.add(); s.name="Rich Black 60/40/40/100"; s.color=c;
+  }
+  // Overprint small 100K text
+  for (var i=0;i<doc.textFrames.length;i++){
+    var r = doc.textFrames[i].textRange;
+    var ca = r.characterAttributes;
+    if (ca.size <= 18){
+      var k = (ca.fillColor.typename==="CMYKColor") && ca.fillColor.cyan===0 && ca.fillColor.magenta===0 && ca.fillColor.yellow===0 && ca.fillColor.black===100;
+      if (k){ ca.overprintFill = true; }
+    }
+  }
+})();
 """
     jsx_ps = """
 // convert_open_doc_to_cmyk.jsx (Photoshop)
 (function(){
-  if (app.documents.length === 0) { return; }
+  if (app.documents.length === 0) return;
   var icc = "US Web Coated (SWOP) v2";
   app.activeDocument.convertProfile(icc, Intent.RELATIVECOLORIMETRIC, true, true);
 })();

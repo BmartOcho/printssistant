@@ -3,6 +3,10 @@ from __future__ import annotations
 from typing import List
 from .jobspec import JobSpec
 
+def _long_edge(job: JobSpec) -> float:
+    return max(getattr(job.trim_size, "w_in", 0.0) or 0.0,
+               getattr(job.trim_size, "h_in", 0.0) or 0.0)
+
 def detect_intents(job: JobSpec, user_msg: str) -> List[str]:
     msg = (user_msg or "").lower()
     intents: List[str] = []
