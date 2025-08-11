@@ -1,32 +1,36 @@
 from __future__ import annotations
-from fastapi import FastAPI, UploadFile, File, Form
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel
-import json, tempfile, os
-
+import json
+import typer
+from typing import Optional, Annotated, List, Dict
 from prepress_helper.jobspec import JobSpec
 from prepress_helper.xml_adapter import load_jobspec_from_xml
 from prepress_helper.router import detect_intents
 from prepress_helper.skills import doc_setup
+from prepress_helper.skills import fold_math  # NEW
 
-app = FastAPI(title="Printssistant API", version="0.0.1")
+app = typer.Typer(add_completion=False, help="Printssistant CLI")
 
-class AdviseRequest(BaseModel):
-    jobspec: JobSpec
-    message: str | None = None
+@app.command()
+def parse_xml(xml: str, map: str):
+    js = load_jobspec_from_xml(xml, map)
+    typer.echo(json.dumps(js.model_dump(), indent=2))
 
-@app.post("/parse_xml")
-async def parse_xml(xml: UploadFile = File(...), mapping_path: str = Form(...)):
-    with tempfile.TemporaryDirectory() as td:
-        xml_path = os.path.join(td, xml.filename)
-        with open(xml_path, "wb") as f:
-            f.write(await xml.read())
-        js = load_jobspec_from_xml(xml_path, mapping_path)
-        return JSONResponse(js.model_dump())
+@app.command()
+def advise(jobspec: str, msg: Optional[str] = typer.Option(None, "--msg")):
+    with open(jobspec, "r", encoding="utf-8") as f:
+        raw = json.load(f)
+    js = JobSpec(**raw)
+    intents = detect_intents(js, msg or "")
+    tips: List[str] = []
+    scripts: Dict[str, str] = {}
+    # Always include basic doc setup
+    tips += doc_setup.tips(js)
+    scripts.update(doc_setup.scripts(js))
+    # Fold math when requested
+    if "fold_math" in intents:
+        tips += fold_math.tips(js)
+        scripts.update(fold_math.scripts(js))
+    typer.echo(json.dumps({"intents": intents, "tips": tips, "scripts": scripts}, indent=2))
 
-@app.post("/advise")
-async def advise(req: AdviseRequest):
-    intents = detect_intents(req.jobspec, req.message or "")
-    tips = doc_setup.tips(req.jobspec)
-    scripts = doc_setup.scripts(req.jobspec)
-    return {"intents": intents, "tips": tips, "scripts": scripts}
+if __name__ == "__main__":
+    app()
