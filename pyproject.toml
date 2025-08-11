@@ -25,7 +25,8 @@ prepress-helper = "prepress_helper.cli:app"
 
 [project.optional-dependencies]
 dev = [
-  "pytest>=7"
+  "pytest>=7",
+  "httpx>=0.28"
 ]
 
 [tool.setuptools.packages.find]
