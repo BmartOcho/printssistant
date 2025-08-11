@@ -12,11 +12,8 @@ from sklearn.metrics import classification_report
 import joblib
 
 """
-Input CSV schema (header row required):
+CSV schema:
 job_number,title,width_in,height_in,pages,label
-J123456,"Tri-Fold Brochure",11,8.5,2,trifold
-J234567,"Business Card",3.5,2,1,business_card
-...
 """
 
 def build_pipeline():
@@ -30,9 +27,8 @@ def build_pipeline():
         remainder="drop",
         verbose_feature_names_out=False,
     )
-    clf = LogisticRegression(max_iter=2000, n_jobs=None)
-    pipe = Pipeline([("pre", pre), ("clf", clf)])
-    return pipe
+    clf = LogisticRegression(max_iter=2000)
+    return Pipeline([("pre", pre), ("clf", clf)])
 
 def main():
     ap = argparse.ArgumentParser()
@@ -41,20 +37,27 @@ def main():
     args = ap.parse_args()
 
     df = pd.read_csv(args.csv)
-    # derive features
+    # derived features
     df["long_edge"] = df[["width_in","height_in"]].max(axis=1)
     df["short_edge"] = df[["width_in","height_in"]].min(axis=1)
     df["aspect"] = (df["long_edge"] / df["short_edge"].replace(0, 1)).round(4)
 
     X = df[["title","width_in","height_in","pages","long_edge","short_edge","aspect"]]
     y = df["label"].astype(str)
+    counts = y.value_counts()
+    min_per_class = counts.min()
+    use_split = (len(df) >= 10) and (min_per_class >= 2) and (counts.size >= 2)
 
-    Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
     pipe = build_pipeline()
-    pipe.fit(Xtr, ytr)
-
-    yhat = pipe.predict(Xte)
-    print(classification_report(yte, yhat))
+    if use_split:
+        Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+        pipe.fit(Xtr, ytr)
+        yhat = pipe.predict(Xte)
+        print(classification_report(yte, yhat))
+    else:
+        print("Small dataset detected — training on all rows without a test split.")
+        print("Label counts:\n", counts.to_string())
+        pipe.fit(X, y)
 
     outp = Path(args.out)
     outp.parent.mkdir(parents=True, exist_ok=True)
