@@ -1,21 +1,79 @@
-
+# src/prepress_helper/router.py
 from __future__ import annotations
-from typing import List
+from typing import List, Tuple
 from .jobspec import JobSpec
 
+# Tri-folds and similar are usually on ~11" long edge; tweak to your shop.
+FOLD_MIN_LONG_EDGE = 10.5
+
 def _long_edge(job: JobSpec) -> float:
-    return max(getattr(job.trim_size, "w_in", 0.0) or 0.0,
-               getattr(job.trim_size, "h_in", 0.0) or 0.0)
+    ts = getattr(job, "trim_size", None)
+    if not ts:
+        return 0.0
+    w = float(getattr(ts, "w_in", 0.0) or 0.0)
+    h = float(getattr(ts, "h_in", 0.0) or 0.0)
+    return max(w, h)
+
+def _contains(text: str | None, *keywords: str) -> bool:
+    if not text:
+        return False
+    t = text.lower()
+    return any(k in t for k in keywords)
 
 def detect_intents(job: JobSpec, user_msg: str) -> List[str]:
+    """
+    Return a list of skill intents to run, in priority order.
+    Possible intents: 'doc_setup', 'fold_math', 'color_policy'.
+    """
     msg = (user_msg or "").lower()
     intents: List[str] = []
-    if any(k in msg for k in ["setup", "artboard", "document", "preset"]):
+
+    # Document setup
+    if any(k in msg for k in ("setup", "artboard", "document", "preset", "new doc", "new document")):
         intents.append("doc_setup")
-    if "fold" in msg or (job.product and "fold" in job.product):
-        intents.append("fold_math")
-    if any(k in msg for k in ["color", "cmyk", "rgb", "icc", "rich black"]):
+
+    # Color policy signals
+    if any(k in msg for k in ("color", "cmyk", "rgb", "icc", "rich black", "ink", "swop", "gracol")):
         intents.append("color_policy")
-    if any(k in msg for k in ["script", "jsx", "action", "automation"]):
-        intents.append("automation_scripts")
-    return intents or ["doc_setup"]
+
+    # Fold math signals (brochure-like) with size gate
+    fold_hint = (
+        "fold" in msg
+        or _contains(job.product, "fold", "brochure", "tri-fold", "trifold", "gatefold", "z-fold")
+    )
+    if fold_hint and ("force fold" in msg or _long_edge(job) >= FOLD_MIN_LONG_EDGE):
+        intents.append("fold_math")
+
+    # Default if nothing matched
+    if not intents:
+        intents.append("doc_setup")
+
+    # De-dup while preserving order
+    seen = set()
+    out: List[str] = []
+    for it in intents:
+        if it not in seen:
+            out.append(it)
+            seen.add(it)
+    return out
+
+def fold_preferences_from_message(user_msg: str) -> Tuple[str, str]:
+    """
+    Parse message to infer fold style and which panel folds in.
+    Returns (style, fold_in):
+      style ∈ {'roll','z'}
+      fold_in ∈ {'left','right'}
+    Usage is optional; your CLI can pass these to fold_math if desired.
+    """
+    msg = (user_msg or "").lower()
+    style = "roll"
+    if "z fold" in msg or "z-fold" in msg or "accordion" in msg:
+        style = "z"
+
+    fold_in = "right"
+    if "left folds in" in msg or "left panel in" in msg or "fold in left" in msg:
+        fold_in = "left"
+    elif "right folds in" in msg or "right panel in" in msg or "fold in right" in msg:
+        fold_in = "right"
+
+    return style, fold_in

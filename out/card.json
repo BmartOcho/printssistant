@@ -1,0 +1,23 @@
+{
+  "product": "Business Cards - R7",
+  "trim_size": {
+    "w_in": 3.5,
+    "h_in": 2.0
+  },
+  "bleed_in": 0.125,
+  "safety_in": 0.125,
+  "pages": 1,
+  "colors": {
+    "front": "CMYK",
+    "back": "No Printing"
+  },
+  "stock": "Customer Supplied Indigo Stock",
+  "finish": null,
+  "imposition_hint": "Flat Product",
+  "due_at": "2024-09-16T05:00:00.0000000Z",
+  "special": {
+    "stock_group": "Customer Supplied",
+    "imposition_across": "3x8",
+    "artwork_file": "J208819_1.pdf"
+  }
+}
