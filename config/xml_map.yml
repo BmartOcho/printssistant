@@ -1,0 +1,15 @@
+
+# Example XPath mapping for your current shop XML
+product: "//Order/Product/@type"
+trim_size.w_in: "number(//Specs/Trim/@width_in)"
+trim_size.h_in: "number(//Specs/Trim/@height_in)"
+bleed_in: "number(//Specs/Bleed/@all_sides_in)"
+safety_in: "number(//Specs/Safety/@all_sides_in)"
+pages: "number(//Specs/Document/@pages)"
+colors.front: "//Colors/@front"
+colors.back: "//Colors/@back"
+stock: "//Stock/@name"
+finish: "//Finish/@type"
+imposition_hint: "//Imposition/@template"
+due_at: "//Due/@at"
+special.fold: "//Fold/@type"

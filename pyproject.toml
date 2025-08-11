@@ -1,0 +1,23 @@
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prepress-helper"
+version = "0.0.1"
+description = "Real-time, app-agnostic prepress assistant (XML + user input → tips & scripts)."
+authors = [{ name="Your Name", email="you@example.com" }]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.111",
+  "uvicorn[standard]>=0.30",
+  "pydantic>=2.7",
+  "lxml>=5.2",
+  "PyYAML>=6.0",
+  "typer[all]>=0.12",
+]
+
+[project.scripts]
+prepress-helper = "cli.main:app"
