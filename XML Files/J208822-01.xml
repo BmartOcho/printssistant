@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Job>
+   <Config>
+      <ProductionIntegrationPath>https://voomgroup.printiq.com/WebService/ProductionIntegration.asmx</ProductionIntegrationPath>
+      <MeasurementType>Imperial</MeasurementType>
+   </Config>
+   <JobNumber>J208822-01</JobNumber>
+   <QQADKey>12448</QQADKey>
+   <IsPriority>False</IsPriority>
+   <NumberOfSections>1</NumberOfSections>
+   <QuotedDateUTC>2024-09-10T19:50:16.7477662Z</QuotedDateUTC>
+   <Workflow>Create Job</Workflow>
+   <AcceptedDateUTC>2024-09-10T19:29:07.4600000Z</AcceptedDateUTC>
+   <Title>Cairn Business Card (Two Communities)</Title>
+   <JobType/>
+   <ProductCode>Stonetown Business Cards</ProductCode>
+   <PONum>8198</PONum>
+   <CourierRef> US Post Office</CourierRef>
+   <Metadata>
+      <Field>
+         <Name/>
+         <Value>There is no metadata for this product</Value>
+      </Field>
+   </Metadata>
+   <AcceptanceUserType>Staff</AcceptanceUserType>
+   <AcceptanceKey>8873</AcceptanceKey>
+   <SpecialInstructions/>
+   <HasSpecialInstructions>0</HasSpecialInstructions>
+   <AccountManager>
+      <FullName>Alison Schlarb</FullName>
+      <Email>aschlarb@voomgroup.com</Email>
+      <Phone>9723799930</Phone>
+   </AccountManager>
+   <Customer>
+      <Number>StonetownCapital</Number>
+      <Name>Stonetown Capital</Name>
+      <Address>
+         <Name>Stonetown Capital</Name>
+         <Address1>720 S. Colorado Blvd</Address1>
+         <Address2>Ste 1150N</Address2>
+         <Address3/>
+         <City>Glendale</City>
+         <PostCode>80246</PostCode>
+         <State>Colorado</State>
+         <Country>United States</Country>
+         <ExternalNote/>
+         <InternalNote/>
+      </Address>
+      <Contact>
+         <Name>Rosanna Page</Name>
+         <Phone>5055160280</Phone>
+         <Mobile/>
+         <Email>rosanna.page@cairncommunities.com</Email>
+         <CreditTerms>Net 30 Days</CreditTerms>
+      </Contact>
+   </Customer>
+   <Product>
+      <Status>Print Ready</Status>
+      <CustomerExpectedDateUTC>2024-09-13T05:00:00.0000000Z</CustomerExpectedDateUTC>
+      <ArtworkThumbnail>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nauuXMKOXUeIs8TQ0dHL1VddwpZtB0hMsGCzDzNr5jScTjcVFfUkJlro67Pj84vk5qSi1+vQ6TRoNWpEUWLY4WJ42EltXRuzC7Kx2YZobesOTPAoPT6fH5PJSFNzB9EmQ9ivxO324vF4OVHbSlZmMgaDjqzMJJpbOlEoFJzs6CU9LQGTyUBFZQMGg44Z0zPYs7eU/LxMTCYjx6ub0Go1pKclcPhINRnpiej1OmJjTTid7nDq8nireUJHwgkTiMvlor6+YQrZJgUIZPr03AueQEaPaXyEjnYjR7ywh58ohQUzAROUETfc0wK6iRIKpQKCURDP972NTjUxXn9DR9DQ80Op9QJ1ZWQCbr5+v4hSqfxE+KJJiXlDx46LnEcP4pMR834WcaoZSEgLHc49T5BUwtpxAUE4lQ8aYd5BDmvPQyxUKK/9+UzWUw0QxzNPCR3xR2vpA/cDCZBGiFceZ35O3D99Epp0YcoQyGhbrIsJo/nJ8X6HeK7xbZiEM7QZuDf27th2J9vP8X4LZ2j4kz7ZfAxF4VQ5YhFM8Tw1xhvBWEx6B5kqEyZEIBFMTUySB1GeQVZ/sUG4KI9YEZw/IjvIOREhkKmMSUuxIgQSwVTApHaQEJMekWJFcLEjsoOcAxEmfWpjksaKn4yW8kJARMw7tTGJI1ZownzaXf/nYarYnUVwOiatKBxtr3OxI0IgUxeTFvMGf33a/f+nIHK8mrqYNJM+VYhjtDddBFMPEUXhOfCPcieN4MLAJHmQi8MvIoIIzoWPyYNMHUyVHTOCsfgYPEgEEVz8iOwgEURwFvx/nWC9Dp3gSzgAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjQtMDktMTBUMTk6Mjk6MTErMDA6MDDd5tHTAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI0LTA5LTEwVDE5OjI5OjExKzAwOjAwrLtpbwAAAEZ0RVh0c29mdHdhcmUASW1hZ2VNYWdpY2sgNi44LjEtNiAyMDEyLTEyLTI5IFExNiBodHRwOi8vd3d3LmltYWdlbWFnaWNrLm9yZ3wxup4AAAAYdEVYdFRodW1iOjpEb2N1bWVudDo6UGFnZXMAMaf/uy8AAAAZdEVYdFRodW1iOjpJbWFnZTo6aGVpZ2h0ADE4MDBa8qBJAAAAGHRFWHRUaHVtYjo6SW1hZ2U6OldpZHRoADMwMDBtPWq0AAAAGXRFWHRUaHVtYjo6TWltZXR5cGUAaW1hZ2UvcG5nP7JWTgAAABd0RVh0VGh1bWI6Ok1UaW1lADE3MjU5OTY1NTEGpimnAAAAEnRFWHRUaHVtYjo6U2l6ZQAxMjRLQkJ8LIrLAAAAbXRFWHRUaHVtYjo6VVJJAGZpbGU6Ly9DOlxQREZIZWxwZXJzXDNkNTcyYWU5LWU2MDQtNGNmOS04NGY3LTFlYWQ1MmQ1ZjM3OFxkMzhiZjgwMC1lNDZlLTRmMjItYjg1Ni04OGNiNTViYzJmZGEucG5nkua+AAAAAABJRU5ErkJggg==</ArtworkThumbnail>
+      <CostPrice>62.7000</CostPrice>
+      <WholesalePrice>62.7000</WholesalePrice>
+      <TotalSalePrice>84.6400</TotalSalePrice>
+      <Description>Stonetown Business Cards - 2 x 3.5 (BC)  Printed CMYK x 2 sides  on 130# Silk Cover
+Binding: Trim
+Size: 2 x 3.5 (BC)
+</Description>
+      <FinishedSize>3.5x2</FinishedSize>
+      <FinishedWidth>3.5000</FinishedWidth>
+      <FinishedHeight>2.0000</FinishedHeight>
+      <SummedSpineWidth/>
+      <Quantity>500</Quantity>
+      <Kinds>1</Kinds>
+      <HasAdvancedKinds>False</HasAdvancedKinds>
+      <DueDateUTC>2024-09-12T20:47:00.0000000Z</DueDateUTC>
+      <FactoryLocationKey>1</FactoryLocationKey>
+      <FactoryLocationName>VG</FactoryLocationName>
+      <FactoryLocationDescription>Voom Group</FactoryLocationDescription>
+      <Weight>1.8600</Weight>
+      <Deliveries>
+         <Delivery>
+            <Status>Pending</Status>
+            <Quantity>500</Quantity>
+            <Boxes>2</Boxes>
+            <Connote/>
+            <DelNum>0</DelNum>
+            <DeliveryInstructions/>
+            <Address>
+               <AddressKey>51170</AddressKey>
+               <AddressLine1>P.O Box 580</AddressLine1>
+               <AddressLine2/>
+               <AddressLine3/>
+               <City>Flora Vista</City>
+               <StateID>-1</StateID>
+               <State>New Mexico</State>
+               <Country>United States</Country>
+               <PostCode>87415</PostCode>
+               <Name>Animas Valley Leasing, LLC</Name>
+               <DisplayString>Animas Valley Leasing, LLC, P.O Box 580, Flora Vista, New Mexico, 87415, United States</DisplayString>
+            </Address>
+            <Contact>
+               <ContactKey>16235</ContactKey>
+               <Title/>
+               <FirstName>Courtney</FirstName>
+               <Surname>Yazzie</Surname>
+               <Phone>5055922054</Phone>
+               <Fax/>
+               <Mobile/>
+               <Email>rosanna.page@cairncommunities.com</Email>
+               <AddressKey>51170</AddressKey>
+               <IsAddressSpecific>True</IsAddressSpecific>
+               <DisplayString>Animas Valley Leasing, LLC, P.O Box 580, Flora Vista, New Mexico, 87415, United States</DisplayString>
+            </Contact>
+         </Delivery>
+      </Deliveries>
+      <Sections>
+         <Section>
+            <Key>55242</Key>
+            <Name>Single-Section_0</Name>
+            <Description>3.5 x 2  Printed CMYK x 2 sides  on 130# Silk Cover
+Binding: Trim</Description>
+            <ImpositionWidth>3.5000</ImpositionWidth>
+            <ImpositionHeight>2.0000</ImpositionHeight>
+            <FinishedWidth>3.5000</FinishedWidth>
+            <FinishedHeight>2.0000</FinishedHeight>
+            <SpineWidth/>
+            <Pages>2</Pages>
+            <SectionTypeTotalPages>2</SectionTypeTotalPages>
+            <Type>Single-Section</Type>
+            <IsSubsequent>False</IsSubsequent>
+            <Status>Print Ready</Status>
+            <Printing>
+               <OperationKey>1137370</OperationKey>
+               <Machine>HP Indigo 7800</Machine>
+               <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+               <EstRunTimeHHMM>00:   01</EstRunTimeHHMM>
+               <Stock>130# Pro Digital Silk Cover</Stock>
+               <StockCode>130#ProDigitalSilkCover</StockCode>
+               <SheetWidth>13.0000</SheetWidth>
+               <SheetDepth>19.0000</SheetDepth>
+               <NumberUp>24</NumberUp>
+               <InternalNumberUp>1</InternalNumberUp>
+               <SheetsRequired>21</SheetsRequired>
+               <MRSheets>6</MRSheets>
+               <Spoils>3</Spoils>
+               <TotalSheets>30</TotalSheets>
+               <ProcessFront>CMYK</ProcessFront>
+               <ProcessReverse>CMYK</ProcessReverse>
+               <StockWeightValue>129.99999999999983759506356421</StockWeightValue>
+               <StockWeightUnit>130lb Cover</StockWeightUnit>
+               <StockThicknessValue>0.0149</StockThicknessValue>
+               <StockThicknessUnit>in</StockThicknessUnit>
+               <Cost>25.6379</Cost>
+               <CostPlus>25.6379</CostPlus>
+               <NoAcross>3</NoAcross>
+               <NoAround>8</NoAround>
+               <GapAcross/>
+               <GapAround/>
+               <Imposition>
+                  <AcrossX>3</AcrossX>
+                  <AcrossY>8</AcrossY>
+                  <SheetX>13</SheetX>
+                  <SheetY>19</SheetY>
+                  <PrintableX>12.5</PrintableX>
+                  <PrintableY>18.5</PrintableY>
+                  <SizeX>3.75</SizeX>
+                  <SizeY>2.25</SizeY>
+                  <Bleed>0.125</Bleed>
+                  <GripX1>0.25</GripX1>
+                  <GripX2>0.25</GripX2>
+                  <GripY1>0.375</GripY1>
+                  <GripY2>0.125</GripY2>
+                  <HasDigitalFrame>False</HasDigitalFrame>
+                  <DigitalFrameLength/>
+                  <DigitalFrameTotalBlocksUp/>
+                  <DigitalFrameTotalNUp/>
+                  <DigitalFrameUsedLength/>
+                  <NumChannels/>
+                  <MaxChannelWidth/>
+                  <IsWorkAndTurn>False</IsWorkAndTurn>
+                  <IsWorkAndTumble>False</IsWorkAndTumble>
+                  <CylinderCircumference/>
+                  <CylinderGapAcross/>
+                  <CylinderGapAround/>
+                  <CylinderWidth/>
+               </Imposition>
+               <Runs>
+                  <Run>
+                     <RunNumber>1</RunNumber>
+                     <Kinds/>
+                  </Run>
+               </Runs>
+            </Printing>
+            <Guillotine/>
+            <Operations>
+               <Operation>
+                  <OperationKey>1137374</OperationKey>
+                  <Name>Imposition</Name>
+                  <Machine>Prepress</Machine>
+                  <EstMRTimeHHMM>00:   00</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Imposition Type</ComponentReferenceName>
+                  <ComponentReferenceValue>Standard Imposition</ComponentReferenceValue>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>0.0000</Cost>
+                  <CostPlus>0.0000</CostPlus>
+               </Operation>
+               <Operation>
+                  <OperationKey>1137373</OperationKey>
+                  <Name>Job Planning</Name>
+                  <Machine>No Machine</Machine>
+                  <EstMRTimeHHMM>00:   10</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Select Admin Time</ComponentReferenceName>
+                  <ComponentReferenceValue>Job Planning with Admin - 10 Min</ComponentReferenceValue>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>16.6671</Cost>
+                  <CostPlus>16.6671</CostPlus>
+               </Operation>
+               <Operation>
+                  <OperationKey>1137372</OperationKey>
+                  <Name>Business Card Slitting</Name>
+                  <Machine>Standard Horizon Smartslitter</Machine>
+                  <EstMRTimeHHMM>00:   02</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   03</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Reference</ComponentReferenceName>
+                  <ComponentReferenceValue/>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>9.9997</Cost>
+                  <CostPlus>9.9997</CostPlus>
+               </Operation>
+            </Operations>
+            <Artwork>
+               <Files>
+                  <File>
+                     <Name>J208822-01_1.pdf</Name>
+                     <OriginalName>56efc924-a23e-4e33-ae33-1a559f43654f.pdf</OriginalName>
+                     <UploadDateTimeUTC>2024-09-10T19:29:20.0833333Z</UploadDateTimeUTC>
+                  </File>
+               </Files>
+            </Artwork>
+            <StockGroups>
+               <StockGroup>Coated Cover</StockGroup>
+            </StockGroups>
+            <ExpectedPDFPages>2</ExpectedPDFPages>
+            <ImpositionFoldCatalog>Flat Product</ImpositionFoldCatalog>
+         </Section>
+      </Sections>
+      <Operations>
+         <Operation>
+            <OperationKey>1137374</OperationKey>
+            <Name>Imposition</Name>
+            <Machine>Prepress</Machine>
+            <EstMRTimeHHMM>00:   00</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Imposition Type</ComponentReferenceName>
+            <ComponentReferenceValue>Standard Imposition</ComponentReferenceValue>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>0.0000</Cost>
+            <CostPlus>0.0000</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1137373</OperationKey>
+            <Name>Job Planning</Name>
+            <Machine>No Machine</Machine>
+            <EstMRTimeHHMM>00:   10</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Select Admin Time</ComponentReferenceName>
+            <ComponentReferenceValue>Job Planning with Admin - 10 Min</ComponentReferenceValue>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>16.6671</Cost>
+            <CostPlus>16.6671</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1137372</OperationKey>
+            <Name>Business Card Slitting</Name>
+            <Machine>Standard Horizon Smartslitter</Machine>
+            <EstMRTimeHHMM>00:   02</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   03</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Reference</ComponentReferenceName>
+            <ComponentReferenceValue/>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>9.9997</Cost>
+            <CostPlus>9.9997</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1137371</OperationKey>
+            <Name>Box Job</Name>
+            <Machine>Handwork</Machine>
+            <EstMRTimeHHMM>00:   02</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   01</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>3 1/2 x 7 x 2" Business Card Boxes</Name>
+                  <Code>S-5800</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Reference</ComponentReferenceName>
+            <ComponentReferenceValue/>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>3.4503</Cost>
+            <CostPlus>3.4503</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1137375</OperationKey>
+            <Name>Dispatch Prep</Name>
+            <Machine>Handwork</Machine>
+            <EstMRTimeHHMM>00:   02</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Reference</ComponentReferenceName>
+            <ComponentReferenceValue/>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>1.8331</Cost>
+            <CostPlus>1.8331</CostPlus>
+         </Operation>
+      </Operations>
+      <JobArtwork>
+         <ArtworkFile>
+            <FileName>J208822-01_1.pdf</FileName>
+            <FileOriginalName>56efc924-a23e-4e33-ae33-1a559f43654f.pdf</FileOriginalName>
+            <FileUploadDateTimeUTC>2024-09-10T19:29:20.0833333Z</FileUploadDateTimeUTC>
+         </ArtworkFile>
+      </JobArtwork>
+   </Product>
+   <Operations/>
+   <IntegrationOperations/>
+   <Kinds/>
+   <References/>
+</Job>
