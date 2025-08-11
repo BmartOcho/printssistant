@@ -1,0 +1,6 @@
+job_number,title,width_in,height_in,pages,label
+J208819,Business Card,3.5,2,1,business_card
+JFAKE01,Tri-Fold Brochure,11,8.5,2,trifold
+JFAKE02,Postcard,6,4,2,postcard
+JFAKE03,Large Banner,36,24,1,banner
+JFAKE04,8pp Saddle Stitch Booklet,8.5,11,8,booklet

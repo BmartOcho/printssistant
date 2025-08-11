@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import List, Tuple
 from .jobspec import JobSpec
 
-# Adjust if you want fold logic on smaller pieces
+# Adjust size gate if desired
 FOLD_MIN_LONG_EDGE = 10.5
 
 def _long_edge(job: JobSpec) -> float:
@@ -18,6 +18,26 @@ def _contains(text: str | None, *keywords: str) -> bool:
         return False
     t = text.lower()
     return any(k in t for k in keywords)
+
+def _ml_additions(job: JobSpec, user_msg: str) -> List[str]:
+    """Use optional ML model to add intents if confident."""
+    try:
+        from .ml.product_classifier import predict_label  # lazy import
+    except Exception:
+        return []
+    pred = predict_label(job, user_msg or "")
+    if not pred:
+        return []
+    label, prob = pred
+    intents: List[str] = []
+    # threshold can be tuned; start at 0.65
+    if prob >= 0.65:
+        if label in ("trifold", "brochure"):
+            intents.append("fold_math")
+        elif label in ("business_card", "postcard", "label", "flyer", "banner", "booklet"):
+            # keep doc_setup as default; future: add booklet imposition, wide-format checks, etc.
+            intents.append("doc_setup")
+    return intents
 
 def detect_intents(job: JobSpec, user_msg: str) -> List[str]:
     """
@@ -43,6 +63,9 @@ def detect_intents(job: JobSpec, user_msg: str) -> List[str]:
     if fold_hint and ("force fold" in msg or _long_edge(job) >= FOLD_MIN_LONG_EDGE):
         intents.append("fold_math")
 
+    # ML-driven additions (optional)
+    intents += _ml_additions(job, msg)
+
     # Default if nothing matched
     if not intents:
         intents.append("doc_setup")
@@ -59,9 +82,7 @@ def detect_intents(job: JobSpec, user_msg: str) -> List[str]:
 def fold_preferences_from_message(user_msg: str) -> Tuple[str, str]:
     """
     Parse message to infer fold style and which panel folds in.
-    Returns (style, fold_in):
-      style ∈ {'roll','z'}
-      fold_in ∈ {'left','right'}
+    Returns (style, fold_in): style ∈ {'roll','z'} ; fold_in ∈ {'left','right'}
     """
     msg = (user_msg or "").lower()
     style = "z" if ("z fold" in msg or "z-fold" in msg or "accordion" in msg) else "roll"
