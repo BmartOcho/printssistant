@@ -20,5 +20,12 @@ dependencies = [
 ]
 
 [project.scripts]
-printssistant = "cli.main:app"
-prepress-helper = "cli.main:app"
+printssistant = "prepress_helper.cli:app"
+# (optional: keep old alias during transition)
+prepress-helper = "prepress_helper.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
