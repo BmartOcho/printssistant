@@ -4,7 +4,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "prepress-helper"
+name = "printssistant"
 version = "0.0.1"
 description = "Real-time, app-agnostic prepress assistant (XML + user input → tips & scripts)."
 authors = [{ name="Your Name", email="you@example.com" }]
@@ -20,4 +20,5 @@ dependencies = [
 ]
 
 [project.scripts]
+printssistant = "cli.main:app"
 prepress-helper = "cli.main:app"
