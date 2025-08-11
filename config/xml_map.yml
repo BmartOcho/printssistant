@@ -1,15 +1,36 @@
+# XML → JobSpec mapping for PrintIQ-like job XMLs
+# Notes:
+# - We assume ONE primary section per job for MVP: Sections/Section[1].
+# - All dimensions are in inches (MeasurementType = Imperial).
+# - Fields that do not exist in the XML are left to JobSpec defaults (e.g., safety_in).
 
-# Example XPath mapping for your current shop XML
-product: "//Order/Product/@type"
-trim_size.w_in: "number(//Specs/Trim/@width_in)"
-trim_size.h_in: "number(//Specs/Trim/@height_in)"
-bleed_in: "number(//Specs/Bleed/@all_sides_in)"
-safety_in: "number(//Specs/Safety/@all_sides_in)"
-pages: "number(//Specs/Document/@pages)"
-colors.front: "//Colors/@front"
-colors.back: "//Colors/@back"
-stock: "//Stock/@name"
-finish: "//Finish/@type"
-imposition_hint: "//Imposition/@template"
-due_at: "//Due/@at"
-special.fold: "//Fold/@type"
+# High-level product identifier (prefer Title; fallback to ProductCode)
+product: "string(//Job/Title | //Job/ProductCode)"
+
+# Due date/time expected by customer
+due_at: "string(//Job/Product/CustomerExpectedDateUTC)"
+
+# Trim size (Finished size)
+trim_size.w_in: "number(//Job/Product/Sections/Section[1]/FinishedWidth)"
+trim_size.h_in: "number(//Job/Product/Sections/Section[1]/FinishedHeight)"
+
+# Page count
+pages: "number(//Job/Product/Sections/Section[1]/Pages)"
+
+# Bleed (per side; inches)
+bleed_in: "number(//Job/Product/Sections/Section[1]/Printing/Imposition/Bleed)"
+
+# Color processes per side
+colors.front: "string(//Job/Product/Sections/Section[1]/Printing/ProcessFront)"
+colors.back: "string(//Job/Product/Sections/Section[1]/Printing/ProcessReverse)"
+
+# Stock info
+stock: "string(//Job/Product/Sections/Section[1]/Printing/Stock)"
+
+# Optional imposition/fold hint (e.g., 'Flat Product', 'Roll Fold', etc.)
+imposition_hint: "string(//Job/Product/Sections/Section[1]/ImpositionFoldCatalog)"
+
+# Helpful extras stored under JobSpec.special
+special.stock_group: "string(//Job/Product/Sections/Section[1]/StockGroups/StockGroup)"
+special.imposition_across: "concat(//Job/Product/Sections/Section[1]/Printing/Imposition/AcrossX, 'x', //Job/Product/Sections/Section[1]/Printing/Imposition/AcrossY)"
+special.artwork_file: "string(//Job/Product/JobArtwork/ArtworkFile/FileName | //Job/Product/Sections/Section[1]/Artwork/Files/File/Name)"
