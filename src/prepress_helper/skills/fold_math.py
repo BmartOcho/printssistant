@@ -11,8 +11,9 @@ def _trifold_panels(total: float, style: str = "roll", fold_in: str = "right") -
     if style == "z":
         t = round(total / 3.0, 4)
         return [t, t, t]
-    outer = round((total + (1.0/16.0)) / 3.0, 4)  # two outers equal
-    inner = round(outer - (1.0/16.0), 4)          # fold-in panel smaller by 1/16"
+    # roll: two equal outers, fold-in panel is 1/16" shorter
+    outer = round((total + (1.0/16.0)) / 3.0, 4)
+    inner = round(outer - (1.0/16.0), 4)
     return [inner, outer, outer] if fold_in == "left" else [outer, outer, inner]
 
 def tips(job: JobSpec, style: str = "roll", fold_in: str = "right") -> List[str]:

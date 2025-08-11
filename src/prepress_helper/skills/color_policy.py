@@ -13,9 +13,9 @@ def tips(job: JobSpec) -> List[str]:
 def scripts(job: JobSpec) -> Dict[str, str]:
     rb = job.special.get("rich_black", "60/40/40/100")
     try:
-        c,m,y,k = [int(x) for x in rb.replace("%","").split("/")]
+        c, m, y, k = [int(x) for x in rb.replace("%", "").split("/")]
     except Exception:
-        c,m,y,k = 60,40,40,100
+        c, m, y, k = 60, 40, 40, 100
     icc = job.special.get("icc_profile", "US Web Coated (SWOP) v2")
     small_pt = job.special.get("small_text_pt", 18)
 

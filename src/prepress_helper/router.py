@@ -1,9 +1,8 @@
-# src/prepress_helper/router.py
 from __future__ import annotations
 from typing import List, Tuple
 from .jobspec import JobSpec
 
-# Tri-folds and similar are usually on ~11" long edge; tweak to your shop.
+# Adjust if you want fold logic on smaller pieces
 FOLD_MIN_LONG_EDGE = 10.5
 
 def _long_edge(job: JobSpec) -> float:
@@ -28,7 +27,7 @@ def detect_intents(job: JobSpec, user_msg: str) -> List[str]:
     msg = (user_msg or "").lower()
     intents: List[str] = []
 
-    # Document setup
+    # Document setup signal
     if any(k in msg for k in ("setup", "artboard", "document", "preset", "new doc", "new document")):
         intents.append("doc_setup")
 
@@ -36,7 +35,7 @@ def detect_intents(job: JobSpec, user_msg: str) -> List[str]:
     if any(k in msg for k in ("color", "cmyk", "rgb", "icc", "rich black", "ink", "swop", "gracol")):
         intents.append("color_policy")
 
-    # Fold math signals (brochure-like) with size gate
+    # Fold math signals with size gate (override with 'force fold')
     fold_hint = (
         "fold" in msg
         or _contains(job.product, "fold", "brochure", "tri-fold", "trifold", "gatefold", "z-fold")
@@ -63,17 +62,8 @@ def fold_preferences_from_message(user_msg: str) -> Tuple[str, str]:
     Returns (style, fold_in):
       style ∈ {'roll','z'}
       fold_in ∈ {'left','right'}
-    Usage is optional; your CLI can pass these to fold_math if desired.
     """
     msg = (user_msg or "").lower()
-    style = "roll"
-    if "z fold" in msg or "z-fold" in msg or "accordion" in msg:
-        style = "z"
-
-    fold_in = "right"
-    if "left folds in" in msg or "left panel in" in msg or "fold in left" in msg:
-        fold_in = "left"
-    elif "right folds in" in msg or "right panel in" in msg or "fold in right" in msg:
-        fold_in = "right"
-
+    style = "z" if ("z fold" in msg or "z-fold" in msg or "accordion" in msg) else "roll"
+    fold_in = "left" if ("left folds in" in msg or "fold in left" in msg) else "right"
     return style, fold_in
