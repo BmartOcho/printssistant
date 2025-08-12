@@ -1,3 +1,14 @@
-business_card: { bleed_in: 0.125, safety_in: 0.125, color_mode: "CMYK" }
-trifold:       { bleed_in: 0.125, safety_in: 0.125, fold_style: "roll" }
-banner:        { bleed_in: 0.125,   safety_in: 0.25,  min_ppi: 150 }
+business_card:
+  bleed_in: 0.125
+  safety_in: 0.125
+  color_mode: "CMYK"
+
+trifold:
+  bleed_in: 0.125
+  safety_in: 0.125
+  fold_style: "roll"
+
+banner:
+  bleed_in: 0.0
+  safety_in: 0.25
+  min_ppi: 150

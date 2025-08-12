@@ -7,20 +7,22 @@ def _axis_length(job: JobSpec) -> float:
         return 0.0
     return max(job.trim_size.w_in, job.trim_size.h_in)
 
-def _trifold_panels(total: float, style: str = "roll", fold_in: str = "right") -> List[float]:
+def _trifold_panels(total: float, style: str = "roll", fold_in: str = "right", offset_in: float = 1.0/16.0) -> List[float]:
     if style == "z":
         t = round(total / 3.0, 4)
         return [t, t, t]
-    # roll: two equal outers, fold-in panel is 1/16" shorter
-    outer = round((total + (1.0/16.0)) / 3.0, 4)
-    inner = round(outer - (1.0/16.0), 4)
+    # roll fold: two equal outers, fold-in panel shorter by offset
+    outer = round((total + offset_in) / 3.0, 4)
+    inner = round(outer - offset_in, 4)
     return [inner, outer, outer] if fold_in == "left" else [outer, outer, inner]
 
 def tips(job: JobSpec, style: str = "roll", fold_in: str = "right") -> List[str]:
     length = _axis_length(job)
     if length < 8.0:
         return ["Size looks too small for a tri-fold—confirm product and dimensions before placing fold guides."]
-    panels = _trifold_panels(length, style=style, fold_in=fold_in)
+    # prefer shop-configured offset if present
+    offset = float(job.special.get("fold_in_offset_in", 1.0/16.0)) if job.special else 1.0/16.0
+    panels = _trifold_panels(length, style=style, fold_in=fold_in, offset_in=offset)
     bleed = job.bleed_in or 0.125
     safety = job.safety_in or 0.125
     return [
@@ -36,7 +38,8 @@ def scripts(job: JobSpec, style: str = "roll", fold_in: str = "right") -> Dict[s
     else:
         w, h = job.trim_size.w_in, job.trim_size.h_in
     length = max(w, h)
-    panels = _trifold_panels(length, style=style, fold_in=fold_in)
+    offset = float(job.special.get("fold_in_offset_in", 1.0/16.0)) if job.special else 1.0/16.0
+    panels = _trifold_panels(length, style=style, fold_in=fold_in, offset_in=offset)
     pos1 = round(panels[0]*72, 3)
     pos2 = round((panels[0]+panels[1])*72, 3)
     bleed = job.bleed_in or 0.125

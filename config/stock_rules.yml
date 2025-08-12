@@ -5,3 +5,5 @@ stocks:
   - name: "100# Cover Silk"
     fold_in_offset_in: 0.09375
     min_text_pt: 8
+  - name: "Customer Supplied Indigo Stock"
+    fold_in_offset_in: 0.0625

@@ -7,8 +7,9 @@ from prepress_helper.jobspec import JobSpec
 from prepress_helper.xml_adapter import load_jobspec_from_xml
 from prepress_helper.router import detect_intents, fold_preferences_from_message
 from prepress_helper.skills import doc_setup
+from prepress_helper.config_loader import load_shop_config, apply_shop_config
 
-# Optional skills (import if present)
+# Optional skills
 try:
     from prepress_helper.skills import fold_math  # type: ignore
 except Exception:
@@ -19,21 +20,27 @@ try:
 except Exception:
     color_policy = None  # type: ignore
 
+# Optional ML (for debug meta only)
+try:
+    from prepress_helper.ml.product_classifier import predict_label  # type: ignore
+except Exception:
+    predict_label = None  # type: ignore
+
 app = typer.Typer(add_completion=False, help="Printssistant CLI")
+SHOP_CFG = load_shop_config("config")
 
 def _uniq(seq: List[str]) -> List[str]:
-    seen: set[str] = set()
-    out: List[str] = []
+    seen: set[str] = set(); out: List[str] = []
     for s in seq:
         if s not in seen:
-            out.append(s)
-            seen.add(s)
+            out.append(s); seen.add(s)
     return out
 
 @app.command()
 def parse_xml(xml: str, map: str):
     """Parse XML into a normalized JobSpec and print JSON."""
     js = load_jobspec_from_xml(xml, map)
+    js = apply_shop_config(js, SHOP_CFG)
     typer.echo(json.dumps(js.model_dump(), indent=2))
 
 @app.command()
@@ -42,21 +49,13 @@ def advise(
     msg: Optional[str] = typer.Option(None, "--msg", help="Free text hint like 'trifold roll fold'"),
     fold: Optional[str] = typer.Option(None, "--fold", help="Override fold style: roll|z"),
     fold_in: Optional[str] = typer.Option(None, "--fold-in", help="Override which panel folds in: left|right"),
-    policy: Optional[str] = typer.Option(None, "--policy", help="Path to policies.yml"),
+    debug_ml: bool = typer.Option(False, "--debug-ml", help="Include ML prediction/confidence when available"),
 ):
     """Given a JobSpec JSON file and options, print tips & scripts."""
-    import yaml
-
     with open(jobspec, "r", encoding="utf-8") as f:
         raw = json.load(f)
     js = JobSpec(**raw)
-
-    # Optional policies.yml → js.special
-    if policy:
-        with open(policy, "r", encoding="utf-8") as pf:
-            pol = yaml.safe_load(pf) or {}
-        if isinstance(pol, dict):
-            js.special.update(pol)  # type: ignore
+    js = apply_shop_config(js, SHOP_CFG)
 
     intents = detect_intents(js, msg or "")
 
@@ -67,23 +66,29 @@ def advise(
     tips += doc_setup.tips(js)
     scripts.update(doc_setup.scripts(js))
 
-    # Fold math (if routed)
+    # Fold math
     if "fold_math" in intents and fold_math:
-        # infer from message, allow CLI options to override
         inf_style, inf_in = fold_preferences_from_message(msg or "")
         use_style = (fold or inf_style or "roll").lower()
         use_in = (fold_in or inf_in or "right").lower()
         tips += fold_math.tips(js, style=use_style, fold_in=use_in)  # type: ignore
         scripts.update(fold_math.scripts(js, style=use_style, fold_in=use_in))  # type: ignore
 
-    # Color policy (if routed)
+    # Color policy
     if "color_policy" in intents and color_policy:
         tips += color_policy.tips(js)  # type: ignore
         scripts.update(color_policy.scripts(js))  # type: ignore
 
-    # De-dupe overlapping messages
     tips = _uniq(tips)
-    typer.echo(json.dumps({"intents": intents, "tips": tips, "scripts": scripts}, indent=2))
+    out: Dict[str, Any] = {"intents": intents, "tips": tips, "scripts": scripts}
+
+    if debug_ml and predict_label:
+        pred = predict_label(js, msg or "")
+        if pred:
+            label, prob = pred
+            out["meta"] = {"ml_prediction": label, "prob": round(prob, 4)}
+
+    typer.echo(json.dumps(out, indent=2))
 
 if __name__ == "__main__":
     app()

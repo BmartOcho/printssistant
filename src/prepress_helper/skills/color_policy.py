@@ -3,21 +3,43 @@ from typing import List, Dict
 from ..jobspec import JobSpec
 
 def tips(job: JobSpec) -> List[str]:
-    return [
+    shop = (job.special or {}).get("shop", {})
+    policies = shop.get("policies", {})
+    tac = policies.get("max_ink_coverage") or job.special.get("max_ink_coverage")
+    t: List[str] = [
         "Work in CMYK; avoid placing RGB assets directly.",
-        "Rich black for large solids/headlines: 60C/40M/40Y/100K.",
         "Body text ≤ 18 pt: 100K only and set to overprint.",
         "Aim for effective 300 PPI on placed images (150+ for wide-format).",
     ]
+    if tac:
+        t.append(f"Keep total area coverage (TAC) ≤ {tac}%. Large solids should respect TAC limits.")
+    rb = (
+        job.special.get("rich_black")
+        or policies.get("sleek_black")
+        or policies.get("rich_black")
+        or "60/40/40/100"
+    )
+    t.insert(1, f"Rich black for large solids/headlines: {rb}.")
+    icc = job.special.get("icc_profile") or policies.get("icc_profile")
+    if icc:
+        t.append(f"Use shop ICC: {icc}.")
+    return t
 
 def scripts(job: JobSpec) -> Dict[str, str]:
-    rb = job.special.get("rich_black", "60/40/40/100")
+    shop = (job.special or {}).get("shop", {})
+    policies = shop.get("policies", {})
+    rb = (
+        job.special.get("rich_black")
+        or policies.get("sleek_black")
+        or policies.get("rich_black")
+        or "60/40/40/100"
+    )
+    icc = job.special.get("icc_profile") or policies.get("icc_profile", "US Web Coated (SWOP) v2")
+    small_pt = job.special.get("small_text_pt") or policies.get("small_text_pt", 18)
     try:
-        c, m, y, k = [int(x) for x in rb.replace("%", "").split("/")]
+        c, m, y, k = [int(x) for x in rb.replace("%","").split("/")]
     except Exception:
         c, m, y, k = 60, 40, 40, 100
-    icc = job.special.get("icc_profile", "US Web Coated (SWOP) v2")
-    small_pt = job.special.get("small_text_pt", 18)
 
     jsx_ai = f"""
 // color_policies.jsx (Illustrator)
