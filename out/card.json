@@ -18,6 +18,83 @@
   "special": {
     "stock_group": "Customer Supplied",
     "imposition_across": "3x8",
-    "artwork_file": "J208819_1.pdf"
+    "artwork_file": "J208819_1.pdf",
+    "shop": {
+      "policies": {
+        "rich_black": "50/40/40/100",
+        "icc_profile": "US Web Coated (SWOP) v2",
+        "small_text_pt": 10,
+        "tac_limit": 280,
+        "sleek_black": "60/60/80/100"
+      },
+      "stocks": [
+        {
+          "name": "80# Text Gloss",
+          "fold_in_offset_in": 0.0625,
+          "min_text_pt": 7
+        },
+        {
+          "name": "100# Cover Silk",
+          "fold_in_offset_in": 0.09375,
+          "min_text_pt": 8
+        },
+        {
+          "name": "Customer Supplied Indigo Stock",
+          "fold_in_offset_in": 0.0625
+        }
+      ],
+      "products": {
+        "business_card": {
+          "bleed_in": 0.125,
+          "safety_in": 0.125,
+          "color_mode": "CMYK"
+        },
+        "trifold": {
+          "bleed_in": 0.125,
+          "safety_in": 0.125,
+          "fold_style": "roll"
+        },
+        "banner": {
+          "bleed_in": 0.0,
+          "safety_in": 0.25,
+          "min_ppi": 150
+        }
+      },
+      "presses": {
+        "indigo_7800": {
+          "icc": "US Web Coated (SWOP) v2",
+          "tac": 300,
+          "allow_spot": true
+        },
+        "fuji_ec1100": {
+          "icc": "US Web Coated (SWOP) v2",
+          "tac": 300,
+          "allow_spot": true
+        },
+        "di_5634_sheetwise": {
+          "icc": "US Web Coated (SWOP) v2",
+          "tac": 280,
+          "allow_spot": false
+        },
+        "di_5634_tumble": {
+          "icc": "US Web Coated (SWOP) v2",
+          "tac": 280,
+          "allow_spot": false
+        },
+        "di_5634_w&t": {
+          "icc": "US Web Coated (SWOP) v2",
+          "tac": 280,
+          "allow_spot": false
+        },
+        "digitech_ltx2": {
+          "icc": null
+        }
+      }
+    },
+    "stock_rule": {
+      "name": "Customer Supplied Indigo Stock",
+      "fold_in_offset_in": 0.0625
+    },
+    "fold_in_offset_in": 0.0625
   }
 }
