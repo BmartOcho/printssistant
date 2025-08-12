@@ -1,0 +1,7 @@
+presses:
+  indigo_7800: {icc: "US Web Coated (SWOP) v2", tac: 300, allow_spot: true}
+  fuji_ec1100: {icc: "US Web Coated (SWOP) v2", tac: 300, allow_spot: true}
+  di_5634_sheetwise: {icc: "US Web Coated (SWOP) v2", tac: 280, allow_spot: false}
+  di_5634_tumble: {icc: "US Web Coated (SWOP) v2", tac: 280, allow_spot: false}
+  di_5634_w&t: {icc: "US Web Coated (SWOP) v2", tac: 280, allow_spot: false}
+  digitech_ltx2: {icc: }
