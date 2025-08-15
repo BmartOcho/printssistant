@@ -3,3 +3,5 @@ icc_profile: "US Web Coated (SWOP) v2"
 small_text_pt: 10
 tac_limit: 280
 sleek_black: "60/60/80/100"
+max_ink_coverage: 300
+allow_rgb: False

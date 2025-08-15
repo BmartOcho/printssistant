@@ -12,6 +12,11 @@ from prepress_helper.config_loader import load_shop_config, apply_shop_config
 
 # Optional skills
 try:
+    from prepress_helper.skills import policy_enforcer # type: ignore
+except Exception:
+    policy_enforcer = None # type: ignore
+
+try:
     from prepress_helper.skills import fold_math  # type: ignore
 except Exception:
     fold_math = None  # type: ignore
@@ -61,6 +66,10 @@ async def advise(req: AdviseRequest):
     if "color_policy" in intents and color_policy:
         tips += color_policy.tips(js)  # type: ignore
         scripts.update(color_policy.scripts(js))  # type: ignore
+
+    if policy_enforcer:
+        tips += policy_enforcer.tips(js, req.message or "")
+        scripts.update(policy_enforcer.scripts(js, req.message or ""))
 
     seen=set(); tips2=[]
     for t in tips:
