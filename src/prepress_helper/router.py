@@ -1,66 +1,104 @@
 from __future__ import annotations
+from typing import List, Tuple, Set, Any
 import re
-from typing import List, Tuple
-from .jobspec import JobSpec
 
-_WIDE_WORDS = re.compile(r"\b(banner|poster|sign|display|backdrop|step\s*and\s*repeat)\b", re.I)
-_FOLD_WORDS = re.compile(r"\b(tri[\s-]?fold|z[\s-]?fold|roll\s*fold|brochure|fold)\b", re.I)
-_COLOR_WORDS = re.compile(r"\b(cmyk|rgb|rich\s*black|icc|profile|color|ink|tac)\b", re.I)
+from prepress_helper.jobspec import JobSpec
+from prepress_helper.config_loader import load_shop_config
 
-def _long_edge(job: JobSpec) -> float:
-    if not job.trim_size:
-        return 0.0
-    return max(float(job.trim_size.w_in), float(job.trim_size.h_in))
+# Load once; CLI/API already calls apply_shop_config downstream.
+SHOP_CFG = load_shop_config("config")
 
-def _canonical_product(job: JobSpec) -> str:
-    p = (getattr(job, "product", "") or "").lower()
-    for patt, label in (
-        (r"\b(tri[\s-]?fold|brochure)\b", "trifold"),
-        (r"\b(business\s*card|bc)\b", "business_card"),
-        (r"\b(postcard|pc)\b", "postcard"),
-        (r"\b(booklet|catalog|book)\b", "booklet"),
-        (r"\b(banner|poster|sign)\b", "banner"),
-    ):
-        if re.search(patt, p):
-            return label
-    return p.strip() or "unknown"
 
-def fold_preferences_from_message(msg: str) -> Tuple[str|None, str|None]:
-    """Infer fold style and which panel folds in from free text."""
-    m = (msg or "").lower()
-    style = "z" if "z fold" in m or "z-fold" in m else ("roll" if "roll" in m else None)
-    fin = "left" if "left" in m else ("right" if "right" in m else None)
-    return style, fin
+def _norm(s: Any) -> str:
+    return (str(s) if s is not None else "").strip().lower()
 
-def detect_intents(job: JobSpec, message: str) -> List[str]:
+
+def _machine_name(js: JobSpec) -> str:
+    sp = getattr(js, "special", {}) or {}
+    return _norm(sp.get("machine"))
+
+
+def _wide_format_machine_names() -> Set[str]:
+    """
+    Collect normalized names from press_capabilities.yml:
+      presses:
+        roll_printers: [ "HP Latex 365", ... ]
+        flatbed_printers: [ "Arizona 2280", ... ]
+    """
+    presses = (SHOP_CFG or {}).get("presses", {}) or {}
+
+    def _to_names(value) -> List[str]:
+        # accept list[str] or list[dict{name: str}]
+        out: List[str] = []
+        if isinstance(value, list):
+            for item in value:
+                if isinstance(item, str):
+                    out.append(item)
+                elif isinstance(item, dict) and "name" in item:
+                    out.append(item["name"])
+        return out
+
+    roll = _to_names(presses.get("roll_printers", []))
+    flat = _to_names(presses.get("flatbed_printers", []))
+    return { _norm(n) for n in (roll + flat) }
+
+
+_WIDE_NAMES = _wide_format_machine_names()
+
+
+def fold_preferences_from_message(msg: str) -> Tuple[str | None, str | None]:
+    """
+    Parse hints like 'trifold roll fold right-in' → ('roll','right')
+    Returns (style, fold_in) where style ∈ {'roll','z'} and fold_in ∈ {'left','right'}
+    """
+    m = _norm(msg)
+    style = None
+    fold_in = None
+
+    if re.search(r"\b(z[\s-]*fold)\b", m):
+        style = "z"
+    elif re.search(r"\b(roll[\s-]*fold|tri[\s-]*fold|trifold)\b", m):
+        style = "roll"
+
+    if re.search(r"\bleft[\s-]*(in|panel)\b", m) or "left-in" in m:
+        fold_in = "left"
+    elif re.search(r"\bright[\s-]*(in|panel)\b", m) or "right-in" in m:
+        fold_in = "right"
+
+    return style, fold_in
+
+
+def detect_intents(js: JobSpec, msg: str) -> List[str]:
+    """
+    Returns an ordered list of intents.
+    NEW: wide_format is ONLY set when js.special.machine matches a configured
+         roll_printer or flatbed_printer (no size- or message-based fallback).
+    """
     intents: List[str] = []
 
-    # Always consider doc setup as base knowledge
+    # Always suggest basic document setup
     intents.append("doc_setup")
 
-    m = message or ""
-    prod = _canonical_product(job)
-    long_edge = _long_edge(job)
-
-    # Fold math triggers
-    if prod == "trifold" or _FOLD_WORDS.search(m):
-        # add a light size sanity check (still allow ML to flip later)
-        if long_edge >= 8.0:
-            intents.append("fold_math")
-
-    # Color policy triggers
-    if _COLOR_WORDS.search(m):
-        intents.append("color_policy")
-
-    # Wide-format triggers:
-    # - explicit words OR product canonical banner/poster/sign
-    # - OR large size heuristic (≥ 24" long edge) common for wide-format
-    if prod == "banner" or _WIDE_WORDS.search(m) or long_edge >= 24.0:
+    # Wide-format strictly by machine list
+    machine = _machine_name(js)
+    if machine and machine in _WIDE_NAMES:
         intents.append("wide_format")
 
-    # De-duplicate while preserving order
-    seen=set(); out=[]
+    m = _norm(msg)
+
+    # Fold math only when asked (msg hints)
+    if re.search(r"\b(tri[\s-]*fold|trifold|roll[\s-]*fold|z[\s-]*fold)\b", m):
+        intents.append("fold_math")
+
+    # Color guidance when clearly requested
+    if re.search(r"\b(cmyk|rich\s*black|tac|ink\s*coverage|color\s*policy|icc)\b", m):
+        intents.append("color_policy")
+
+    # Preserve order & uniqueness
+    seen: set[str] = set()
+    out: List[str] = []
     for i in intents:
         if i not in seen:
-            out.append(i); seen.add(i)
+            out.append(i)
+            seen.add(i)
     return out

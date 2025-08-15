@@ -1,32 +1,40 @@
-# config/policies.yml
-max_ink_coverage: 300
+# ----- Shop defaults -----
+default_icc: "US Web Coated (SWOP) v2"  # change to "GRACoL 2013" if desired
 
-# Rich blacks by workflow
-rich_black_sheetfed: "50/40/40/100"
-rich_black_wide: "75/75/75/100"
+bleed_min_in: 0.125         # global: always require at least 0.125"
+safety_min_in: 0.25         # global: always require at least 0.25"
 
-# Global prepress mins (apply to ALL jobs)
-min_bleed_in: 0.125
-min_safety_in: 0.25
+tac_max_percent: 300
 
-# Wide-format defaults
-grommet_spacing_default_in: 12
+# Rich black by workflow
+rich_black:
+  sheet_fed: [50, 40, 40, 100]
+  wide_format: [75, 75, 75, 100]
+
+# Wide-format color pipeline behavior
 allow_rgb_assets_wide: true
 
-# Soft-nags toggles
+# ----- Minimum specs (used for tips/nags) -----
+min_text_pt:
+  body_k_only: 7            # minimum for 100K body text
+  small_knockout: 8         # small reversed/knockout text
+
+min_stroke_pt:
+  k_only: 0.25              # 100K hairlines
+  knockout: 0.35            # reversed/knockout hairlines
+  wide_format: 0.50         # large format hairlines
+
+overprint_small_k_text_pt: 10  # Auto-overprint ≤ this size if 100K (handled in color_policy)
+
+# ----- Spot color policy -----
+spot_policy:
+  allow_spot_on_sheet_fed: false
+  allow_spot_on_wide_format: true
+  whitelist_spots: ["White", "Clear", "Gloss Varnish"]
+  white_requires_topmost: true
+
+# ----- Soft nags (gentle reminders) -----
 soft_nags:
   enable: true
-  adjustments: true       # tell me when we auto-raised bleed/safety
-  grommets: true          # remind to confirm grommet spacing on wide-format
-  icc_missing: false       # nudge when no ICC found and a default is assumed
-
-# Optional misc rules
-min_stroke_pt: 0.25
-min_text_pt:
-  positive: 6
-  knockout: 8
-overprint_rules:
-  small_100K_text_under_pt: 10
-
-# A default ICC if nothing else is specified
-default_icc: "US Web Coated (SWOP) v2"
+  icc_missing: true
+  grommets_prompt_wide: true

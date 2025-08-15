@@ -1,36 +1,33 @@
-# XML → JobSpec mapping for PrintIQ-like job XMLs
-# Notes:
-# - We assume ONE primary section per job for MVP: Sections/Section[1].
-# - All dimensions are in inches (MeasurementType = Imperial).
-# - Fields that do not exist in the XML are left to JobSpec defaults (e.g., safety_in).
+# Normalized field → XPath (first non-empty wins when pipes/() used)
 
-# High-level product identifier (prefer Title; fallback to ProductCode)
-product: "string(//Job/Title | //Job/ProductCode)"
+# —— Basics ——
+product: "string((//ProductName | //ProductCode | //Title | //JobName)[1])"
 
-# Due date/time expected by customer
-due_at: "string(//Job/Product/CustomerExpectedDateUTC)"
+# Finished size in inches from a single '8.5x5.5' node
+trim_w_in: "number(substring-before(//FinishedSize, 'x'))"
+trim_h_in: "number(substring-after(//FinishedSize, 'x'))"
 
-# Trim size (Finished size)
-trim_size.w_in: "number(//Job/Product/Sections/Section[1]/FinishedWidth)"
-trim_size.h_in: "number(//Job/Product/Sections/Section[1]/FinishedHeight)"
+bleed_in:  "number((//Bleed)[1])"
+safety_in: "number((//Safety)[1])"
+pages:     "number((//Pages | //QtyPages)[1])"
 
-# Page count
-pages: "number(//Job/Product/Sections/Section[1]/Pages)"
+# Colors (force strings so missing becomes '')
+colors.front: "string((//ProcessFront | //ColorsFront | //FrontColors)[1])"
+colors.back:  "string((//ProcessBack  | //ColorsBack  | //BackColors)[1])"
 
-# Bleed (per side; inches)
-bleed_in: "number(//Job/Product/Sections/Section[1]/Printing/Imposition/Bleed)"
+# Stock/finish
+stock:  "string((//Stock | //Paper | //Media)[1])"
+finish: "string((//Finish | //Coating | //Lamination)[1])"
 
-# Color processes per side
-colors.front: "string(//Job/Product/Sections/Section[1]/Printing/ProcessFront)"
-colors.back: "string(//Job/Product/Sections/Section[1]/Printing/ProcessReverse)"
+# Misc hints
+imposition_hint: "string((//ImpositionHint | //ProductCategory)[1])"
 
-# Stock info
-stock: "string(//Job/Product/Sections/Section[1]/Printing/Stock)"
+# Dates
+due_at: "string((//CustomerExpectedDateUTC | //DueUTC)[1])"
 
-# Optional imposition/fold hint (e.g., 'Flat Product', 'Roll Fold', etc.)
-imposition_hint: "string(//Job/Product/Sections/Section[1]/ImpositionFoldCatalog)"
-
-# Helpful extras stored under JobSpec.special
-special.stock_group: "string(//Job/Product/Sections/Section[1]/StockGroups/StockGroup)"
-special.imposition_across: "concat(//Job/Product/Sections/Section[1]/Printing/Imposition/AcrossX, 'x', //Job/Product/Sections/Section[1]/Printing/Imposition/AcrossY)"
-special.artwork_file: "string(//Job/Product/JobArtwork/ArtworkFile/FileName | //Job/Product/Sections/Section[1]/Artwork/Files/File/Name)"
+# —— Special bag (free-form) ——
+special.stock_group:      "string(//StockGroup)"
+special.imposition_across: "concat(string((//ImposeAcross)[1]), 'x', string((//ImposeDown)[1]))"
+special.artwork_file:     "normalize-space(string((//ArtworkFile | //FileName)[1]))"
+# IMPORTANT: map to single string (not node-set)
+special.machine:          "normalize-space(string((//Machine)[1]))"

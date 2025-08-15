@@ -1,54 +1,63 @@
-from prepress_helper.jobspec import JobSpec
-from prepress_helper.router import detect_intents
-from prepress_helper.skills import wide_format
+from prepress_helper.jobspec import JobSpec, TrimSize
+import prepress_helper.router as router
 
-def _banner_job(rgb=True):
+def _js(machine: str | None, w=11.0, h=8.5):
     return JobSpec(
-        product="Vinyl Banner",
-        trim_size={"w_in": 72.0, "h_in": 24.0},
-        bleed_in=0.0,
-        safety_in=0.25,
+        product="Test",
+        trim_size=TrimSize(w_in=w, h_in=h),
+        bleed_in=0.125,
+        safety_in=0.125,
         pages=1,
         colors={"front": "CMYK", "back": "No Printing"},
-        special={
-            "shop": {
-                "policies": {"icc_profile": "GRACoL 2013"},
-                "products": {
-                    "banner": {
-                        "min_ppi": 150,
-                        "allow_rgb": rgb,
-                        "grommet_margin_in": 0.5,
-                        "grommet_spacing_in": 12
-                    }
-                }
-            },
-            "product_preset": {
-                "min_ppi": 150,
-                "allow_rgb": rgb,
-                "grommet_margin_in": 0.5,
-                "grommet_spacing_in": 12
-            }
-        }
+        stock="Test",
+        finish=None,
+        imposition_hint="Flat",
+        due_at=None,
+        special={"machine": machine} if machine else {}
     )
 
-def test_router_marks_wide_format_by_size():
-    js = _banner_job()
-    intents = detect_intents(js, "")
+def test_marks_wide_format_when_machine_is_roll_printer():
+    # Temporarily override config for this test
+    router.SHOP_CFG = {
+        "press_capabilities": {
+            "roll_printers": ["hp latex 560"],
+            "flatbed_printers": []
+        }
+    }
+    js = _js("HP Latex 560")
+    intents = router.detect_intents(js, "")
     assert "wide_format" in intents
 
-def test_wide_format_tips_rgb_allowed():
-    js = _banner_job(rgb=True)
-    tips = wide_format.tips(js)
-    assert any("RGB assets allowed" in t for t in tips)
-    assert any("≥ 150 PPI" in t or "150 PPI" in t for t in tips)
+def test_marks_wide_format_when_machine_is_flatbed():
+    router.SHOP_CFG = {
+        "press_capabilities": {
+            "roll_printers": [],
+            "flatbed_printers": ["oce arizona 1260"]
+        }
+    }
+    js = _js("Oce Arizona 1260")
+    intents = router.detect_intents(js, "")
+    assert "wide_format" in intents
 
-def test_wide_format_tips_rgb_blocked():
-    js = _banner_job(rgb=False)
-    tips = wide_format.tips(js)
-    assert any("Work in CMYK" in t for t in tips)
+def test_does_not_mark_wide_format_for_sheet_fed_even_if_large():
+    router.SHOP_CFG = {
+        "press_capabilities": {
+            "roll_printers": [],
+            "flatbed_printers": []
+        }
+    }
+    # Big sheet, but sheet-fed machine name → should NOT set wide_format
+    js = _js("Fuji J Press 750S", w=26.0, h=12.0)
+    intents = router.detect_intents(js, "")
+    assert "wide_format" not in intents
 
-def test_wide_format_scripts_add_guides():
-    js = _banner_job()
-    scr = wide_format.scripts(js)
-    code = scr.get("illustrator_jsx_wide_format_guides","")
-    assert "addV" in code and "addH" in code
+def test_message_keyword_alone_does_not_force_wide_format():
+    router.SHOP_CFG = {
+        "press_capabilities": {
+            "roll_printers": [],
+            "flatbed_printers": []
+        }
+    }
+    js = _js(None)
+    intents = router.detect_intents(js, "banner")
+    assert "wide_format" not in intents

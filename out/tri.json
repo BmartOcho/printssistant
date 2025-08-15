@@ -1,23 +1,164 @@
 {
   "product": "Cairn Guest Cards",
-  "trim_size": {
-    "w_in": 8.5,
-    "h_in": 5.5
-  },
+  "trim_size": null,
   "bleed_in": 0.125,
-  "safety_in": 0.125,
+  "safety_in": NaN,
   "pages": 1,
   "colors": {
     "front": "CMYK",
-    "back": "No Printing"
+    "back": ""
   },
   "stock": "100# Uncoated Cover - White",
-  "finish": null,
-  "imposition_hint": "Flat Product",
+  "finish": "",
+  "imposition_hint": "",
   "due_at": "2024-09-13T05:00:00.0000000Z",
   "special": {
     "stock_group": "Uncoated Cover",
-    "imposition_across": "2x2",
-    "artwork_file": "J208830_1.pdf"
+    "imposition_across": "x",
+    "artwork_file": "J208830_1.pdf b573726c-bc44-48d6-9bf8-674f73c7967b.pdf 2024-09-10T20:13:08.8333333Z",
+    "machine": "HP Indigo 7800",
+    "adjustments": {
+      "safety_in": {
+        "from": NaN,
+        "to": NaN,
+        "min": 0.25
+      }
+    },
+    "shop": {
+      "policies": {
+        "default_icc": "US Web Coated (SWOP) v2",
+        "bleed_min_in": 0.125,
+        "safety_min_in": 0.25,
+        "tac_max_percent": 300,
+        "rich_black": {
+          "sheet_fed": [
+            50,
+            40,
+            40,
+            100
+          ],
+          "wide_format": [
+            75,
+            75,
+            75,
+            100
+          ]
+        },
+        "allow_rgb_assets_wide": true,
+        "min_text_pt": {
+          "body_k_only": 7,
+          "small_knockout": 8
+        },
+        "min_stroke_pt": {
+          "k_only": 0.25,
+          "knockout": 0.35,
+          "wide_format": 0.5
+        },
+        "overprint_small_k_text_pt": 10,
+        "spot_policy": {
+          "allow_spot_on_sheet_fed": false,
+          "allow_spot_on_wide_format": true,
+          "whitelist_spots": [
+            "White",
+            "Clear",
+            "Gloss Varnish"
+          ],
+          "white_requires_topmost": true
+        },
+        "soft_nags": {
+          "enable": true,
+          "icc_missing": true,
+          "grommets_prompt_wide": true
+        }
+      },
+      "products": {
+        "business_card": {
+          "bleed_in": 0.125,
+          "safety_in": 0.125,
+          "color_mode": "CMYK"
+        },
+        "trifold": {
+          "bleed_in": 0.125,
+          "safety_in": 0.125,
+          "fold_style": "roll"
+        },
+        "banner": {
+          "bleed_in": 0.0,
+          "safety_in": 0.5,
+          "min_ppi": 200,
+          "allow_rgb": true,
+          "icc_profile": "GRACoL 2013",
+          "grommet_margin_in": 0.5,
+          "grommet_spacing_in": 12,
+          "finishing": {
+            "hems": {
+              "all_sides": 1.0
+            },
+            "pole_pocket": {
+              "top": {
+                "depth_in": 3.0
+              }
+            },
+            "grommet": {
+              "diameter_in": 0.375,
+              "corners_only": false
+            }
+          }
+        },
+        "poster": {
+          "bleed_in": 0.125,
+          "safety_in": 0.25,
+          "min_ppi": 200,
+          "allow_rgb": true,
+          "icc_profile": "GRACoL 2013"
+        }
+      },
+      "presses": {
+        "indigo_7800": {
+          "icc": "US Web Coated (SWOP) v2",
+          "tac": 300,
+          "allow_spot": true
+        },
+        "fuji_ec1100": {
+          "icc": "US Web Coated (SWOP) v2",
+          "tac": 300,
+          "allow_spot": true
+        },
+        "di_5634_sheetwise": {
+          "icc": "US Web Coated (SWOP) v2",
+          "tac": 280,
+          "allow_spot": false
+        },
+        "di_5634_tumble": {
+          "icc": "US Web Coated (SWOP) v2",
+          "tac": 280,
+          "allow_spot": false
+        },
+        "di_5634_w&t": {
+          "icc": "US Web Coated (SWOP) v2",
+          "tac": 280,
+          "allow_spot": false
+        },
+        "digitech_ltx2": {
+          "icc": null
+        },
+        "hp_latex_570": {
+          "max_width_in": 64,
+          "allow_rgb": true,
+          "icc_profile": "LATEX_Generic_SAV.icc",
+          "substrates": [
+            "SAV",
+            "Banner_13oz",
+            "PolyPoster"
+          ]
+        },
+        "indigo_7900": {
+          "max_width_in": 13,
+          "max_ink_coverage": 300,
+          "allow_rgb": false,
+          "icc_profile": "GRACoL 2013"
+        }
+      }
+    }
   }
 }

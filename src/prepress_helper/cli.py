@@ -1,4 +1,3 @@
-# src/prepress_helper/cli.py
 from __future__ import annotations
 import json
 import typer
@@ -26,11 +25,6 @@ try:
 except Exception:
     color_policy = None  # type: ignore
 
-try:
-    from prepress_helper.skills import soft_nags  # type: ignore
-except Exception:
-    soft_nags = None  # type: ignore
-
 # Optional ML (for debug meta only)
 try:
     from prepress_helper.ml.product_classifier import predict_label  # type: ignore
@@ -40,53 +34,54 @@ except Exception:
 app = typer.Typer(add_completion=False, help="Printssistant CLI")
 SHOP_CFG = load_shop_config("config")
 
-def _dedupe_tips(tips: List[str]) -> List[str]:
-    lower = [t.lower() for t in tips]
-    has_rgb_allowed = any("rgb assets allowed" in s for s in lower)
-    has_rgb_blocked = any("rgb assets not allowed" in s for s in lower)
-    has_wf_setup = any(s.startswith("set document to ") for s in lower)
-    has_shop_rb = any(s.startswith("use shop rich black") for s in lower)
 
-    def is_generic_setup(s: str) -> bool:
-        return s.startswith("create a document at ")
-
-    def is_cmyk_admonition(s: str) -> bool:
-        return ("use cmyk document color mode; avoid placing rgb assets directly." in s
-                or "work in cmyk; avoid placing rgb" in s)
-
-    kept_cmyk = False
-    out: List[str] = []
+def _uniq(seq: List[str]) -> List[str]:
     seen: set[str] = set()
-
-    for t in tips:
-        s = t.lower()
-        if has_wf_setup and is_generic_setup(s):
-            continue
-        if has_rgb_allowed:
-            if is_cmyk_admonition(s) or "rgb assets not allowed" in s:
-                continue
-        if has_rgb_blocked and "rgb assets allowed" in s:
-            continue
-        if is_cmyk_admonition(s):
-            if kept_cmyk:
-                continue
-            kept_cmyk = True
-        if has_shop_rb and s.startswith("rich black for large solids"):
-            continue
-
-        key = s.strip()
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(t)
+    out: List[str] = []
+    for s in seq:
+        if s not in seen:
+            out.append(s)
+            seen.add(s)
     return out
 
+
+def _read_json_auto(path: str) -> Any:
+    """Read JSON allowing UTF-8/UTF-8 BOM/UTF-16 LE/BE."""
+    with open(path, "rb") as f:
+        data = f.read()
+    # UTF-8 BOM
+    if data.startswith(b"\xef\xbb\xbf"):
+        text = data.decode("utf-8-sig")
+    # UTF-16 LE/BE
+    elif data.startswith(b"\xff\xfe") or data.startswith(b"\xfe\xff"):
+        text = data.decode("utf-16")
+    else:
+        text = data.decode("utf-8")
+    return json.loads(text)
+
+
 @app.command()
-def parse_xml(xml: str, map: str):
-    """Parse XML into a normalized JobSpec and print JSON."""
+def parse_xml(
+    xml: str,
+    map: str,
+    out: Optional[str] = typer.Option(
+        None,
+        "--out",
+        help="Write UTF-8 JSON to this path (avoids shell redirection encoding issues).",
+    ),
+):
+    """Parse XML into a normalized JobSpec and print JSON (or write to --out)."""
     js = load_jobspec_from_xml(xml, map)
     js = apply_shop_config(js, SHOP_CFG)
-    typer.echo(json.dumps(js.model_dump(), indent=2))
+    payload = json.dumps(js.model_dump(), indent=2)
+
+    if out:
+        with open(out, "w", encoding="utf-8") as fh:
+            fh.write(payload)
+    else:
+        # Printing to stdout lets the shell decide encoding; prefer --out on Windows/PS
+        typer.echo(payload)
+
 
 @app.command()
 def advise(
@@ -97,13 +92,11 @@ def advise(
     debug_ml: bool = typer.Option(False, "--debug-ml", help="Include ML prediction/confidence when available"),
 ):
     """Given a JobSpec JSON file and options, print tips & scripts."""
-    with open(jobspec, "r", encoding="utf-8") as f:
-        raw = json.load(f)
+    raw = _read_json_auto(jobspec)
     js = JobSpec(**raw)
     js = apply_shop_config(js, SHOP_CFG)
 
     intents = detect_intents(js, msg or "")
-
     tips: List[str] = []
     scripts: Dict[str, str] = {}
     nags: List[str] = []
@@ -111,11 +104,6 @@ def advise(
     # Always include basic doc setup
     tips += doc_setup.tips(js)
     scripts.update(doc_setup.scripts(js))
-
-    # Policy enforcement (TAC, rich black, RGB block)
-    if policy_enforcer:
-        tips += policy_enforcer.tips(js, message=(msg or ""), intents=intents)
-        scripts.update(policy_enforcer.scripts(js, message=(msg or ""), intents=intents))
 
     # Fold math
     if "fold_math" in intents and fold_math:
@@ -125,16 +113,23 @@ def advise(
         tips += fold_math.tips(js, style=use_style, fold_in=use_in)  # type: ignore
         scripts.update(fold_math.scripts(js, style=use_style, fold_in=use_in))  # type: ignore
 
-    # Color policy (generic)
+    # Color policy
     if "color_policy" in intents and color_policy:
         tips += color_policy.tips(js)  # type: ignore
         scripts.update(color_policy.scripts(js))  # type: ignore
 
-    # Soft-nags (non-blocking)
-    if soft_nags:
-        nags += soft_nags.tips(js, message=(msg or ""), intents=intents)  # type: ignore
+    # Soft nags (if policy_enforcer is present it can append)
+    if policy_enforcer:
+        extra = policy_enforcer.soft_nags(js)  # type: ignore
+        if extra:
+            nags.extend(extra)
 
-    tips = _dedupe_tips(tips)
+    if policy_enforcer and hasattr(policy_enforcer, "soft_nags"):
+        extra = policy_enforcer.soft_nags(js)  # type: ignore
+    if extra:
+        nags.extend(extra)
+
+    tips = _uniq(tips)
     out: Dict[str, Any] = {"intents": intents, "tips": tips, "scripts": scripts}
     if nags:
         out["nags"] = nags
@@ -146,6 +141,7 @@ def advise(
             out["meta"] = {"ml_prediction": label, "prob": round(prob, 4)}
 
     typer.echo(json.dumps(out, indent=2))
+
 
 if __name__ == "__main__":
     app()

@@ -1,87 +1,84 @@
 # src/prepress_helper/skills/policy_enforcer.py
 from __future__ import annotations
-from typing import List, Dict, Optional
-from ..jobspec import JobSpec
 
-def _shop(job: JobSpec) -> Dict:
-    return (job.special or {}).get("shop", {})  # type: ignore
+import math
+from typing import Any, Dict, List, Optional
 
-def _policies(job: JobSpec) -> Dict:
-    return _shop(job).get("policies", {})  # type: ignore
 
-def _presses(job: JobSpec) -> Dict:
-    return _shop(job).get("presses", {})  # type: ignore
+def _shop(js) -> Dict[str, Any]:
+    return (getattr(js, "special", {}) or {}).get("shop", {})  # type: ignore[attr-defined]
 
-def _resolve_allow_rgb(job: JobSpec) -> Optional[bool]:
-    # precedence: product preset -> press -> global policies -> None
-    shop = _shop(job)
-    products = shop.get("products", {}) or {}
-    preset = (job.special or {}).get("product_preset")  # type: ignore
 
-    if isinstance(preset, dict) and "allow_rgb" in preset:
-        try:
-            return bool(preset["allow_rgb"])
-        except Exception:
-            pass
+def _policies(js) -> Dict[str, Any]:
+    return _shop(js).get("policies", {})
 
-    press_key = (job.special or {}).get("press")  # type: ignore
-    if press_key and press_key in _presses(job):
-        press = _presses(job).get(press_key, {})
-        if isinstance(press, dict) and "allow_rgb" in press:
-            try:
-                return bool(press["allow_rgb"])
-            except Exception:
-                pass
 
-    pol = _policies(job)
-    if "allow_rgb" in pol:
-        try:
-            return bool(pol["allow_rgb"])
-        except Exception:
-            pass
+def _presses(js) -> Dict[str, Any]:
+    return _shop(js).get("presses", {})
 
-    return None
 
-def _is_wide_from_intents(intents: Optional[List[str]]) -> bool:
-    return bool(intents and ("wide_format" in intents))
+def _norm_float(v: Any, default: Optional[float] = None) -> Optional[float]:
+    try:
+        if v is None:
+            return default
+        f = float(v)
+        if math.isnan(f):  # covers NaN coming from XML
+            return default
+        return f
+    except Exception:
+        return default
 
-def tips(
-    job: JobSpec,
-    message: str = "",
-    intents: Optional[List[str]] = None,
-) -> List[str]:
-    pol = _policies(job)
-    out: List[str] = []
 
-    # TAC enforcement + lightweight message parse
-    tac_limit = pol.get("max_ink_coverage") or (job.special or {}).get("max_ink_coverage")  # type: ignore
-    if tac_limit:
-        out.append(f"Keep total area coverage (TAC) ≤ {tac_limit}% per shop policy.")
-        import re
-        m = re.search(r'(\d{2,3})\s*%?\s*(?:tac|total|coverage)?', (message or "").lower())
-        if m:
-            try:
-                seen = int(m.group(1))
-                if 50 <= seen <= 400 and int(tac_limit) < seen:
-                    out.append(f"⚠️ Proposed coverage {seen}% exceeds TAC {tac_limit}%. Reduce ink builds or adjust profile.")
-            except Exception:
-                pass
-
-    # RGB allowance (negative only; positive messaging handled by wide_format or other skills)
-    allow = _resolve_allow_rgb(job)
-    if allow is False:
-        out.append("RGB assets not allowed—convert to CMYK before placing.")
-
-    # Rich black selection by workflow
-    rb_sheet = pol.get("rich_black_sheetfed") or pol.get("rich_black")
-    rb_wide = pol.get("rich_black_wide") or pol.get("rich_black")
-
-    use_wide = _is_wide_from_intents(intents)
-    rb_val = (rb_wide if use_wide else rb_sheet)
-    if rb_val:
-        out.append(f"Use shop rich black: {rb_val}.")
-
-    return out
-
-def scripts(job: JobSpec, message: str = "", intents: Optional[List[str]] = None) -> Dict[str, str]:
+def _maybe_press_cfg(presses: Dict[str, Any], machine_name: Optional[str]) -> Dict[str, Any]:
+    """Best-effort fuzzy match of a machine name to a key in `presses`."""
+    if not isinstance(presses, dict) or not machine_name:
+        return {}
+    m = machine_name.lower().strip()
+    m_norm = m.replace(" ", "_").replace("-", "_")
+    for key, cfg in presses.items():
+        k = key.lower()
+        if k in m or m in k or k in m_norm or m_norm in k:
+            return cfg or {}
     return {}
+
+
+def soft_nags(js) -> List[str]:
+    """
+    Return 'soft nag' strings based on shop policy & (rough) press detection.
+    Non-fatal prompts that guide the operator.
+    """
+    nags: List[str] = []
+
+    pol = _policies(js)
+    presses = _presses(js)
+
+    # --- Safety & Bleed minimums ---
+    safety_min = _norm_float(pol.get("safety_min_in"))
+    bleed_min = _norm_float(pol.get("bleed_min_in"))
+
+    eff_safety = _norm_float(getattr(js, "safety_in", None), safety_min)
+    if safety_min is not None and (eff_safety is None or eff_safety < safety_min):
+        nags.append(f'Soft-nag: Safety increased to {safety_min:.3f}" (min {safety_min:.3f}").')
+
+    eff_bleed = _norm_float(getattr(js, "bleed_in", None), bleed_min)
+    if bleed_min is not None and (eff_bleed is None or eff_bleed < bleed_min):
+        nags.append(f'Soft-nag: Bleed increased to {bleed_min:.3f}" (min {bleed_min:.3f}").')
+
+    # --- ICC profile hint ---
+    machine = (getattr(js, "special", {}) or {}).get("machine")  # type: ignore[attr-defined]
+    press_cfg = _maybe_press_cfg(presses, machine)
+    icc = press_cfg.get("icc") or press_cfg.get("icc_profile") or pol.get("default_icc")
+    if icc:
+        nags.append(f"Soft-nag: Using ICC profile: {icc}.")
+
+    # --- Wide-format grommet reminder (heuristic) ---
+    # Flag as wide if the matched press indicates roll/flatbed-ish traits:
+    # either a big max width (>= 54) or it explicitly allows RGB (common for LFP RIPs).
+    maxw = _norm_float(press_cfg.get("max_width_in"))
+    allow_rgb = bool(press_cfg.get("allow_rgb"))
+    is_wide = (maxw is not None and maxw >= 54) or allow_rgb
+    if is_wide:
+        g_spacing = _norm_float(pol.get("grommet_spacing_in"), 12.0) or 12.0
+        nags.append(f'Soft-nag: Confirm grommet spacing; assuming {g_spacing:.0f}" by default.')
+
+    return nags
