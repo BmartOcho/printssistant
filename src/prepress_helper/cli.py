@@ -25,6 +25,11 @@ try:
 except Exception:
     color_policy = None  # type: ignore
 
+try:
+    from prepress_helper.skills import wide_format # type: ignore
+except Exception:
+    wide_format = None # type: ignore
+
 # Optional ML (for debug meta only)
 try:
     from prepress_helper.ml.product_classifier import predict_label  # type: ignore
@@ -44,14 +49,25 @@ def _canon_tip(t: str) -> str:
     return s
 
 def _dedupe_tips(tips: List[str]) -> List[str]:
-    # Prefer shop-specific rich black if present
+    # If RGB is explicitly allowed, drop generic CMYK admonitions
+    has_rgb_allowed = any("rgb assets allowed" in t.lower() for t in tips)
+
+    def keep(t: str) -> bool:
+        s = t.lower()
+        if has_rgb_allowed and ("use cmyk document color mode" in s or "work in cmyk" in s):
+            return False
+        return True
+
+    # Prefer shop-specific rich black over generic
     has_shop_rb = any(t.lower().startswith("use shop rich black") for t in tips)
     out: List[str] = []
     seen: set[str] = set()
     for t in tips:
+        if not keep(t):
+            continue
         if has_shop_rb and t.lower().startswith("rich black for large solids"):
             continue
-        key = _canon_tip(t)
+        key = t.strip().lower()
         if key not in seen:
             seen.add(key)
             out.append(t)
@@ -104,6 +120,10 @@ def advise(
     if policy_enforcer:
         tips += policy_enforcer.tips(js, msg or "")  # type: ignore
         scripts.update(policy_enforcer.scripts(js, msg or ""))  # type: ignore
+
+    if "wide_format" in intents and wide_format:
+        tips += wide_format.tips(js) # type: ignore
+        scripts.update(wide_format.scripts(js)) # type: ignore
 
     tips = _dedupe_tips(tips)
     out: Dict[str, Any] = {"intents": intents, "tips": tips, "scripts": scripts}

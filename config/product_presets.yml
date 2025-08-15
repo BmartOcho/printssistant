@@ -11,4 +11,15 @@ trifold:
 banner:
   bleed_in: 0.0
   safety_in: 0.25
-  min_ppi: 150
+  min_ppi: 200
+  allow_rgb: True
+  grommet_margin_in: 0.5
+  grommet_spacing_in: 12
+  icc_profile: "GRACoL 2013" # or our RIP/Device ICC name
+
+poster:
+  bleed_in: 0.125
+  safety_in: 0.25
+  min_ppi: 200
+  allow_rgb: True
+  icc_profile: "GRACoL 2013"

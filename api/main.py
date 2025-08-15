@@ -25,6 +25,11 @@ try:
 except Exception:
     color_policy = None  # type: ignore
 
+try:
+    from prepress_helper.skills import wide_format # type: ignore
+except Exception:
+    wide_format = None # type: ignore
+
 app = FastAPI(title="Printssistant API", version="0.0.1")
 SHOP_CFG = load_shop_config("config")
 
@@ -70,6 +75,10 @@ async def advise(req: AdviseRequest):
     if policy_enforcer:
         tips += policy_enforcer.tips(js, req.message or "")
         scripts.update(policy_enforcer.scripts(js, req.message or ""))
+
+    if "wide_format" in intents and wide_format:
+        tips += wide_format.tips(js) # type:ignore
+        scripts.update(wide_format.scripts(js)) # type: ignore
 
     seen=set(); tips2=[]
     for t in tips:
