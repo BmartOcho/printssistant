@@ -1,7 +1,11 @@
-rich_black: "50/40/40/100"
 icc_profile: "US Web Coated (SWOP) v2"
-small_text_pt: 10
 tac_limit: 280
 sleek_black: "60/60/80/100"
 max_ink_coverage: 300
-allow_rgb: False
+rich_black: "50/40/40/100"
+min_stroke_pt: 0.25
+min_text_pt:
+  positive: 6
+  knockout: 8
+overprint_rules:
+  small_100K_text_under_pt: 10

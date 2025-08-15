@@ -5,3 +5,25 @@ presses:
   di_5634_tumble: {icc: "US Web Coated (SWOP) v2", tac: 280, allow_spot: false}
   di_5634_w&t: {icc: "US Web Coated (SWOP) v2", tac: 280, allow_spot: false}
   digitech_ltx2: {icc: }
+
+roll_printers:
+  hp_latex_570:
+    max_width_in: 64
+    allow_rgb: true
+    icc_profile: "LATEX_Generic_SAV.icc"
+    substrates: [ "SAV", "Banner_13oz", "PolyPoster" ]
+
+sheetfed_presses:
+  indigo_7900:
+    max_width_in: 13
+    max_ink_coverage: 300
+    allow_rgb: false
+    icc_profile: "GRACoL 2013"
+
+flatbed_printers:
+  trufire_x2:
+    max_width_in: 120
+    max_depth_in: 60
+    max_ink_coverage: 300
+    allow_rgb: true
+    icc_profile: "GRACoL 2013"
