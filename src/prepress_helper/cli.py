@@ -1,5 +1,6 @@
+# src/prepress_helper/cli.py
 from __future__ import annotations
-import json, re
+import json
 import typer
 from typing import Optional, List, Dict, Any
 
@@ -26,9 +27,9 @@ except Exception:
     color_policy = None  # type: ignore
 
 try:
-    from prepress_helper.skills import wide_format # type: ignore
+    from prepress_helper.skills import soft_nags  # type: ignore
 except Exception:
-    wide_format = None # type: ignore
+    soft_nags = None  # type: ignore
 
 # Optional ML (for debug meta only)
 try:
@@ -39,19 +40,8 @@ except Exception:
 app = typer.Typer(add_completion=False, help="Printssistant CLI")
 SHOP_CFG = load_shop_config("config")
 
-def _canon_tip(t: str) -> str:
-    s = t.strip().lower()
-    s = re.sub(r"[.\s]+$", "", s)
-    s = s.replace("use cmyk document color mode;", "work in cmyk;")
-    s = s.replace("rgb assets not allowed—convert to cmyk before placing", "work in cmyk; avoid placing rgb assets directly")
-    s = s.replace("≤", "<=")
-    s = s.replace("-", "-")
-    return s
-
 def _dedupe_tips(tips: List[str]) -> List[str]:
-    """Normalize and remove conflicts/duplicates across skills."""
     lower = [t.lower() for t in tips]
-
     has_rgb_allowed = any("rgb assets allowed" in s for s in lower)
     has_rgb_blocked = any("rgb assets not allowed" in s for s in lower)
     has_wf_setup = any(s.startswith("set document to ") for s in lower)
@@ -70,25 +60,17 @@ def _dedupe_tips(tips: List[str]) -> List[str]:
 
     for t in tips:
         s = t.lower()
-
-        # Prefer wide-format setup over generic
         if has_wf_setup and is_generic_setup(s):
             continue
-
-        # RGB conflicts
         if has_rgb_allowed:
             if is_cmyk_admonition(s) or "rgb assets not allowed" in s:
                 continue
         if has_rgb_blocked and "rgb assets allowed" in s:
             continue
-
-        # Collapse multiple CMYK admonitions to a single line (when no RGB-allowed present)
         if is_cmyk_admonition(s):
             if kept_cmyk:
                 continue
             kept_cmyk = True
-
-        # Prefer shop-specific rich black over generic phrasing
         if has_shop_rb and s.startswith("rich black for large solids"):
             continue
 
@@ -97,23 +79,6 @@ def _dedupe_tips(tips: List[str]) -> List[str]:
             continue
         seen.add(key)
         out.append(t)
-
-    return out
-
-    # Prefer shop-specific rich black over generic phrasing
-    has_shop_rb = any(s.startswith("use shop rich black") for s in lower)
-
-    out: List[str] = []
-    seen: set[str] = set()
-    for t in tips:
-        if not keep(t):
-            continue
-        if has_shop_rb and t.lower().startswith("rich black for large solids"):
-            continue
-        key = t.strip().lower()
-        if key not in seen:
-            seen.add(key)
-            out.append(t)
     return out
 
 @app.command()
@@ -141,10 +106,16 @@ def advise(
 
     tips: List[str] = []
     scripts: Dict[str, str] = {}
+    nags: List[str] = []
 
     # Always include basic doc setup
     tips += doc_setup.tips(js)
     scripts.update(doc_setup.scripts(js))
+
+    # Policy enforcement (TAC, rich black, RGB block)
+    if policy_enforcer:
+        tips += policy_enforcer.tips(js, message=(msg or ""), intents=intents)
+        scripts.update(policy_enforcer.scripts(js, message=(msg or ""), intents=intents))
 
     # Fold math
     if "fold_math" in intents and fold_math:
@@ -154,22 +125,19 @@ def advise(
         tips += fold_math.tips(js, style=use_style, fold_in=use_in)  # type: ignore
         scripts.update(fold_math.scripts(js, style=use_style, fold_in=use_in))  # type: ignore
 
-    # Color policy
+    # Color policy (generic)
     if "color_policy" in intents and color_policy:
         tips += color_policy.tips(js)  # type: ignore
         scripts.update(color_policy.scripts(js))  # type: ignore
 
-    # Policy enforcer (TAC, shop rich black echo, RGB allowance, etc.)
-    if policy_enforcer:
-        tips += policy_enforcer.tips(js, msg or "")  # type: ignore
-        scripts.update(policy_enforcer.scripts(js, msg or ""))  # type: ignore
-
-    if "wide_format" in intents and wide_format:
-        tips += wide_format.tips(js) # type: ignore
-        scripts.update(wide_format.scripts(js)) # type: ignore
+    # Soft-nags (non-blocking)
+    if soft_nags:
+        nags += soft_nags.tips(js, message=(msg or ""), intents=intents)  # type: ignore
 
     tips = _dedupe_tips(tips)
     out: Dict[str, Any] = {"intents": intents, "tips": tips, "scripts": scripts}
+    if nags:
+        out["nags"] = nags
 
     if debug_ml and predict_label:
         pred = predict_label(js, msg or "")

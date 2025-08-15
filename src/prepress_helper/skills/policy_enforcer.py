@@ -1,3 +1,4 @@
+# src/prepress_helper/skills/policy_enforcer.py
 from __future__ import annotations
 from typing import List, Dict, Optional
 from ..jobspec import JobSpec
@@ -5,27 +6,19 @@ from ..jobspec import JobSpec
 def _shop(job: JobSpec) -> Dict:
     return (job.special or {}).get("shop", {})  # type: ignore
 
-def _products(job: JobSpec) -> Dict:
-    return _shop(job).get("products", {})  # type: ignore
+def _policies(job: JobSpec) -> Dict:
+    return _shop(job).get("policies", {})  # type: ignore
 
 def _presses(job: JobSpec) -> Dict:
     return _shop(job).get("presses", {})  # type: ignore
 
-def _policies(job: JobSpec) -> Dict:
-    return _shop(job).get("policies", {})  # type: ignore
-
-def _preset(job: JobSpec) -> Dict:
-    # If job.special.product_preset is a dict, prefer it; else fall back to products.banner
-    pp = (job.special or {}).get("product_preset")  # type: ignore
-    if isinstance(pp, dict):
-        return pp
-    prod = _products(job).get("banner", {})
-    return prod if isinstance(prod, dict) else {}
-
 def _resolve_allow_rgb(job: JobSpec) -> Optional[bool]:
-    """Precedence: product preset -> press -> global policies -> None."""
-    preset = _preset(job)
-    if "allow_rgb" in preset:
+    # precedence: product preset -> press -> global policies -> None
+    shop = _shop(job)
+    products = shop.get("products", {}) or {}
+    preset = (job.special or {}).get("product_preset")  # type: ignore
+
+    if isinstance(preset, dict) and "allow_rgb" in preset:
         try:
             return bool(preset["allow_rgb"])
         except Exception:
@@ -49,15 +42,21 @@ def _resolve_allow_rgb(job: JobSpec) -> Optional[bool]:
 
     return None
 
-def tips(job: JobSpec, message: str = "") -> List[str]:
+def _is_wide_from_intents(intents: Optional[List[str]]) -> bool:
+    return bool(intents and ("wide_format" in intents))
+
+def tips(
+    job: JobSpec,
+    message: str = "",
+    intents: Optional[List[str]] = None,
+) -> List[str]:
     pol = _policies(job)
     out: List[str] = []
 
-    # TAC enforcement
+    # TAC enforcement + lightweight message parse
     tac_limit = pol.get("max_ink_coverage") or (job.special or {}).get("max_ink_coverage")  # type: ignore
     if tac_limit:
         out.append(f"Keep total area coverage (TAC) ≤ {tac_limit}% per shop policy.")
-        # naive TAC detection in free text
         import re
         m = re.search(r'(\d{2,3})\s*%?\s*(?:tac|total|coverage)?', (message or "").lower())
         if m:
@@ -68,24 +67,21 @@ def tips(job: JobSpec, message: str = "") -> List[str]:
             except Exception:
                 pass
 
-    # Rich black echo (prefer any shop/preset values)
-    rb = (
-        (job.special or {}).get("rich_black") or  # type: ignore
-        pol.get("sleek_black") or
-        pol.get("rich_black")
-    )
-    if rb:
-        out.append(f"Use shop rich black: {rb}.")
-
-    # RGB allowance (with proper precedence)
+    # RGB allowance (negative only; positive messaging handled by wide_format or other skills)
     allow = _resolve_allow_rgb(job)
     if allow is False:
         out.append("RGB assets not allowed—convert to CMYK before placing.")
-    # If allow is True, we don't add a line here; wide_format (or other skills) will add a positive RGB tip.
-    # If allow is None, we stay silent and let other skills decide.
+
+    # Rich black selection by workflow
+    rb_sheet = pol.get("rich_black_sheetfed") or pol.get("rich_black")
+    rb_wide = pol.get("rich_black_wide") or pol.get("rich_black")
+
+    use_wide = _is_wide_from_intents(intents)
+    rb_val = (rb_wide if use_wide else rb_sheet)
+    if rb_val:
+        out.append(f"Use shop rich black: {rb_val}.")
 
     return out
 
-def scripts(job: JobSpec, message: str = "") -> Dict[str, str]:
-    # Policy enforcer is advisory-only for now.
+def scripts(job: JobSpec, message: str = "", intents: Optional[List[str]] = None) -> Dict[str, str]:
     return {}
