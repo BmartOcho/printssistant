@@ -49,17 +49,60 @@ def _canon_tip(t: str) -> str:
     return s
 
 def _dedupe_tips(tips: List[str]) -> List[str]:
-    # If RGB is explicitly allowed, drop generic CMYK admonitions
-    has_rgb_allowed = any("rgb assets allowed" in t.lower() for t in tips)
+    """Normalize and remove conflicts/duplicates across skills."""
+    lower = [t.lower() for t in tips]
 
-    def keep(t: str) -> bool:
+    has_rgb_allowed = any("rgb assets allowed" in s for s in lower)
+    has_rgb_blocked = any("rgb assets not allowed" in s for s in lower)
+    has_wf_setup = any(s.startswith("set document to ") for s in lower)
+    has_shop_rb = any(s.startswith("use shop rich black") for s in lower)
+
+    def is_generic_setup(s: str) -> bool:
+        return s.startswith("create a document at ")
+
+    def is_cmyk_admonition(s: str) -> bool:
+        return ("use cmyk document color mode; avoid placing rgb assets directly." in s
+                or "work in cmyk; avoid placing rgb" in s)
+
+    kept_cmyk = False
+    out: List[str] = []
+    seen: set[str] = set()
+
+    for t in tips:
         s = t.lower()
-        if has_rgb_allowed and ("use cmyk document color mode" in s or "work in cmyk" in s):
-            return False
-        return True
 
-    # Prefer shop-specific rich black over generic
-    has_shop_rb = any(t.lower().startswith("use shop rich black") for t in tips)
+        # Prefer wide-format setup over generic
+        if has_wf_setup and is_generic_setup(s):
+            continue
+
+        # RGB conflicts
+        if has_rgb_allowed:
+            if is_cmyk_admonition(s) or "rgb assets not allowed" in s:
+                continue
+        if has_rgb_blocked and "rgb assets allowed" in s:
+            continue
+
+        # Collapse multiple CMYK admonitions to a single line (when no RGB-allowed present)
+        if is_cmyk_admonition(s):
+            if kept_cmyk:
+                continue
+            kept_cmyk = True
+
+        # Prefer shop-specific rich black over generic phrasing
+        if has_shop_rb and s.startswith("rich black for large solids"):
+            continue
+
+        key = s.strip()
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(t)
+
+    return out
+
+    # Prefer shop-specific rich black over generic phrasing
+    has_shop_rb = any(s.startswith("use shop rich black") for s in lower)
+
     out: List[str] = []
     seen: set[str] = set()
     for t in tips:

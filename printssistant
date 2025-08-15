@@ -1,0 +1,21 @@
+{
+  "intents": [
+    "doc_setup",
+    "wide_format"
+  ],
+  "tips": [
+    "Set safety margins to 0.125 in; keep text and logos inside.",
+    "Keep total area coverage (TAC) \u2264 300% per shop policy.",
+    "Use shop rich black: 60/60/80/100.",
+    "Set document to 11.0\u00d78.5 in; bleed 0.125\"; safety 0.125\".",
+    "RGB assets allowed; embed sRGB/Adobe RGB and let the RIP handle conversion.",
+    "For large-format output, aim for \u2265 200 PPI at final size (200+ if viewed close).",
+    "Use device/profile: GRACoL 2013.",
+    "Keep critical content \u2265 0.5\" from all edges (grommet/safe margin).",
+    "Plan grommets ~every 12.0\" along edges unless specified otherwise."
+  ],
+  "scripts": {
+    "illustrator_jsx": "\n// create_artboard.jsx\n(function(){\n  var bleed = 0.125; // inches\n  var w = 11.0, h = 8.5; // inches\n  var doc = app.documents.add(DocumentColorSpace.CMYK, w*72, h*72);\n  doc.documentPreferences.documentBleedUniformSize = true;\n  doc.documentPreferences.documentBleedTopOffset = bleed*72;\n})();\n",
+    "illustrator_jsx_wide_format_guides": "\n// wide_format_guides.jsx\n(function(){\n  var w = 11.0, h = 8.5, bleed = 0.125, safety = 0.125;\n  if (app.documents.length === 0) {\n    var doc = app.documents.add(DocumentColorSpace.CMYK, w*72, h*72);\n    doc.documentPreferences.documentBleedUniformSize = true;\n    doc.documentPreferences.documentBleedTopOffset = bleed*72;\n  }\n  var doc = app.activeDocument;\n  function addV(x){ var g = doc.guides.add(); g.orientation = Direction.VERTICAL; g.coordinate = x; }\n  function addH(y){ var g = doc.guides.add(); g.orientation = Direction.HORIZONTAL; g.coordinate = y; }\n  // Safety guides\n  addV(9.0); addV(783.0);\n  addH(9.0);  addH(603.0);\n  // Grommet vertical guides\n  var xs = [36.0];\n  for (var i=0;i<xs.length;i++){ addV(xs[i]); }\n  // Grommet horizontal guides\n  var ys = [36.0];\n  for (var j=0;j<ys.length;j++){ addH(ys[j]); }\n})();\n"
+  }
+}
