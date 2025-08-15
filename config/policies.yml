@@ -11,13 +11,14 @@ min_safety_in: 0.25
 
 # Wide-format defaults
 grommet_spacing_default_in: 12
+allow_rgb_assets_wide: true
 
 # Soft-nags toggles
 soft_nags:
   enable: true
   adjustments: true       # tell me when we auto-raised bleed/safety
   grommets: true          # remind to confirm grommet spacing on wide-format
-  icc_missing: true       # nudge when no ICC found and a default is assumed
+  icc_missing: false       # nudge when no ICC found and a default is assumed
 
 # Optional misc rules
 min_stroke_pt: 0.25
