@@ -1,101 +1,65 @@
 from __future__ import annotations
-from typing import List, Tuple, Set, Any
-import re
+from typing import List, Dict, Any, Tuple
 
-from prepress_helper.jobspec import JobSpec
-from prepress_helper.config_loader import load_shop_config
+try:
+    # Optional: tests sometimes override SHOP_CFG directly
+    SHOP_CFG: Dict[str, Any] = SHOP_CFG  # type: ignore[name-defined]
+except Exception:
+    SHOP_CFG = {}  # Default empty; tests may set this
 
-# Load once; CLI/API already calls apply_shop_config downstream.
-SHOP_CFG = load_shop_config("config")
-
-
-def _norm(s: Any) -> str:
-    return (str(s) if s is not None else "").strip().lower()
-
-
-def _machine_name(js: JobSpec) -> str:
-    sp = getattr(js, "special", {}) or {}
-    return _norm(sp.get("machine"))
-
-
-def _wide_format_machine_names() -> Set[str]:
-    """
-    Collect normalized names from press_capabilities.yml:
-      presses:
-        roll_printers: [ "HP Latex 365", ... ]
-        flatbed_printers: [ "Arizona 2280", ... ]
-    """
-    presses = (SHOP_CFG or {}).get("presses", {}) or {}
-
-    def _to_names(value) -> List[str]:
-        # accept list[str] or list[dict{name: str}]
-        out: List[str] = []
-        if isinstance(value, list):
-            for item in value:
-                if isinstance(item, str):
-                    out.append(item)
-                elif isinstance(item, dict) and "name" in item:
-                    out.append(item["name"])
-        return out
-
-    roll = _to_names(presses.get("roll_printers", []))
-    flat = _to_names(presses.get("flatbed_printers", []))
-    return { _norm(n) for n in (roll + flat) }
-
-
-_WIDE_NAMES = _wide_format_machine_names()
-
+def _is_wide_format_machine(machine: str) -> bool:
+    caps = SHOP_CFG.get("press_capabilities", {}) or {}
+    rolls = [s.lower() for s in caps.get("roll_printers", [])]
+    flats = [s.lower() for s in caps.get("flatbed_printers", [])]
+    m = (machine or "").lower()
+    return bool(m) and (m in rolls or m in flats)
 
 def fold_preferences_from_message(msg: str) -> Tuple[str | None, str | None]:
-    """
-    Parse hints like 'trifold roll fold right-in' → ('roll','right')
-    Returns (style, fold_in) where style ∈ {'roll','z'} and fold_in ∈ {'left','right'}
-    """
-    m = _norm(msg)
+    text = (msg or "").lower()
     style = None
-    fold_in = None
-
-    if re.search(r"\b(z[\s-]*fold)\b", m):
-        style = "z"
-    elif re.search(r"\b(roll[\s-]*fold|tri[\s-]*fold|trifold)\b", m):
+    fin = None
+    if "roll" in text:
         style = "roll"
+    if "z-fold" in text or "z fold" in text or "zfold" in text:
+        style = "z"
+    if "left panel in" in text or "folds in left" in text:
+        fin = "left"
+    if "right panel in" in text or "folds in right" in text:
+        fin = "right"
+    return style, fin
 
-    if re.search(r"\bleft[\s-]*(in|panel)\b", m) or "left-in" in m:
-        fold_in = "left"
-    elif re.search(r"\bright[\s-]*(in|panel)\b", m) or "right-in" in m:
-        fold_in = "right"
+def detect_intents(js, message: str) -> List[str]:
+    intents: List[str] = ["doc_setup"]
+    text = (message or "").lower()
 
-    return style, fold_in
-
-
-def detect_intents(js: JobSpec, msg: str) -> List[str]:
-    """
-    Returns an ordered list of intents.
-    NEW: wide_format is ONLY set when js.special.machine matches a configured
-         roll_printer or flatbed_printer (no size- or message-based fallback).
-    """
-    intents: List[str] = []
-
-    # Always suggest basic document setup
-    intents.append("doc_setup")
-
-    # Wide-format strictly by machine list
-    machine = _machine_name(js)
-    if machine and machine in _WIDE_NAMES:
-        intents.append("wide_format")
-
-    m = _norm(msg)
-
-    # Fold math only when asked (msg hints)
-    if re.search(r"\b(tri[\s-]*fold|trifold|roll[\s-]*fold|z[\s-]*fold)\b", m):
-        intents.append("fold_math")
-
-    # Color guidance when clearly requested
-    if re.search(r"\b(cmyk|rich\s*black|tac|ink\s*coverage|color\s*policy|icc)\b", m):
+    # Color policy cues
+    if any(k in text for k in ("color policy", "rich black", "tac", "ink coverage", "cmyk", "rgb")):
         intents.append("color_policy")
 
-    # Preserve order & uniqueness
-    seen: set[str] = set()
+    # Fold cues
+    if any(k in text for k in ("trifold", "tri-fold", "z-fold", "z fold", "roll fold")):
+        intents.append("fold_math")
+
+    # Spot color cues
+    if any(k in text for k in ("pantone", "spot", "white ink")):
+        intents.append("spot")
+
+    # Minimum spec cues
+    if any(k in text for k in ("hairline", "small text", "tiny type", "min spec", "minimum spec")):
+        intents.append("min_specs")
+
+    # Wide-format by machine name (from XML→special.machine)
+    machine = ""
+    try:
+        if js.special and isinstance(js.special, dict):
+            machine = str(js.special.get("machine") or "")
+    except Exception:
+        machine = ""
+    if _is_wide_format_machine(machine):
+        intents.append("wide_format")
+
+    # De-dupe
+    seen = set()
     out: List[str] = []
     for i in intents:
         if i not in seen:

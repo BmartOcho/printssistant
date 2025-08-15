@@ -49,15 +49,67 @@ def _read_json_auto(path: str) -> Any:
     """Read JSON allowing UTF-8/UTF-8 BOM/UTF-16 LE/BE."""
     with open(path, "rb") as f:
         data = f.read()
-    # UTF-8 BOM
-    if data.startswith(b"\xef\xbb\xbf"):
+    if data.startswith(b"\xef\xbb\xbf"):      # UTF-8 BOM
         text = data.decode("utf-8-sig")
-    # UTF-16 LE/BE
-    elif data.startswith(b"\xff\xfe") or data.startswith(b"\xfe\xff"):
+    elif data.startswith(b"\xff\xfe") or data.startswith(b"\xfe\xff"):  # UTF-16
         text = data.decode("utf-16")
     else:
         text = data.decode("utf-8")
     return json.loads(text)
+
+
+def _dedupe_nags(lines: List[str]) -> List[str]:
+    seen = set()
+    out: List[str] = []
+    for s in lines:
+        norm = s.strip().lower()
+        if norm not in seen:
+            out.append(s)
+            seen.add(norm)
+    return out
+
+
+def _dedupe_tips(tips: List[str]) -> List[str]:
+    """
+    De-duplicate tips and apply preferred phrasing:
+      - Prefer 'Set document to ...' over 'Create a document at ...'
+      - Prefer 'RGB assets allowed...' over CMYK admonitions
+      - Prefer 'Use shop rich black...' over generic 'Rich black ...'
+      - Collapse duplicate CMYK admonitions (e.g. 'Use CMYK...' vs 'Work in CMYK...')
+    """
+    lower = [t.strip().lower() for t in tips]
+    has_set_document = any("set document to" in t for t in lower)
+    has_rgb_allowed = any("rgb assets allowed" in t for t in lower)
+    has_shop_rich = any("use shop rich black" in t for t in lower)
+
+    out: List[str] = []
+    seen: set[str] = set()
+    seen_rgb_admon = False  # collapse variations that contain 'avoid placing rgb assets directly'
+
+    for s in tips:
+        key = s.strip().lower()
+        if key in seen:
+            continue
+
+        if has_set_document and "create a document at" in key:
+            continue
+
+        if "avoid placing rgb assets directly" in key:
+            if has_rgb_allowed:
+                # If RGB is allowed, drop admonitions entirely
+                continue
+            # Otherwise, keep only the first admonition we encounter
+            if seen_rgb_admon:
+                continue
+            seen_rgb_admon = True
+
+        if has_shop_rich and ("rich black" in key) and ("use shop rich black" not in key):
+            continue
+
+        out.append(s)
+        seen.add(key)
+
+    return out
 
 
 @app.command()
@@ -79,7 +131,6 @@ def parse_xml(
         with open(out, "w", encoding="utf-8") as fh:
             fh.write(payload)
     else:
-        # Printing to stdout lets the shell decide encoding; prefer --out on Windows/PS
         typer.echo(payload)
 
 
@@ -118,18 +169,18 @@ def advise(
         tips += color_policy.tips(js)  # type: ignore
         scripts.update(color_policy.scripts(js))  # type: ignore
 
-    # Soft nags (if policy_enforcer is present it can append)
-    if policy_enforcer:
-        extra = policy_enforcer.soft_nags(js)  # type: ignore
-        if extra:
-            nags.extend(extra)
-
+    # Soft nags
     if policy_enforcer and hasattr(policy_enforcer, "soft_nags"):
-        extra = policy_enforcer.soft_nags(js)  # type: ignore
-    if extra:
-        nags.extend(extra)
+        try:
+            extra = policy_enforcer.soft_nags(js) or []  # type: ignore[attr-defined]
+            nags.extend(extra)
+        except Exception:
+            pass
 
-    tips = _uniq(tips)
+    # Apply de-dupers
+    tips = _dedupe_tips(tips)
+    nags = _dedupe_nags(nags)
+
     out: Dict[str, Any] = {"intents": intents, "tips": tips, "scripts": scripts}
     if nags:
         out["nags"] = nags
