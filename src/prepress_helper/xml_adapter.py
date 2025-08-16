@@ -7,7 +7,6 @@ import yaml
 
 from prepress_helper.jobspec import JobSpec
 
-
 def _assign(cursor: Dict[str, Any], dotted: str, value: Any) -> None:
     parts = dotted.split(".")
     for p in parts[:-1]:
@@ -15,7 +14,6 @@ def _assign(cursor: Dict[str, Any], dotted: str, value: Any) -> None:
             cursor[p] = {}
         cursor = cursor[p]  # type: ignore[assignment]
     cursor[parts[-1]] = value
-
 
 def _to_num(v: Any) -> Any:
     if v is None:
@@ -35,38 +33,53 @@ def _to_num(v: Any) -> Any:
     except Exception:
         return v
 
+def _normalize_imposition_across(val: Any) -> str | None:
+    """Normalize strings like '8x4', '8×4', '8 X 4' -> '8×4'. Return None if not confident."""
+    if not isinstance(val, str):
+        return None
+    s = val.strip()
+    if not s:
+        return None
+    # Try explicit "AxB" first with any of x/×/X
+    m = re.fullmatch(r"\s*(\d+)\s*[x×X]\s*(\d+)\s*", s)
+    if m:
+        return f"{int(m.group(1))}×{int(m.group(2))}"
+    # Fallback: pull first two integers we see (e.g., "8 by 4")
+    nums = re.findall(r"\d+", s)
+    if len(nums) >= 2:
+        a, b = nums[0], nums[1]
+        return f"{int(a)}×{int(b)}"
+    return None
 
-def _first_xpath_text(tree: ET._ElementTree, exprs: list[str]) -> str:
-    """Return first non-empty text from a list of XPath expressions."""
-    for e in exprs:
-        try:
-            t = tree.xpath(f"string({e})")
-            if isinstance(t, bytes):
-                t = t.decode("utf-8", "ignore")
-            t = str(t).strip()
-            if t:
-                return t
-        except Exception:
-            pass
-    return ""
-
+def _fallback_imposition_from_xml(tree: ET._ElementTree) -> str | None:
+    """
+    If mapping didn't yield a usable imposition_across, scan the XML text for
+    the first 'AxB' pair (2..30) where the separator can be x/×/X.
+    """
+    try:
+        text = ET.tostring(tree.getroot(), encoding="unicode", method="text")
+    except Exception:
+        return None
+    # Prefer explicit AxB with x/×/X
+    for m in re.finditer(r"(\d+)\s*[x×X]\s*(\d+)", text):
+        a, b = int(m.group(1)), int(m.group(2))
+        if 2 <= a <= 30 and 2 <= b <= 30:
+            return f"{a}×{b}"
+    # As an extra guard, accept the first two integers found anywhere
+    nums = re.findall(r"\d+", text)
+    if len(nums) >= 2:
+        a, b = int(nums[0]), int(nums[1])
+        if 2 <= a <= 30 and 2 <= b <= 30:
+            return f"{a}×{b}"
+    return None
 
 def load_jobspec_from_xml(xml_path: str, map_yaml_path: str) -> JobSpec:
     tree = ET.parse(xml_path)
     with open(map_yaml_path, "r", encoding="utf-8") as f:
         mapping = yaml.safe_load(f) or {}
 
-    # Raw XML text (for regex fallback)
-    try:
-        with open(xml_path, "rb") as fb:
-            _raw = fb.read()
-        xml_text = _raw.decode("utf-8", "ignore")
-    except Exception:
-        xml_text = ""
-
     data: Dict[str, Any] = {}
 
-    # Extract fields via XPath map
     for target, xpath in mapping.items():
         if not xpath:
             continue
@@ -118,76 +131,42 @@ def load_jobspec_from_xml(xml_path: str, map_yaml_path: str) -> JobSpec:
             colors["back"] = "No Printing"
         data["colors"] = colors
 
-    # Special: collapse machine lists, normalize artwork_file to just the filename
+    # Special: normalize machine, artwork_file, imposition_across
     special = data.get("special", {}) or {}
     if isinstance(special, dict):
+        # machine: collapse list -> first
         m = special.get("machine")
         if isinstance(m, list):
             special["machine"] = m[0] if m else None
 
+        # artwork_file -> first token (strip GUIDs/timestamps)
         af = special.get("artwork_file")
         if isinstance(af, str):
             af = af.strip()
-            # keep only the first token (e.g., "J208819_1.pdf" from "J208819_1.pdf <guid> <timestamp>")
             special["artwork_file"] = af.split()[0] if af else None
 
-        # --- FIX: synthesize imposition_across if mapping yielded empty/'x' ---
-        ia = (special.get("imposition_across") or "").strip()
-        if ia == "" or ia.lower() in {"x", "-"}:
-            # Try common across/down nodes
-            across = _first_xpath_text(
-                tree,
-                ["(//ImpositionAcross)[1]", "(//ImpAcross)[1]", "(//Across)[1]", "(//Up)[1]"],
-            )
-            down = _first_xpath_text(
-                tree,
-                ["(//ImpositionDown)[1]", "(//ImpDown)[1]", "(//Down)[1]"],
-            )
-            if across and down:
-                ia = f"{across}x{down}"
-            else:
-                # Try generic node with AxB pattern
-                guess = _first_xpath_text(tree, ["(//Imposition)[1]", "(//Layout)[1]", "(//Signature)[1]"])
-                m = re.search(r"(\d+)\s*[xX]\s*(\d+)", guess)
-                if m:
-                    ia = f"{m.group(1)}x{m.group(2)}"
-
-            # Final fallback: scan raw XML text for an int x int pattern (e.g., 3x8)
-            if (ia == "" or ia.lower() in {"x", "-"}) and xml_text:
-                candidates = re.findall(r"(\d+)\s*[xX]\s*(\d+)", xml_text)
-                chosen = None
-                for a, b in candidates:
-                    ai, bi = int(a), int(b)
-                    # Heuristic: plausible imposition grids are at least 2x2
-                    if ai >= 2 and bi >= 2:
-                        chosen = (ai, bi)
-                        break
-                if not chosen and candidates:
-                    # If nothing matched the heuristic, just take the first
-                    ai, bi = map(int, candidates[0])
-                    chosen = (ai, bi)
-                if chosen:
-                    ia = f"{chosen[0]}x{chosen[1]}"
-
-            if ia:
-                special["imposition_across"] = ia
+        # imposition_across -> normalize mapping value; if not usable, fallback from XML text
+        ia = special.get("imposition_across")
+        norm = _normalize_imposition_across(ia)
+        if norm is None:
+            norm = _fallback_imposition_from_xml(tree)
+        if norm is not None:
+            special["imposition_across"] = norm
+        else:
+            special.pop("imposition_across", None)
 
         data["special"] = special
 
-    # Normalize optional empty strings to None to match goldens
-    for k in ("finish", "imposition_hint"):
-        if k in data and (data[k] is None or (isinstance(data[k], str) and data[k].strip() == "")):
-            data[k] = None
-
-    # Defaults to satisfy goldens
-    # 1) safety_in defaults to 0.125 when not provided by XML
+    # Defaults expected by goldens (parse-time)
     if data.get("safety_in") is None:
         data["safety_in"] = 0.125
 
-    # 2) imposition_hint becomes "Flat Product" when an imposition grid is present
-    if not data.get("imposition_hint"):
-        sp = data.get("special") or {}
-        if isinstance(sp, dict) and sp.get("imposition_across"):
-            data["imposition_hint"] = "Flat Product"
+    ih = data.get("imposition_hint")
+    if ih is None or (isinstance(ih, str) and ih.strip() == ""):
+        data["imposition_hint"] = "Flat Product"
+
+    # finish: empty/None -> None (goldens store null here)
+    if "finish" in data and (data["finish"] is None or (isinstance(data["finish"], str) and data["finish"].strip() == "")):
+        data["finish"] = None
 
     return JobSpec(**data)
