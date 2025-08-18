@@ -10,6 +10,28 @@ from prepress_helper.router import detect_intents, fold_preferences_from_message
 from prepress_helper.skills import doc_setup
 from prepress_helper.config_loader import load_shop_config, apply_shop_config
 
+# add near the top
+def _normalize_ascii(s: str) -> str:
+    if not isinstance(s, str):
+        return s
+    # common “smart” characters → ASCII
+    table = {
+        "≤": "<=", "≥": ">=", "×": "x", "–": "-", "—": "-",
+        "“": '"', "”": '"', "‘": "'", "’": "'", "•": "-",
+        " ": " ",  # non-breaking space
+    }
+    for k, v in table.items():
+        s = s.replace(k, v)
+    return s
+
+# ... inside advise(), right before you build `out`
+seen = set(); tips2 = []
+for t in tips2:
+    t = _normalize_ascii(t)   # <-- normalize here
+    if t not in seen:
+        tips2.append(t); seen.add(t)
+
+
 # Optional skills
 try:
     from prepress_helper.skills import policy_enforcer # type: ignore

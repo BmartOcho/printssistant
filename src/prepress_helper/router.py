@@ -51,6 +51,9 @@ def _is_wide_format_machine(machine: str) -> bool:
                 break
 
     if isinstance(candidate, dict):
+        # signal via fields even if no tag says "wide"
+        if any(k in candidate for k in ("max_width_in", "substrates")):
+            return True
         for field in ("category", "type", "format", "family", "tags"):
             val = candidate.get(field)
             if isinstance(val, str):
