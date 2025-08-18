@@ -1,0 +1,15 @@
+﻿{
+    "intents":  [
+                    "doc_setup"
+                ],
+    "tips":  [
+                 "Create a document at 3.5Ã2 in with 0.125 in bleed on all sides.",
+                 "Set safety margins to 0.25 in; keep text and logos inside.",
+                 "Use CMYK document color mode; avoid placing RGB assets directly.",
+                 "Keep total area coverage (TAC) â¤ 300% per shop policy.",
+                 "Use shop rich black: 50/40/40/100."
+             ],
+    "scripts":  {
+                    "illustrator_jsx":  "// create_artboard.jsx\n(function(){\n  var bleed = 0.125; // inches\n  var w = 3.5, h = 2; // inches\n  var doc = app.documents.add(DocumentColorSpace.CMYK, w*72, h*72);\n  doc.documentPreferences.documentBleedUniformSize = true;\n  doc.documentPreferences.documentBleedTopOffset = bleed*72;\n})();"
+                }
+}
