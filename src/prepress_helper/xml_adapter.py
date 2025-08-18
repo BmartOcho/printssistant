@@ -1,5 +1,6 @@
+# src/prepress_helper/xml_adapter.py
 from __future__ import annotations
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Tuple, Optional
 import math
 import re
 from lxml import etree as ET
@@ -34,6 +35,28 @@ def _to_num(v: Any) -> Any:
         return n
     except Exception:
         return v
+
+
+def _coerce_int_like(v: Any) -> Optional[int]:
+    """Return an int if v looks integral (e.g., '3', '3.0', 3.0); else None."""
+    if v is None:
+        return None
+    if isinstance(v, bool):
+        return None
+    if isinstance(v, int):
+        return v
+    if isinstance(v, float):
+        return int(v) if v.is_integer() else None
+    if isinstance(v, str):
+        s = v.strip()
+        if s == "":
+            return None
+        if re.fullmatch(r"\d+(\.0+)?", s):
+            try:
+                return int(float(s))
+            except Exception:
+                return None
+    return None
 
 
 def _as_clean_int_str(val: Any) -> str | None:
@@ -160,14 +183,22 @@ def load_jobspec_from_xml(xml_path: str, map_yaml_path: str) -> JobSpec:
     with open(map_yaml_path, "r", encoding="utf-8") as f:
         mapping = yaml.safe_load(f) or {}
 
+    # NEW: friendly validation for mapping file
+    if not isinstance(mapping, dict) or not all(isinstance(k, str) and isinstance(v, str) for k, v in mapping.items()):
+        raise ValueError(f"Mapping YAML must be a dict of 'target: xpath'. Got: {type(mapping).__name__}")
+
     data: Dict[str, Any] = {}
 
     for target, xpath in mapping.items():
         if not xpath:
             continue
-        raw = tree.xpath(xpath)
-        val: Any = None
+        try:
+            raw = tree.xpath(xpath)
+        except ET.XPathEvalError:
+            # Skip bad XPaths but keep parsing the rest
+            continue
 
+        val: Any = None
         if isinstance(raw, list):
             vals = []
             for v in raw:
@@ -196,6 +227,12 @@ def load_jobspec_from_xml(xml_path: str, map_yaml_path: str) -> JobSpec:
     for key in ("bleed_in", "safety_in", "pages", "trim_w_in", "trim_h_in"):
         if key in data:
             data[key] = _to_num(data[key])
+
+    # NEW: ensure pages is an int if integral
+    if "pages" in data:
+        coerced = _coerce_int_like(data["pages"])
+        if coerced is not None:
+            data["pages"] = coerced
 
     # Build nested trim_size if separate W/H present
     tw = data.get("trim_w_in")

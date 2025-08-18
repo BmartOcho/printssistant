@@ -6,7 +6,7 @@ import tempfile, os
 
 from prepress_helper.jobspec import JobSpec
 from prepress_helper.xml_adapter import load_jobspec_from_xml
-from prepress_helper.router import detect_intents, fold_preferences_from_message
+from prepress_helper.router import detect_intents, fold_preferences_from_message, set_shop_cfg
 from prepress_helper.skills import doc_setup
 from prepress_helper.config_loader import load_shop_config, apply_shop_config
 
@@ -32,6 +32,7 @@ except Exception:
 
 app = FastAPI(title="Printssistant API", version="0.0.1")
 SHOP_CFG = load_shop_config("config")
+set_shop_cfg(SHOP_CFG)
 
 class AdviseRequest(BaseModel):
     jobspec: JobSpec

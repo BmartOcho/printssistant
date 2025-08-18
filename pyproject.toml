@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=69.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -9,14 +9,18 @@ description = "Real-time, app-agnostic prepress assistant (XML + user input → 
 authors = [{ name="Your Name", email="you@example.com" }]
 readme = "README.md"
 requires-python = ">=3.11"
+
+# Pin ranges to avoid breaking upgrades while staying current.
 dependencies = [
-  "fastapi>=0.111",
-  "uvicorn[standard]>=0.30",
-  "pydantic>=2.7",
+  "fastapi>=0.116,<0.117",
+  "starlette>=0.40,<0.48",         # keep within FastAPI 0.116.x supported range
+  "uvicorn[standard]>=0.34,<0.36", # 0.35.x known-good; avoid 0.36+ breakage for now
+  "pydantic>=2.11,<2.12",
+  "python-multipart>=0.0.9",
   "lxml>=5.2",
   "PyYAML>=6.0",
   "typer>=0.12",
-  "python-multipart>=0.0.9"
+  "typing-extensions>=4.12,<5"
 ]
 
 [project.scripts]
@@ -34,8 +38,24 @@ ml = [
   "joblib>=1.3"
 ]
 
+[tool.setuptools]
+include-package-data = true
+
+# Include config/templates/assets that live inside the package.
+[tool.setuptools.package-data]
+prepress_helper = [
+  "config/*.yml",
+  "config/*.yaml",
+  "templates/**",
+  "assets/**"
+]
+
+# Package discovery:
+# - your library is under src/
+# - optionally include api/ if you want `uvicorn api.main:app` to work after install
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["src", "."]
+include = ["prepress_helper*", "api*"]
 
 [tool.setuptools.package-dir]
 "" = "src"

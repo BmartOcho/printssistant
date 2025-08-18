@@ -27,7 +27,8 @@ due_at: "string((//CustomerExpectedDateUTC | //DueUTC)[1])"
 
 # —— Special bag (free-form) ——
 special.stock_group:      "string(//StockGroup)"
-special.imposition_across: "concat(string((//ImposeAcross)[1]), 'x', string((//ImposeDown)[1]))"
+special.imposition_across: "string((//ImposeAcross)[1])"
+special.imposition_down:   "string((//ImposeDown)[1])"
 special.artwork_file:     "normalize-space(string((//ArtworkFile | //FileName)[1]))"
 # IMPORTANT: map to single string (not node-set)
 special.machine:          "normalize-space(string((//Machine)[1]))"
