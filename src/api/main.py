@@ -1,42 +1,59 @@
 from __future__ import annotations
-from fastapi import FastAPI, UploadFile, File, Form
+
+import os
+import tempfile
+
+from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-import tempfile, os
 
+from prepress_helper.config_loader import apply_shop_config, load_shop_config
 from prepress_helper.jobspec import JobSpec
-from prepress_helper.xml_adapter import load_jobspec_from_xml
-from prepress_helper.router import detect_intents, fold_preferences_from_message, set_shop_cfg
+from prepress_helper.router import (
+    detect_intents,
+    fold_preferences_from_message,
+    set_shop_cfg,
+)
 from prepress_helper.skills import doc_setup
-from prepress_helper.config_loader import load_shop_config, apply_shop_config
+from prepress_helper.xml_adapter import load_jobspec_from_xml
+
 
 # add near the top
 def _normalize_ascii(s: str) -> str:
     if not isinstance(s, str):
         return s
-    # common “smart” characters → ASCII
     table = {
-        "≤": "<=", "≥": ">=", "×": "x", "–": "-", "—": "-",
-        "“": '"', "”": '"', "‘": "'", "’": "'", "•": "-",
-        " ": " ",  # non-breaking space
+        "≤": "<=",
+        "≥": ">=",
+        "×": "x",
+        "–": "-",
+        "—": "-",
+        "“": '"',
+        "”": '"',
+        "‘": "'",
+        "’": "'",
+        "\u00a0": " ",
     }
     for k, v in table.items():
         s = s.replace(k, v)
     return s
 
+
 # ... inside advise(), right before you build `out`
-seen = set(); tips2 = []
+seen = set()
+tips2 = []
 for t in tips2:
-    t = _normalize_ascii(t)   # <-- normalize here
+    t = _normalize_ascii(t)
     if t not in seen:
-        tips2.append(t); seen.add(t)
+        tips2.append(t)
+        seen.add(t)
 
 
 # Optional skills
 try:
-    from prepress_helper.skills import policy_enforcer # type: ignore
+    from prepress_helper.skills import policy_enforcer  # type: ignore
 except Exception:
-    policy_enforcer = None # type: ignore
+    policy_enforcer = None  # type: ignore
 
 try:
     from prepress_helper.skills import fold_math  # type: ignore
@@ -48,26 +65,30 @@ except Exception:
     color_policy = None  # type: ignore
 
 try:
-    from prepress_helper.skills import wide_format # type: ignore
+    from prepress_helper.skills import wide_format  # type: ignore
 except Exception:
-    wide_format = None # type: ignore
+    wide_format = None  # type: ignore
 
 app = FastAPI(title="Printssistant API", version="0.0.1")
 SHOP_CFG = load_shop_config("config")
 set_shop_cfg(SHOP_CFG)
+
 
 class AdviseRequest(BaseModel):
     jobspec: JobSpec
     message: str | None = None
     debug_ml: bool = False
 
+
 @app.get("/")
 def root():
     return {"status": "ok", "service": "printssistant", "docs": "/docs"}
 
+
 @app.get("/healthz")
 def healthz():
     return {"ok": True}
+
 
 @app.post("/parse_xml")
 async def parse_xml(xml: UploadFile = File(...), mapping_path: str = Form(...)):
@@ -78,6 +99,7 @@ async def parse_xml(xml: UploadFile = File(...), mapping_path: str = Form(...)):
         js = load_jobspec_from_xml(xml_path, mapping_path)
         js = apply_shop_config(js, SHOP_CFG)
         return JSONResponse(js.model_dump())
+
 
 @app.post("/advise")
 async def advise(req: AdviseRequest):
@@ -100,19 +122,22 @@ async def advise(req: AdviseRequest):
         scripts.update(policy_enforcer.scripts(js, req.message or ""))
 
     if "wide_format" in intents and wide_format:
-        tips += wide_format.tips(js) # type:ignore
-        scripts.update(wide_format.scripts(js)) # type: ignore
+        tips += wide_format.tips(js)  # type:ignore
+        scripts.update(wide_format.scripts(js))  # type: ignore
 
-    seen=set(); tips2=[]
+    seen = set()
+    tips2 = []
     for t in tips:
         if t not in seen:
-            tips2.append(t); seen.add(t)
+            tips2.append(t)
+            seen.add(t)
 
     out = {"intents": intents, "tips": tips2, "scripts": scripts}
 
     # optional ML debug
     try:
         from prepress_helper.ml.product_classifier import predict_label  # type: ignore
+
         if req.debug_ml:
             pred = predict_label(js, req.message or "")
             if pred:

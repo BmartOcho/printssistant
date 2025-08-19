@@ -1,6 +1,9 @@
 from __future__ import annotations
-from typing import List, Dict
+
+from typing import Dict, List
+
 from ..jobspec import JobSpec
+
 
 def tips(job: JobSpec) -> List[str]:
     shop = (job.special or {}).get("shop", {})
@@ -14,12 +17,7 @@ def tips(job: JobSpec) -> List[str]:
         t.append("Work in CMYK; avoid placing RGB assets directly.")
 
     # Rich black preference (shop-specific wins)
-    rb = (
-        job.special.get("rich_black")
-        or policies.get("sleek_black")
-        or policies.get("rich_black")
-        or "60/40/40/100"
-    )
+    rb = job.special.get("rich_black") or policies.get("sleek_black") or policies.get("rich_black") or "60/40/40/100"
     t.append(f"Rich black for large solids/headlines: {rb}.")
 
     # Small text policy
@@ -36,19 +34,15 @@ def tips(job: JobSpec) -> List[str]:
 
     return t
 
+
 def scripts(job: JobSpec) -> Dict[str, str]:
     shop = (job.special or {}).get("shop", {})
     policies = shop.get("policies", {})
-    rb = (
-        job.special.get("rich_black")
-        or policies.get("sleek_black")
-        or policies.get("rich_black")
-        or "60/40/40/100"
-    )
+    rb = job.special.get("rich_black") or policies.get("sleek_black") or policies.get("rich_black") or "60/40/40/100"
     icc = job.special.get("icc_profile") or policies.get("icc_profile", "US Web Coated (SWOP) v2")
     small_pt = job.special.get("small_text_pt") or policies.get("small_text_pt", 18)
     try:
-        c, m, y, k = [int(x) for x in rb.replace("%","").split("/")]
+        c, m, y, k = [int(x) for x in rb.replace("%", "").split("/")]
     except Exception:
         c, m, y, k = 60, 40, 40, 100
 
@@ -82,4 +76,4 @@ def scripts(job: JobSpec) -> Dict[str, str]:
   app.activeDocument.convertProfile(icc, Intent.RELATIVECOLORIMETRIC, true, true);
 }})();
 """
-    return { "illustrator_jsx_color": jsx_ai, "photoshop_jsx_cmyk": jsx_ps }
+    return {"illustrator_jsx_color": jsx_ai, "photoshop_jsx_cmyk": jsx_ps}

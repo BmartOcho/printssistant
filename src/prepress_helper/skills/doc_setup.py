@@ -1,11 +1,14 @@
 # src/prepress_helper/skills/doc_setup.py
 from __future__ import annotations
+
 from typing import Any, Dict, List, Tuple
+
 
 def _shop_policies(js) -> Dict[str, Any]:
     special = getattr(js, "special", {}) or {}
     shop = special.get("shop", {}) if isinstance(special, dict) else {}
     return shop.get("policies", {}) if isinstance(shop, dict) else {}
+
 
 def _trim(js) -> Tuple[float | None, float | None]:
     ts = getattr(js, "trim_size", None)
@@ -17,15 +20,20 @@ def _trim(js) -> Tuple[float | None, float | None]:
     # fallback if raw fields exist on root
     w = getattr(js, "trim_w_in", None)
     h = getattr(js, "trim_h_in", None)
-    return (float(w) if isinstance(w, (int, float)) else None,
-            float(h) if isinstance(h, (int, float)) else None)
+    return (
+        float(w) if isinstance(w, (int, float)) else None,
+        float(h) if isinstance(h, (int, float)) else None,
+    )
+
 
 def _is_nan(x: Any) -> bool:
     return isinstance(x, float) and x != x  # NaN check
 
+
 def _fmt_in(x: float) -> str:
     s = f"{x:.3f}"
     return s.rstrip("0").rstrip(".")
+
 
 def _get_min(pol: Dict[str, Any], a: str, b: str, default: float) -> float:
     """Accept either naming style, e.g. bleed_min_in or min_bleed_in."""
@@ -34,6 +42,7 @@ def _get_min(pol: Dict[str, Any], a: str, b: str, default: float) -> float:
         return float(val if val is not None else default)
     except Exception:
         return default
+
 
 def tips(js) -> List[str]:
     pol = _shop_policies(js)
@@ -64,6 +73,7 @@ def tips(js) -> List[str]:
     out.append("Use CMYK document color mode; avoid placing RGB assets directly.")
     return out
 
+
 def scripts(js) -> Dict[str, str]:
     pol = _shop_policies(js)
     bleed_min = _get_min(pol, "bleed_min_in", "min_bleed_in", 0.125)
@@ -85,5 +95,7 @@ def scripts(js) -> Dict[str, str]:
   doc.documentPreferences.documentBleedUniformSize = true;
   doc.documentPreferences.documentBleedTopOffset = bleed*72;
 }})();
-""".strip("\n")
+""".strip(
+        "\n"
+    )
     return {"illustrator_jsx": jsx}

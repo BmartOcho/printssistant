@@ -1,8 +1,9 @@
 # src/prepress_helper/config_loader.py
 from __future__ import annotations
 
-from typing import Dict, Any, Optional
 from pathlib import Path
+from typing import Any, Dict, Optional
+
 import yaml
 
 try:
@@ -12,7 +13,6 @@ except Exception:  # pragma: no cover
     resources = None  # type: ignore
 
 from .jobspec import JobSpec
-
 
 # ----------------------------
 # Helpers
@@ -91,6 +91,7 @@ def _resolve_cfg_dir(cfg_dir: Optional[str]) -> Optional[Path]:
 # Public API
 # ----------------------------
 
+
 def load_shop_config(cfg_dir: Optional[str] = None) -> Dict[str, Any]:
     """
     Load shop config from YAML. Works when launched from any working directory and when frozen.
@@ -131,7 +132,6 @@ def apply_shop_config(js: JobSpec, shop_cfg: Dict[str, Any]) -> JobSpec:
     # accept both naming styles: min_bleed_in / bleed_min_in ; min_safety_in / safety_min_in
     min_bleed = _num(policies.get("min_bleed_in", policies.get("bleed_min_in", 0.125)), 0.125)
     min_safety = _num(policies.get("min_safety_in", policies.get("safety_min_in", 0.25)), 0.25)
-
 
     # Track adjustments so we can soft-nag later
     special = dict(js.special or {})

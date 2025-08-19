@@ -1,5 +1,6 @@
 # tests/test_router_wide.py
-from prepress_helper.router import set_shop_cfg, _is_wide_format_machine
+from prepress_helper.router import _is_wide_format_machine, set_shop_cfg
+
 
 def test_wide_format_signals():
     cfg = {

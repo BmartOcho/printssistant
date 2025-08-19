@@ -1,21 +1,29 @@
 # tests/test_xml_normalization.py
+import os
+import tempfile
+import textwrap
+
+import yaml
+
 from prepress_helper.xml_adapter import load_jobspec_from_xml
-import tempfile, textwrap, os, yaml
+
 
 def test_pages_and_colors_and_finish():
-    xml = textwrap.dedent("""\
+    xml = textwrap.dedent(
+        """\
         <Job>
           <Pages>3.0</Pages>
           <ProcessFront>CMYK</ProcessFront>
           <ProcessBack></ProcessBack>
           <Finish></Finish>
         </Job>
-    """)
+    """
+    )
     mapping = {
         "pages": "number((//Pages)[1])",
         "colors.front": "string(//ProcessFront)",
         "colors.back": "string(//ProcessBack)",
-        "finish": "string(//Finish)"
+        "finish": "string(//Finish)",
     }
     with tempfile.TemporaryDirectory() as td:
         xmlp = os.path.join(td, "job.xml")

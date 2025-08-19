@@ -1,13 +1,19 @@
 from __future__ import annotations
-from typing import List, Dict
+
+from typing import Dict, List
+
 from ..jobspec import JobSpec
+
 
 def _axis_length(job: JobSpec) -> float:
     if not job.trim_size:
         return 0.0
     return max(job.trim_size.w_in, job.trim_size.h_in)
 
-def _trifold_panels(total: float, style: str = "roll", fold_in: str = "right", offset_in: float = 1.0/16.0) -> List[float]:
+
+def _trifold_panels(
+    total: float, style: str = "roll", fold_in: str = "right", offset_in: float = 1.0 / 16.0
+) -> List[float]:
     if style == "z":
         t = round(total / 3.0, 4)
         return [t, t, t]
@@ -16,21 +22,23 @@ def _trifold_panels(total: float, style: str = "roll", fold_in: str = "right", o
     inner = round(outer - offset_in, 4)
     return [inner, outer, outer] if fold_in == "left" else [outer, outer, inner]
 
+
 def tips(job: JobSpec, style: str = "roll", fold_in: str = "right") -> List[str]:
     length = _axis_length(job)
     if length < 8.0:
         return ["Size looks too small for a tri-fold—confirm product and dimensions before placing fold guides."]
     # prefer shop-configured offset if present
-    offset = float(job.special.get("fold_in_offset_in", 1.0/16.0)) if job.special else 1.0/16.0
+    offset = float(job.special.get("fold_in_offset_in", 1.0 / 16.0)) if job.special else 1.0 / 16.0
     panels = _trifold_panels(length, style=style, fold_in=fold_in, offset_in=offset)
     bleed = job.bleed_in or 0.125
     safety = job.safety_in or 0.125
     return [
         f"Tri-fold ({style}) along long edge: panel widths ≈ {', '.join(f'{p:.4g}\"' for p in panels)} (total {length}\").",
-        f"Add fold guides at {panels[0]:.4g}\" and {(panels[0]+panels[1]):.4g}\" from the left edge.",
-        f"Use {bleed}\" bleed; keep type {safety}\" from folds/trim.",
-        "If your fold-in panel is opposite, flip which side is smaller."
+        f'Add fold guides at {panels[0]:.4g}" and {(panels[0]+panels[1]):.4g}" from the left edge.',
+        f'Use {bleed}" bleed; keep type {safety}" from folds/trim.',
+        "If your fold-in panel is opposite, flip which side is smaller.",
     ]
+
 
 def scripts(job: JobSpec, style: str = "roll", fold_in: str = "right") -> Dict[str, str]:
     if not job.trim_size:
@@ -38,10 +46,10 @@ def scripts(job: JobSpec, style: str = "roll", fold_in: str = "right") -> Dict[s
     else:
         w, h = job.trim_size.w_in, job.trim_size.h_in
     length = max(w, h)
-    offset = float(job.special.get("fold_in_offset_in", 1.0/16.0)) if job.special else 1.0/16.0
+    offset = float(job.special.get("fold_in_offset_in", 1.0 / 16.0)) if job.special else 1.0 / 16.0
     panels = _trifold_panels(length, style=style, fold_in=fold_in, offset_in=offset)
-    pos1 = round(panels[0]*72, 3)
-    pos2 = round((panels[0]+panels[1])*72, 3)
+    pos1 = round(panels[0] * 72, 3)
+    pos2 = round((panels[0] + panels[1]) * 72, 3)
     bleed = job.bleed_in or 0.125
     jsx = f"""
 // add_trifold_guides.jsx

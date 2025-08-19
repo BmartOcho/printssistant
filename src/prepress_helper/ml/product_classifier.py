@@ -1,7 +1,8 @@
 from __future__ import annotations
+
+import os
 from pathlib import Path
 from typing import Optional, Tuple
-import os
 
 # Lazy imports so the app works even if ML deps aren't installed
 try:
@@ -10,6 +11,7 @@ except Exception:
     joblib = None  # type: ignore
 
 _MODEL_CACHE = {"path": None, "model": None}
+
 
 def _candidate_paths() -> list[Path]:
     env = os.getenv("PRINTSSISTANT_MODEL")
@@ -22,6 +24,7 @@ def _candidate_paths() -> list[Path]:
         here.parents[3] / "models" / "product_type.joblib",  # repo root (…/src/prepress_helper/ml/../../..)
         Path.cwd() / "models" / "product_type.joblib",
     ]
+
 
 def load_model() -> Optional[object]:
     """Load and memoize the classifier pipeline. Returns None if unavailable."""
@@ -40,6 +43,7 @@ def load_model() -> Optional[object]:
             continue
     return None
 
+
 def _features_from_jobspec(js, title_hint: str = "") -> dict:
     title = (getattr(js, "product", None) or "").strip()
     if title_hint:
@@ -52,9 +56,14 @@ def _features_from_jobspec(js, title_hint: str = "") -> dict:
     aspect = round(long_edge / (short_edge or 1.0), 4) if short_edge else 0.0
     return {
         "title": title,
-        "w_in": w, "h_in": h, "pages": pages,
-        "long_edge": long_edge, "short_edge": short_edge, "aspect": aspect,
+        "w_in": w,
+        "h_in": h,
+        "pages": pages,
+        "long_edge": long_edge,
+        "short_edge": short_edge,
+        "aspect": aspect,
     }
+
 
 def predict_label(js, title_hint: str = "") -> Optional[Tuple[str, float]]:
     """

@@ -1,24 +1,27 @@
 from __future__ import annotations
+
 import argparse
 from pathlib import Path
+
+import joblib
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
-import joblib
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 """
 CSV schema:
 job_number,title,width_in,height_in,pages,label
 """
 
+
 def build_pipeline():
-    text = TfidfVectorizer(ngram_range=(1,2), min_df=1, max_features=20000)
-    numeric_cols = ["width_in","height_in","pages","long_edge","short_edge","aspect"]
+    text = TfidfVectorizer(ngram_range=(1, 2), min_df=1, max_features=20000)
+    numeric_cols = ["width_in", "height_in", "pages", "long_edge", "short_edge", "aspect"]
     pre = ColumnTransformer(
         transformers=[
             ("text", text, "title"),
@@ -30,6 +33,7 @@ def build_pipeline():
     clf = LogisticRegression(max_iter=2000)
     return Pipeline([("pre", pre), ("clf", clf)])
 
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("csv", help="training data CSV")
@@ -38,11 +42,11 @@ def main():
 
     df = pd.read_csv(args.csv)
     # derived features
-    df["long_edge"] = df[["width_in","height_in"]].max(axis=1)
-    df["short_edge"] = df[["width_in","height_in"]].min(axis=1)
+    df["long_edge"] = df[["width_in", "height_in"]].max(axis=1)
+    df["short_edge"] = df[["width_in", "height_in"]].min(axis=1)
     df["aspect"] = (df["long_edge"] / df["short_edge"].replace(0, 1)).round(4)
 
-    X = df[["title","width_in","height_in","pages","long_edge","short_edge","aspect"]]
+    X = df[["title", "width_in", "height_in", "pages", "long_edge", "short_edge", "aspect"]]
     y = df["label"].astype(str)
     counts = y.value_counts()
     min_per_class = counts.min()
@@ -63,6 +67,7 @@ def main():
     outp.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(pipe, outp)
     print(f"Saved model → {outp}")
+
 
 if __name__ == "__main__":
     main()

@@ -1,13 +1,15 @@
 from __future__ import annotations
-import json
-import typer
-from typing import Optional, List, Dict, Any
 
+import json
+from typing import Any, Dict, List, Optional
+
+import typer
+
+from prepress_helper.config_loader import apply_shop_config, load_shop_config
 from prepress_helper.jobspec import JobSpec
-from prepress_helper.xml_adapter import load_jobspec_from_xml
 from prepress_helper.router import detect_intents, fold_preferences_from_message
 from prepress_helper.skills import doc_setup
-from prepress_helper.config_loader import load_shop_config, apply_shop_config
+from prepress_helper.xml_adapter import load_jobspec_from_xml
 
 # Optional skills
 try:
@@ -49,7 +51,7 @@ def _read_json_auto(path: str) -> Any:
     """Read JSON allowing UTF-8/UTF-8 BOM/UTF-16 LE/BE."""
     with open(path, "rb") as f:
         data = f.read()
-    if data.startswith(b"\xef\xbb\xbf"):      # UTF-8 BOM
+    if data.startswith(b"\xef\xbb\xbf"):  # UTF-8 BOM
         text = data.decode("utf-8-sig")
     elif data.startswith(b"\xff\xfe") or data.startswith(b"\xfe\xff"):  # UTF-16
         text = data.decode("utf-16")

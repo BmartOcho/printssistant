@@ -1,32 +1,32 @@
 # ui/app.py
 from __future__ import annotations
 
-import io
 import json
 import os
+import sys
 import tempfile
 from datetime import datetime
-from typing import Dict, Any, List, Optional
+from pathlib import Path
+from typing import Any, Dict, List
 
 import streamlit as st
 
-from pathlib import Path
-import sys
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 if SRC.exists() and str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 
-# Your library imports
-from prepress_helper.xml_adapter import load_jobspec_from_xml
-from prepress_helper.config_loader import load_shop_config, apply_shop_config
+from prepress_helper.config_loader import apply_shop_config, load_shop_config
 from prepress_helper.router import (
     detect_intents,
     fold_preferences_from_message,
     set_shop_cfg,
 )
 from prepress_helper.skills import doc_setup
+
+# Your library imports
+from prepress_helper.xml_adapter import load_jobspec_from_xml
 
 # Optional skills: safely import if present
 try:
@@ -53,6 +53,7 @@ except Exception:
 # -----------------------
 # Helpers
 # -----------------------
+
 
 def normalize_ascii(s: str) -> str:
     """Keep console/Windows-friendly text."""
@@ -173,7 +174,12 @@ def _session_download(js, message: str, intents: List[str], tips: List[str], che
         "version": "mvp-1",
     }
     b = json.dumps(payload, indent=2, ensure_ascii=False).encode("utf-8")
-    st.download_button("💾 Download session JSON", data=b, file_name="printssistant_session.json", mime="application/json")
+    st.download_button(
+        "💾 Download session JSON",
+        data=b,
+        file_name="printssistant_session.json",
+        mime="application/json",
+    )
 
     up = st.file_uploader("Or load a previously saved session.json", type=["json"], key="session_upl")
     if up:

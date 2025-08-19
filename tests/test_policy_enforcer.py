@@ -1,5 +1,6 @@
 from prepress_helper.jobspec import JobSpec
-from prepress_helper.skills import policy_enforcer, color_policy
+from prepress_helper.skills import color_policy, policy_enforcer
+
 
 def _bc_jobspec():
     return JobSpec(
@@ -23,21 +24,22 @@ def _bc_jobspec():
         },
     )
 
+
 def test_tac_warning_triggers_over_limit():
     js = _bc_jobspec()
     tips = policy_enforcer.tips(js, "heavy solid 340 TAC")
     assert any("exceeds TAC 300%" in t for t in tips)
+
 
 def test_tac_warning_not_triggered_under_limit():
     js = _bc_jobspec()
     tips = policy_enforcer.tips(js, "solid 260 TAC")
     assert not any("exceeds TAC" in t for t in tips)
 
+
 def test_color_policy_uses_shop_settings():
     js = _bc_jobspec()
     tips = color_policy.tips(js)
     assert any("Body text ≤ 10 pt" in t for t in tips)
-    assert any(
-        "60/60/80/100" in t for t in tips
-    ), "Should reflect shop rich black"
+    assert any("60/60/80/100" in t for t in tips), "Should reflect shop rich black"
     assert any("US Web Coated (SWOP) v2" in t for t in tips)

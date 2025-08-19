@@ -1,9 +1,12 @@
 from __future__ import annotations
-from typing import List, Dict, Any
-from prepress_helper.jobspec import JobSpec
+
+from typing import Any, Dict, List
+
 from prepress_helper.config_loader import load_shop_config
+from prepress_helper.jobspec import JobSpec
 
 SHOP = load_shop_config("config")
+
 
 def _get(cfg: Dict[str, Any], path: str, default=None):
     cur = cfg
@@ -12,6 +15,7 @@ def _get(cfg: Dict[str, Any], path: str, default=None):
             return default
         cur = cur[part]
     return cur
+
 
 def tips(js: JobSpec, intents: List[str], msg: str) -> List[str]:
     out: List[str] = []
@@ -30,10 +34,14 @@ def tips(js: JobSpec, intents: List[str], msg: str) -> List[str]:
         else:
             out.append("Spot colors allowed for wide-format. Use spots only when needed (e.g., White/Gloss).")
         if "White" in whitelist:
-            out.append("If using White Ink, place white objects on a topmost spot swatch named 'White' with overprint OFF unless RIP requires otherwise.")
+            out.append(
+                "If using White Ink, place white objects on a topmost spot swatch named 'White' with overprint OFF unless RIP requires otherwise."
+            )
     else:
         if allow_sheet:
-            out.append("Spot colors permitted on sheet-fed only when specified by the job ticket; otherwise convert to CMYK.")
+            out.append(
+                "Spot colors permitted on sheet-fed only when specified by the job ticket; otherwise convert to CMYK."
+            )
         else:
             out.append("Convert Pantone/spot colors to CMYK for sheet-fed production unless explicitly required.")
 
@@ -47,6 +55,7 @@ def tips(js: JobSpec, intents: List[str], msg: str) -> List[str]:
 
     return out
 
+
 def scripts(js: JobSpec, intents: List[str], msg: str) -> Dict[str, str]:
     spot_cfg = _get(SHOP, "policies.spot_policy", {}) or {}
     whitelist = set(spot_cfg.get("whitelist_spots", []))
@@ -54,7 +63,8 @@ def scripts(js: JobSpec, intents: List[str], msg: str) -> Dict[str, str]:
 
     scripts: Dict[str, str] = {}
     if add_white:
-        scripts["illustrator_jsx_spot_white"] = r"""
+        scripts["illustrator_jsx_spot_white"] = (
+            r"""
 // add_white_spot.jsx (Illustrator)
 (function(){
   if (app.documents.length===0) return;
@@ -71,4 +81,5 @@ def scripts(js: JobSpec, intents: List[str], msg: str) -> Dict[str, str]:
   ensureSpot("White");
 })();
 """.strip()
+        )
     return scripts

@@ -1,5 +1,6 @@
 from __future__ import annotations
-from typing import List, Dict, Any, Tuple, Optional
+
+from typing import Any, Dict, List, Optional, Tuple
 
 # Module-level cache, populated by set_shop_cfg() from the API on startup.
 SHOP_CFG: Dict[str, Any] = {}
@@ -32,8 +33,8 @@ def _is_wide_format_machine(machine: str) -> bool:
 
     # --- A) legacy grouped lists
     caps = SHOP_CFG.get("press_capabilities") or {}
-    rolls = [ _norm(x) for x in (caps.get("roll_printers") or []) ]
-    flats = [ _norm(x) for x in (caps.get("flatbed_printers") or []) ]
+    rolls = [_norm(x) for x in (caps.get("roll_printers") or [])]
+    flats = [_norm(x) for x in (caps.get("flatbed_printers") or [])]
     if m in rolls or m in flats:
         return True
 

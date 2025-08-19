@@ -2,7 +2,10 @@
 from prepress_helper.config_loader import apply_shop_config
 from prepress_helper.jobspec import JobSpec
 
-def _mk(js=None): return JobSpec(**(js or {}))
+
+def _mk(js=None):
+    return JobSpec(**(js or {}))
+
 
 def test_policy_alias_bleed_safety():
     js = _mk({"bleed_in": 0.0, "safety_in": 0.0})

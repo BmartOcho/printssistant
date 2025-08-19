@@ -1,10 +1,12 @@
 # src/prepress_helper/xml_adapter.py
 from __future__ import annotations
-from typing import Any, Dict, Tuple, Optional
+
 import math
 import re
-from lxml import etree as ET
+from typing import Any, Dict, Optional, Tuple
+
 import yaml
+from lxml import etree as ET
 
 from prepress_helper.jobspec import JobSpec
 
@@ -88,13 +90,7 @@ def _normalize_imposition_pair(text: str) -> str | None:
     s = text.strip().lower()
     if not s:
         return None
-    s = (
-        s.replace("×", "x")
-         .replace(" by ", "x")
-         .replace(" x ", "x")
-         .replace(" x", "x")
-         .replace("x ", "x")
-    )
+    s = s.replace("×", "x").replace(" by ", "x").replace(" x ", "x").replace(" x", "x").replace("x ", "x")
     m = re.fullmatch(r"(\d+)\s*x\s*(\d+)", s)
     if m:
         return f"{int(m.group(1))}x{int(m.group(2))}"
@@ -306,7 +302,9 @@ def load_jobspec_from_xml(xml_path: str, map_yaml_path: str) -> JobSpec:
         data["imposition_hint"] = "Flat Product"
 
     # finish: empty/None -> None
-    if "finish" in data and (data["finish"] is None or (isinstance(data["finish"], str) and data["finish"].strip() == "")):
+    if "finish" in data and (
+        data["finish"] is None or (isinstance(data["finish"], str) and data["finish"].strip() == "")
+    ):
         data["finish"] = None
 
     return JobSpec(**data)

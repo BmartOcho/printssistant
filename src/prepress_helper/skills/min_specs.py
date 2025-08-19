@@ -1,9 +1,12 @@
 from __future__ import annotations
-from typing import List, Dict, Any
-from prepress_helper.jobspec import JobSpec
+
+from typing import Any, Dict, List
+
 from prepress_helper.config_loader import load_shop_config
+from prepress_helper.jobspec import JobSpec
 
 SHOP = load_shop_config("config")
+
 
 def _get(cfg: Dict[str, Any], path: str, default=None):
     cur = cfg
@@ -13,8 +16,17 @@ def _get(cfg: Dict[str, Any], path: str, default=None):
         cur = cur[part]
     return cur
 
-KEYWORDS_MIN_TEXT = {"small text", "tiny text", "fine text", "reverse text", "knockout text", "white text"}
+
+KEYWORDS_MIN_TEXT = {
+    "small text",
+    "tiny text",
+    "fine text",
+    "reverse text",
+    "knockout text",
+    "white text",
+}
 KEYWORDS_HAIRLINE = {"hairline", "thin line", "fine line", "barcodes", "micro lines"}
+
 
 def tips(js: JobSpec, msg: str, intents: List[str]) -> List[str]:
     """
@@ -50,6 +62,7 @@ def tips(js: JobSpec, msg: str, intents: List[str]) -> List[str]:
             out.append(f"Minimum hairline width: 100K lines ≥ {s_k} pt; reversed/knockout lines ≥ {s_knock} pt.")
 
     return out
+
 
 def scripts(js: JobSpec, msg: str, intents: List[str]) -> Dict[str, str]:
     # Focus on guidance; scripts here would duplicate color_policy behavior.

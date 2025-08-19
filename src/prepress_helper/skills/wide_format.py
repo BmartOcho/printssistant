@@ -1,14 +1,19 @@
 from __future__ import annotations
-from typing import List, Dict, Tuple
+
+from typing import Dict, List, Tuple
+
 from ..jobspec import JobSpec
+
 
 def _dims(job: JobSpec) -> Tuple[float, float]:
     if not job.trim_size:
         return (24.0, 18.0)
     return (float(job.trim_size.w_in), float(job.trim_size.h_in))
 
+
 def _get_shop(job: JobSpec) -> Dict:
     return (job.special or {}).get("shop", {})
+
 
 def _get_preset(job: JobSpec) -> Dict:
     shop = _get_shop(job)
@@ -17,6 +22,7 @@ def _get_preset(job: JobSpec) -> Dict:
     if isinstance(preset, dict):
         return preset
     return products.get("banner", {}) if isinstance(products.get("banner", {}), dict) else {}
+
 
 def _is_rgb_allowed(job: JobSpec) -> bool:
     # precedence: product preset -> press -> policies
@@ -35,6 +41,7 @@ def _is_rgb_allowed(job: JobSpec) -> bool:
     allow = policies.get("allow_rgb")
     return bool(allow) if allow is not None else False
 
+
 def _min_ppi(job: JobSpec) -> int:
     preset = _get_preset(job)
     try:
@@ -42,18 +49,25 @@ def _min_ppi(job: JobSpec) -> int:
     except Exception:
         return 150
 
-def _grommet(job: JobSpec) -> Tuple[float|None, float|None]:
+
+def _grommet(job: JobSpec) -> Tuple[float | None, float | None]:
     preset = _get_preset(job)
-    gm = None; gs = None
+    gm = None
+    gs = None
     if "grommet_margin_in" in preset:
-        try: gm = float(preset["grommet_margin_in"])
-        except Exception: pass
+        try:
+            gm = float(preset["grommet_margin_in"])
+        except Exception:
+            pass
     if "grommet_spacing_in" in preset:
-        try: gs = float(preset["grommet_spacing_in"])
-        except Exception: pass
+        try:
+            gs = float(preset["grommet_spacing_in"])
+        except Exception:
+            pass
     return gm, gs
 
-def _icc(job: JobSpec) -> str|None:
+
+def _icc(job: JobSpec) -> str | None:
     # precedence: product preset -> job.special -> policies
     preset = _get_preset(job)
     if "icc_profile" in preset and preset["icc_profile"]:
@@ -61,6 +75,7 @@ def _icc(job: JobSpec) -> str|None:
     shop = _get_shop(job)
     policies = shop.get("policies", {})
     return (job.special or {}).get("icc_profile") or policies.get("icc_profile")
+
 
 def tips(job: JobSpec) -> List[str]:
     w, h = _dims(job)
@@ -71,10 +86,12 @@ def tips(job: JobSpec) -> List[str]:
     gm, gs = _grommet(job)
 
     t: List[str] = [
-        f"Set document to {w}×{h} in; bleed {bleed}\"; safety {safety}\".",
-        ("RGB assets allowed; embed sRGB/Adobe RGB and let the RIP handle conversion."
-         if allow_rgb else
-         "Work in CMYK; avoid placing RGB assets directly."),
+        f'Set document to {w}×{h} in; bleed {bleed}"; safety {safety}".',
+        (
+            "RGB assets allowed; embed sRGB/Adobe RGB and let the RIP handle conversion."
+            if allow_rgb
+            else "Work in CMYK; avoid placing RGB assets directly."
+        ),
         f"For large-format output, aim for ≥ {minppi} PPI at final size (200+ if viewed close).",
     ]
 
@@ -83,11 +100,12 @@ def tips(job: JobSpec) -> List[str]:
         t.append(f"Use device/profile: {icc}.")
 
     if gm:
-        t.append(f"Keep critical content ≥ {gm}\" from all edges (grommet/safe margin).")
+        t.append(f'Keep critical content ≥ {gm}" from all edges (grommet/safe margin).')
     if gs:
-        t.append(f"Plan grommets ~every {gs}\" along edges unless specified otherwise.")
+        t.append(f'Plan grommets ~every {gs}" along edges unless specified otherwise.')
 
     return t
+
 
 def scripts(job: JobSpec) -> Dict[str, str]:
     w, h = _dims(job)
@@ -96,10 +114,10 @@ def scripts(job: JobSpec) -> Dict[str, str]:
     gm, gs = _grommet(job)
 
     # Safety guides
-    left  = round(safety*72, 3)
-    right = round((w - safety)*72, 3)
-    top   = round(safety*72, 3)
-    bot   = round((h - safety)*72, 3)
+    left = round(safety * 72, 3)
+    right = round((w - safety) * 72, 3)
+    top = round(safety * 72, 3)
+    bot = round((h - safety) * 72, 3)
 
     grom_vert = ""
     grom_horz = ""
@@ -109,14 +127,14 @@ def scripts(job: JobSpec) -> Dict[str, str]:
         x = gm
         endx = max(gm, w - gm)
         while x <= endx + 1e-6:
-            xs.append(round(x*72, 3))
+            xs.append(round(x * 72, 3))
             x += gs
         # horizontal positions
         ys = []
         y = gm
         endy = max(gm, h - gm)
         while y <= endy + 1e-6:
-            ys.append(round(y*72, 3))
+            ys.append(round(y * 72, 3))
             y += gs
 
         xs_str = ", ".join(str(v) for v in xs)
@@ -147,4 +165,4 @@ def scripts(job: JobSpec) -> Dict[str, str]:
   addH({top});  addH({bot});{grom_vert}{grom_horz}
 }})();
 """
-    return { "illustrator_jsx_wide_format_guides": jsx }
+    return {"illustrator_jsx_wide_format_guides": jsx}

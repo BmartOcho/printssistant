@@ -1,12 +1,14 @@
 from __future__ import annotations
+
 from pathlib import Path
-import json
+
 import pytest
 from fastapi.testclient import TestClient
 
 from api.main import app  # <-- now that api/ is a package, this works
 
 client = TestClient(app)
+
 
 def test_advise_endpoint_basic():
     jobspec = {
@@ -22,9 +24,8 @@ def test_advise_endpoint_basic():
     data = resp.json()
     assert "scripts" in data and isinstance(data["scripts"], dict)
     # either the intent was detected or the tips mention rich black
-    assert ("color_policy" in data.get("intents", [])) or any(
-        "rich black" in t.lower() for t in data.get("tips", [])
-    )
+    assert ("color_policy" in data.get("intents", [])) or any("rich black" in t.lower() for t in data.get("tips", []))
+
 
 @pytest.mark.skipif(
     not (Path("samples/J208819.xml").exists() and Path("config/xml_map.yml").exists()),

@@ -1,13 +1,18 @@
 # src/prepress_helper/skills/soft_nags.py
 from __future__ import annotations
-from typing import List, Dict, Optional
+
+from typing import Dict, List, Optional
+
 from ..jobspec import JobSpec
+
 
 def _shop(job: JobSpec) -> Dict:
     return (job.special or {}).get("shop", {})  # type: ignore
 
+
 def _policies(job: JobSpec) -> Dict:
     return _shop(job).get("policies", {})  # type: ignore
+
 
 def _enabled(job: JobSpec, name: str) -> bool:
     pol = _policies(job)
@@ -20,11 +25,14 @@ def _enabled(job: JobSpec, name: str) -> bool:
         return False
     return bool(sn.get(name, True))
 
+
 def _is_wide(intents: Optional[List[str]]) -> bool:
     return bool(intents and "wide_format" in intents)
 
+
 def _fmt_in(x: float) -> str:
     return f'{x:.3f}"'
+
 
 def _find_icc(job: JobSpec) -> Optional[str]:
     # Try special → product preset → press → policies.default_icc
@@ -33,7 +41,7 @@ def _find_icc(job: JobSpec) -> Optional[str]:
         return special["icc_profile"]  # type: ignore
 
     shop = _shop(job)
-    products = shop.get("products") or {}
+    shop.get("products") or {}
     preset = special.get("product_preset")
     if isinstance(preset, dict) and isinstance(preset.get("icc_profile"), str):
         return preset["icc_profile"]
@@ -51,6 +59,7 @@ def _find_icc(job: JobSpec) -> Optional[str]:
 
     return None
 
+
 def tips(job: JobSpec, message: str = "", intents: Optional[List[str]] = None) -> List[str]:
     out: List[str] = []
     pol = _policies(job)
@@ -61,14 +70,10 @@ def tips(job: JobSpec, message: str = "", intents: Optional[List[str]] = None) -
         if isinstance(adj, dict):
             b = adj.get("bleed_in")
             if isinstance(b, dict) and b.get("from") is not None and b.get("to") is not None:
-                out.append(
-                    f'Soft-nag: Bleed increased to {_fmt_in(float(b["to"]))} (min {_fmt_in(float(b["min"]))}).'
-                )
+                out.append(f'Soft-nag: Bleed increased to {_fmt_in(float(b["to"]))} (min {_fmt_in(float(b["min"]))}).')
             s = adj.get("safety_in")
             if isinstance(s, dict) and s.get("from") is not None and s.get("to") is not None:
-                out.append(
-                    f'Soft-nag: Safety increased to {_fmt_in(float(s["to"]))} (min {_fmt_in(float(s["min"]))}).'
-                )
+                out.append(f'Soft-nag: Safety increased to {_fmt_in(float(s["to"]))} (min {_fmt_in(float(s["min"]))}).')
 
     # 2) Wide-format grommet confirmation
     if _is_wide(intents) and _enabled(job, "grommets"):
@@ -84,9 +89,10 @@ def tips(job: JobSpec, message: str = "", intents: Optional[List[str]] = None) -
             out.append("Soft-nag: No ICC profile specified—using system default.")
         else:
             # Gentle confirmation (info-style)
-            out.append(f'Soft-nag: Using ICC profile: {icc}.')
+            out.append(f"Soft-nag: Using ICC profile: {icc}.")
 
     return out
+
 
 def scripts(job: JobSpec, message: str = "", intents: Optional[List[str]] = None) -> Dict[str, str]:
     # No scripts for nags—just guidance.

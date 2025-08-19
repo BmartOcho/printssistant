@@ -1,7 +1,9 @@
 # src/prepress_helper/jobspec.py
 from __future__ import annotations
-from typing import Optional, Dict, Any
-from pydantic import BaseModel, Field, ConfigDict, field_validator
+
+from typing import Any, Dict, Optional
+
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class TrimSize(BaseModel):

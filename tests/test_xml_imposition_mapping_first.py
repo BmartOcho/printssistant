@@ -1,16 +1,26 @@
 # tests/test_xml_imposition_mapping_first.py
+import os
+import tempfile
+import textwrap
+
+import yaml
+
 from prepress_helper.xml_adapter import load_jobspec_from_xml
-import tempfile, textwrap, os, yaml
+
 
 def test_mapping_first_imposition():
-    xml = textwrap.dedent("""\
+    xml = textwrap.dedent(
+        """\
         <Job>
           <ImposeAcross>6</ImposeAcross>
           <ImposeDown>7</ImposeDown>
         </Job>
-    """)
-    mapping = {"special.imposition_across": "string((//ImposeAcross)[1])",
-               "special.imposition_down": "string((//ImposeDown)[1])"}
+    """
+    )
+    mapping = {
+        "special.imposition_across": "string((//ImposeAcross)[1])",
+        "special.imposition_down": "string((//ImposeDown)[1])",
+    }
 
     with tempfile.TemporaryDirectory() as td:
         xmlp = os.path.join(td, "job.xml")

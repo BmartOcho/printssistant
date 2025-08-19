@@ -1,14 +1,19 @@
 from __future__ import annotations
-from typing import List, Dict, Any
+
 import re
+from typing import Any, Dict, List
+
 from prepress_helper.jobspec import JobSpec
+
 
 def _shop(js: JobSpec) -> Dict[str, Any]:
     sp = js.special or {}
     return sp.get("shop", {}) if isinstance(sp, dict) else {}
 
+
 def _pol(js: JobSpec) -> Dict[str, Any]:
     return _shop(js).get("policies", {}) or {}
+
 
 def _is_wide_machine(js: JobSpec) -> bool:
     sp = js.special or {}
@@ -17,6 +22,7 @@ def _is_wide_machine(js: JobSpec) -> bool:
     rolls = [s.lower() for s in caps.get("roll_printers", [])]
     flats = [s.lower() for s in caps.get("flatbed_printers", [])]
     return bool(machine) and (machine in rolls or machine in flats)
+
 
 def tips(js: JobSpec, message: str) -> List[str]:
     """
@@ -39,12 +45,15 @@ def tips(js: JobSpec, message: str) -> List[str]:
 
     # Shop rich black (prefer wide-format if applicable)
     rb = pol.get("rich_black", {}) or {}
-    formula = rb.get("wide_format" if _is_wide_machine(js) else "sheet_fed") or rb.get("sheet_fed") or rb.get("wide_format")
+    formula = (
+        rb.get("wide_format" if _is_wide_machine(js) else "sheet_fed") or rb.get("sheet_fed") or rb.get("wide_format")
+    )
     if isinstance(formula, (list, tuple)) and len(formula) == 4:
         c, m, y, k = formula
         out.append(f"Use shop rich black: {c}/{m}/{y}/{k}.")
 
     return out
+
 
 def soft_nags(js: JobSpec) -> List[str]:
     out: List[str] = []
@@ -71,6 +80,7 @@ def soft_nags(js: JobSpec) -> List[str]:
         out.append('Soft-nag: Confirm grommet spacing; assuming 12" by default.')
 
     return out
+
 
 def scripts(js: JobSpec, message: str) -> Dict[str, str]:
     """
