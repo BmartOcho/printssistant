@@ -292,9 +292,8 @@ def load_jobspec_from_xml(xml_path: str, map_yaml_path: str) -> JobSpec:
         # Golden expects only the combined key; drop the separate down key entirely
         special.pop("imposition_down", None)
 
-        # Keep only golden-expected keys
-        keep_keys = {"artwork_file", "stock_group", "imposition_across"}
-        special = {k: v for k, v in special.items() if k in keep_keys and v not in (None, "", [])}
+        # Remove empty values
+        special = {k: v for k, v in special.items() if v not in (None, "", [])}
 
         data["special"] = special
 
