@@ -18,6 +18,12 @@ Wide-format detection improved (treats max_width_in and substrates as wide signa
 24/24 tests passing on Windows (Py 3.11/3.12).
 
 Quickstart
+
+SPIN UP EVERYTHING:
+cd "C:\Users\Benjamin\Desktop\Python Apps\printssistant"
+powershell -ExecutionPolicy Bypass -File .\dev-up.ps1
+
+
 1) Environment
 
 Python 3.11–3.12 recommended.
