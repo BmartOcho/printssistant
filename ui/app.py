@@ -4,11 +4,15 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
+import sys
 import tempfile
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Dict, List
 
 import streamlit as st
+import yaml
 
 # -----------------------
 # Session state & utils
@@ -16,8 +20,8 @@ import streamlit as st
 
 
 def _tid(text: str) -> str:
-    """Stable 8-char ID per tip for checkbox keys."""
-    return hashlib.md5(text.encode("utf-8")).hexdigest()[:8]
+    """Stable 8-char ID."""
+    return hashlib.md5(str(text).encode("utf-8")).hexdigest()[:8]
 
 
 def _init_state() -> None:
@@ -26,30 +30,28 @@ def _init_state() -> None:
     ss.setdefault("intents", [])
     ss.setdefault("tips", [])  # list[str]
     ss.setdefault("scripts", {})  # dict[str, str]
-    ss.setdefault("completed", {})  # tip_id -> bool
-    ss.setdefault("last_parse_key", None)  # changes when new job is parsed
+    ss.setdefault("tips_completed", {})  # tip_id -> bool
+    ss.setdefault("shop_completed", {})  # checklist item key -> bool
+    ss.setdefault("last_parse_key", None)  # changes when new job/config/tips are loaded
+    ss.setdefault("checklist_hash", "")  # hash of checklists.yml content
 
 
 _init_state()
 
 
-def _parse_key(js: Any, tips: List[str]) -> str:
-    """A fingerprint for the current job so we reset checklist only when data changes."""
+def _parse_key(js: Any, tips: List[str], checklist_hash: str) -> str:
+    """Fingerprint current job+tips+checklist config to know when to reset state."""
     try:
-        payload = js.model_dump()  # pydantic
+        payload = js.model_dump()
     except Exception:
         payload = js
-    raw = json.dumps({"job": payload, "tips": tips}, sort_keys=True, ensure_ascii=False)
+    raw = json.dumps({"job": payload, "tips": tips, "cfg": checklist_hash}, sort_keys=True, ensure_ascii=False)
     return hashlib.md5(raw.encode("utf-8")).hexdigest()[:10]
 
 
 # -----------------------
-# Import app libraries
-# (imports after state/utils; we silence E402 since we need runtime path logic)
+# Import library (after state/utils)
 # -----------------------
-
-import sys
-from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
@@ -72,19 +74,19 @@ from prepress_helper.xml_adapter import load_jobspec_from_xml  # noqa: E402
 try:  # noqa: E402
     from prepress_helper.skills import color_policy  # type: ignore  # noqa: E402
 except Exception:  # noqa: E402
-    color_policy = None  # type: ignore  # noqa: E402
+    color_policy = None  # type: ignore
 try:  # noqa: E402
     from prepress_helper.skills import fold_math  # type: ignore  # noqa: E402
 except Exception:  # noqa: E402
-    fold_math = None  # type: ignore  # noqa: E402
+    fold_math = None  # type: ignore
 try:  # noqa: E402
     from prepress_helper.skills import policy_enforcer  # type: ignore  # noqa: E402
 except Exception:  # noqa: E402
-    policy_enforcer = None  # type: ignore  # noqa: E402
+    policy_enforcer = None  # type: ignore
 try:  # noqa: E402
     from prepress_helper.skills import wide_format  # type: ignore  # noqa: E402
 except Exception:  # noqa: E402
-    wide_format = None  # type: ignore  # noqa: E402
+    wide_format = None  # type: ignore
 
 
 # -----------------------
@@ -93,7 +95,6 @@ except Exception:  # noqa: E402
 
 
 def normalize_ascii(s: str) -> str:
-    """Keep console/Windows-friendly text."""
     if not isinstance(s, str):
         return s
     table = {
@@ -120,8 +121,23 @@ def _load_shop_cfg() -> Dict[str, Any]:
     return cfg
 
 
+@st.cache_resource
+def _load_checklists(path: str = "config/checklists.yml") -> Dict[str, Any] | None:
+    if not os.path.exists(path):
+        return None
+    with open(path, "r", encoding="utf-8") as f:
+        data = yaml.safe_load(f) or {}
+    return data if isinstance(data, dict) else None
+
+
+def _checklist_md5(path: str = "config/checklists.yml") -> str:
+    if not os.path.exists(path):
+        return ""
+    with open(path, "rb") as f:
+        return hashlib.md5(f.read()).hexdigest()
+
+
 def _write_temp_uploaded(file) -> str:
-    """Persist Streamlit upload to a temp path so xml_adapter can read it."""
     if file is None:
         return ""
     suffix = os.path.splitext(file.name or "upload.xml")[1] or ".xml"
@@ -152,46 +168,147 @@ def _scripts_downloads(scripts: Dict[str, str]) -> None:
         st.divider()
 
 
-def _tips_checklist(tips: List[str]) -> None:
-    st.subheader("Checklist")
+# -------- dotted lookups + templating for labels --------
 
+
+def _get_path_val(root: Any, dotted: str, shop_cfg: Dict[str, Any]) -> Any:
+    """
+    Resolve dotted path against JobSpec or shop config.
+    - 'shop.xxx' → from shop_cfg
+    - else       → from JobSpec object/dict
+    """
+    base: Any
+    path = dotted.strip()
+    if path.startswith("shop."):
+        base = shop_cfg
+        parts = path[5:].split(".")
+    else:
+        base = root
+        parts = path.split(".")
+
+    cur = base
+    for p in parts:
+        if cur is None:
+            return None
+        if isinstance(cur, dict):
+            cur = cur.get(p)
+        else:
+            cur = getattr(cur, p, None)
+    return cur
+
+
+_RE_PLACEHOLDER = re.compile(r"\{([^}]+)\}")
+
+
+def _format_label(template: str, js: Any, shop_cfg: Dict[str, Any]) -> str:
+    def repl(m: re.Match) -> str:
+        val = _get_path_val(js, m.group(1), shop_cfg)
+        if isinstance(val, float):
+            return f"{val:g}"
+        return str(val) if val is not None else "—"
+
+    out = _RE_PLACEHOLDER.sub(repl, template)
+    return normalize_ascii(out)
+
+
+def _eval_show_if(expr: str | None, js: Any, shop_cfg: Dict[str, Any]) -> bool:
+    """
+    Minimal condition support:
+      - "path.to.value" → truthy if exists and non-empty
+      - "path == 'value'" (quotes optional if no spaces)
+    """
+    if not expr:
+        return True
+
+    if "==" in expr:
+        left, right = expr.split("==", 1)
+        left = left.strip()
+        right = right.strip().strip("'\"")
+        lv = _get_path_val(js, left, shop_cfg)
+        return str(lv) == right
+
+    # truthy lookup
+    v = _get_path_val(js, expr.strip(), shop_cfg)
+    return bool(v)
+
+
+# -------- shop checklist renderer --------
+
+
+def _render_shop_checklist(js: Any, shop_cfg: Dict[str, Any], cfg: Dict[str, Any] | None) -> None:
+    st.subheader("Shop Checklist (Config-driven)")
+
+    if not cfg or not isinstance(cfg.get("sections"), list):
+        st.info("No checklist config found. Create config/checklists.yml to enable this panel.")
+        return
+
+    total_items = 0
+    done_items = 0
+
+    for section in cfg["sections"]:
+        name = str(section.get("name") or "Checklist")
+        items = section.get("items") or []
+        if not isinstance(items, list):
+            continue
+
+        with st.expander(name, expanded=True):
+            for item in items:
+                item_id = str(item.get("id") or _tid(item.get("label", "")))
+                label_t = str(item.get("label") or "Checklist item")
+                show_if = item.get("show_if")
+                help_text = item.get("help")
+                default_checked = bool(item.get("default_checked", False))
+
+                if not _eval_show_if(show_if, js, shop_cfg):
+                    continue
+
+                label = _format_label(label_t, js, shop_cfg)
+
+                key = f"shop_{item_id}_{st.session_state.last_parse_key or 'session'}"
+                if key not in st.session_state:
+                    st.session_state[key] = st.session_state.shop_completed.get(key, default_checked)
+
+                def _on_toggle(k: str = key) -> None:
+                    st.session_state.shop_completed[k] = st.session_state.get(k, False)
+
+                st.checkbox(label, key=key, on_change=_on_toggle, help=help_text)
+                total_items += 1
+                done_items += 1 if st.session_state.get(key, False) else 0
+
+    if total_items:
+        st.caption(f"Checklist progress: {done_items}/{total_items}")
+
+
+def _tips_checklist(tips: List[str]) -> None:
+    st.subheader("AI Tips — quick checklist")
     if not tips:
         st.info("No tips available for this job.")
         return
 
-    # Bulk controls
     cols = st.columns([1, 1, 6])
-    if cols[0].button("✅ Mark all done"):
+    if cols[0].button("✅ Mark all done", key="tips_mark_all"):
         for tip in tips:
             tid = _tid(tip)
-            st.session_state.completed[tid] = True
-            st.session_state[f"cb_{tid}"] = True
-    if cols[1].button("↩️ Clear all"):
+            st.session_state.tips_completed[tid] = True
+            st.session_state[f"cb_tip_{tid}"] = True
+    if cols[1].button("↩️ Clear all", key="tips_clear_all"):
         for tip in tips:
             tid = _tid(tip)
-            st.session_state.completed[tid] = False
-            st.session_state[f"cb_{tid}"] = False
+            st.session_state.tips_completed[tid] = False
+            st.session_state[f"cb_tip_{tid}"] = False
 
-    done = sum(st.session_state.completed.get(_tid(t), False) for t in tips)
+    done = sum(st.session_state.tips_completed.get(_tid(t), False) for t in tips)
     st.caption(f"Progress: {done}/{len(tips)}")
 
-    # Render checkboxes with stable keys and on_change handler
     def _on_toggle(tip_text: str) -> None:
         tid = _tid(tip_text)
-        st.session_state.completed[tid] = st.session_state.get(f"cb_{tid}", False)
+        st.session_state.tips_completed[tid] = st.session_state.get(f"cb_tip_{tid}", False)
 
     for tip in tips:
         tid = _tid(tip)
-        # Initialize widget state from stored completion (only first time)
-        if f"cb_{tid}" not in st.session_state:
-            st.session_state[f"cb_{tid}"] = st.session_state.completed.get(tid, False)
-        st.checkbox(
-            tip,
-            key=f"cb_{tid}",
-            on_change=_on_toggle,
-            args=(tip,),
-            help="Click to mark this step complete.",
-        )
+        if f"cb_tip_{tid}" not in st.session_state:
+            st.session_state[f"cb_tip_{tid}"] = st.session_state.tips_completed.get(tid, False)
+        st.checkbox(tip, key=f"cb_tip_{tid}", on_change=_on_toggle, args=(tip,))
 
 
 def _job_summary(js) -> None:
@@ -215,7 +332,8 @@ def _session_download(js, message: str, intents: List[str], tips: List[str]) -> 
         "message": message,
         "intents": intents,
         "jobspec": jobspec,
-        "tips_checked": st.session_state.completed,
+        "tips_checked": st.session_state.tips_completed,
+        "shop_checked": st.session_state.shop_completed,
         "version": "mvp-1",
     }
     b = json.dumps(payload, indent=2, ensure_ascii=False).encode("utf-8")
@@ -244,6 +362,9 @@ st.set_page_config(page_title="Printssistant — Operator Console", layout="wide
 st.title("🖨️ Printssistant — Operator Console (MVP)")
 
 SHOP_CFG = _load_shop_cfg()
+CHECK_CFG = _load_checklists()
+CHECK_HASH = _checklist_md5()
+st.session_state.checklist_hash = CHECK_HASH
 
 with st.sidebar:
     st.header("Settings")
@@ -261,7 +382,6 @@ tab1, tab2 = st.tabs(["Parse XML & Advise", "Manual JobSpec"])
 # -----------------------
 with tab1:
     st.subheader("1) Upload job XML")
-
     with st.form("xml_parse_form", clear_on_submit=False):
         xml_file = st.file_uploader("XML file", type=["xml"])
         sample_hint = st.text_input(
@@ -280,19 +400,15 @@ with tab1:
             if not xml_path or not os.path.exists(xml_path):
                 st.error("Please upload an XML or provide a valid local path.")
             else:
-                # Build JobSpec
                 js = load_jobspec_from_xml(xml_path, mapping_path)
 
-                # Optional machine override
                 if selected_machine and selected_machine != "(none)":
                     special = dict(js.special or {})
                     special["machine"] = selected_machine
                     js.special = special
 
-                # Apply shop policies (bleed/safety mins, etc.)
                 js = apply_shop_config(js, SHOP_CFG)
 
-                # Detect intents & collect tips/scripts
                 intents = detect_intents(js, message or "")
                 tips: List[str] = []
                 scripts: Dict[str, str] = {}
@@ -337,14 +453,13 @@ with tab1:
                         seen.add(t)
                         tips_dedup.append(t)
 
-                # Persist to session
-                fingerprint = _parse_key(js, tips_dedup)
+                # Reset state only if job/tips/config changed
+                fingerprint = _parse_key(js, tips_dedup, CHECK_HASH)
                 if st.session_state.last_parse_key != fingerprint:
-                    # Reset checklist for a new job
-                    st.session_state.completed = {}
-                    # Clean old checkbox widget keys
+                    st.session_state.tips_completed = {}
+                    st.session_state.shop_completed = {}
                     for k in list(st.session_state.keys()):
-                        if str(k).startswith("cb_"):
+                        if str(k).startswith(("cb_tip_", "shop_")):
                             del st.session_state[k]
                     st.session_state.last_parse_key = fingerprint
 
@@ -352,15 +467,14 @@ with tab1:
                 st.session_state.intents = intents
                 st.session_state.tips = tips_dedup
                 st.session_state.scripts = scripts
-
-                st.success("Parsed and advised. See summary and checklist below.")
+                st.success("Parsed and advised. See summary and checklists below.")
 
         except Exception as e:
             st.exception(e)
 
-    # Render current session (if any)
     if st.session_state.job:
         _job_summary(st.session_state.job)
+        _render_shop_checklist(st.session_state.job, SHOP_CFG, CHECK_CFG)
         st.subheader("Intents")
         st.write(", ".join(st.session_state.intents) if st.session_state.intents else "—")
         _tips_checklist(st.session_state.tips)
@@ -428,7 +542,6 @@ with tab2:
                 tips2 += wide_format.tips(js2)  # type: ignore
                 scripts2.update(wide_format.scripts(js2))  # type: ignore
 
-            # normalize + de-dupe
             seen = set()
             tips2 = [normalize_ascii(t) for t in tips2]
             tips2_dedup = []
@@ -437,12 +550,12 @@ with tab2:
                     seen.add(t)
                     tips2_dedup.append(t)
 
-            # Persist manual run as current session (same UX as XML parse)
-            fingerprint = _parse_key(js2, tips2_dedup)
+            fingerprint = _parse_key(js2, tips2_dedup, CHECK_HASH)
             if st.session_state.last_parse_key != fingerprint:
-                st.session_state.completed = {}
+                st.session_state.tips_completed = {}
+                st.session_state.shop_completed = {}
                 for k in list(st.session_state.keys()):
-                    if str(k).startswith("cb_"):
+                    if str(k).startswith(("cb_tip_", "shop_")):
                         del st.session_state[k]
                 st.session_state.last_parse_key = fingerprint
 
@@ -451,8 +564,8 @@ with tab2:
             st.session_state.tips = tips2_dedup
             st.session_state.scripts = scripts2
 
-            # Render
             _job_summary(js2)
+            _render_shop_checklist(js2, SHOP_CFG, CHECK_CFG)
             st.subheader("Intents")
             st.write(", ".join(intents2) if intents2 else "—")
             _tips_checklist(tips2_dedup)

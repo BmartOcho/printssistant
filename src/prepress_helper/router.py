@@ -16,20 +16,60 @@ def _norm(s: Optional[str]) -> str:
     return (s or "").strip().lower()
 
 
-def _is_wide_format_machine(machine: str) -> bool:
-    """
-    True if `machine` is a known wide-format device.
+# --- add near top-level (helpers) ---
+def _current_cfg() -> dict:
+    cfg = {}
+    # prefer public SHOP_CFG if present (tests poke this)
+    try:
+        if isinstance(SHOP_CFG, dict):
+            cfg.update(SHOP_CFG)
+    except NameError:
+        pass
+    # merge any private store too
+    try:
+        if isinstance(_SHOP_CFG, dict):
+            cfg.update(_SHOP_CFG)
+    except NameError:
+        pass
+    return cfg
 
-    Supports two shapes:
-      A) Legacy grouped lists under SHOP_CFG['press_capabilities']:
-         - roll_printers: [str, ...]
-         - flatbed_printers: [str, ...]
-      B) Normalized dict under SHOP_CFG['presses']:
-         - presses: { "<name>": { category/type/format/family/tags: ... }, ... }
-    """
-    m = _norm(machine)
-    if not m:
-        return False
+
+def _is_wide_format_machine(name: str) -> bool:
+    """True for LF/roll/flatbed devices, False for sheet-fed like Indigo."""
+    n = (name or "").lower().strip()
+    cfg = _current_cfg()
+    presses = cfg.get("presses") or {}
+    p = presses.get(name, {}) if isinstance(presses, dict) else {}
+
+    # 1) Explicit allow-lists from press_capabilities
+    pc = cfg.get("press_capabilities") or {}
+    flatbeds = [s.lower() for s in pc.get("flatbed_printers", []) if isinstance(s, str)]
+    rolls = [s.lower() for s in pc.get("roll_printers", []) if isinstance(s, str)]
+    if n in flatbeds or n in rolls:
+        return True
+
+    # 2) Width threshold (roll/flatbed devices are typically ≥ 24")
+    width = 0.0
+    for k in ("max_width_in", "max_width"):
+        try:
+            width = float(p.get(k, 0) or 0)
+            if width:
+                break
+        except Exception:
+            pass
+    if width >= 24:
+        return True
+
+    # 3) Substrate hints
+    subs = [str(s).lower() for s in p.get("substrates", []) if isinstance(s, str)]
+    if any(s in {"banner_13oz", "banner", "sav", "vinyl", "polyester", "fabric"} for s in subs):
+        return True
+
+    # 4) Name hints
+    if any(tag in n for tag in ("latex", "flatbed", "wide", "roll")):
+        return True
+
+    return False
 
     # --- A) legacy grouped lists
     caps = SHOP_CFG.get("press_capabilities") or {}

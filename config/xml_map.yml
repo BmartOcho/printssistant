@@ -1,21 +1,23 @@
 # Normalized field → XPath (first non-empty wins when pipes/() used)
 
 # —— Basics ——
-product: "string((//ProductName | //ProductCode | //Title | //JobName)[1])"
+product: "normalize-space(string((//Title | //ProductName | //JobName)[1]))"
+job_number: "normalize-space(string((//JobNumber | //JobID)[1]))"
+
 
 # Finished size in inches from a single '8.5x5.5' node
-trim_w_in: "number(substring-before(//FinishedSize, 'x'))"
-trim_h_in: "number(substring-after(//FinishedSize, 'x'))"
+trim_w_in: "number((//FinishedWidth | //TrimWidth)[1])"
+trim_h_in: "number((//FinishedHeight | //TrimHeight)[1])"
 
 bleed_in:  "number((//Bleed)[1])"
 safety_in: "number((//Safety)[1])"
 pages:     "number((//Pages | //QtyPages)[1])"
 
-# Colors (force strings so missing becomes '')
+# Colors (add ProcessReverse for the back)
 colors.front: "string((//ProcessFront | //ColorsFront | //FrontColors)[1])"
-colors.back:  "string((//ProcessBack  | //ColorsBack  | //BackColors)[1])"
+colors.back:  "string((//ProcessReverse | //ProcessBack | //BackColors)[1])"
 
-# Stock/finish
+# Stock
 stock:  "string((//Stock | //Paper | //Media)[1])"
 finish: "string((//Finish | //Coating | //Lamination)[1])"
 
@@ -25,10 +27,11 @@ imposition_hint: "string((//ImpositionHint | //ProductCategory)[1])"
 # Dates
 due_at: "string((//CustomerExpectedDateUTC | //DueUTC)[1])"
 
-# —— Special bag (free-form) ——
-special.stock_group:      "string(//StockGroup)"
-special.imposition_across: "string((//ImposeAcross)[1])"
-special.imposition_down:   "string((//ImposeDown)[1])"
-special.artwork_file:     "normalize-space(string((//ArtworkFile | //FileName)[1]))"
-# IMPORTANT: map to single string (not node-set)
-special.machine:          "normalize-space(string((//Machine)[1]))"
+# —— Special (free-form) ——
+special.stock_group:        "string(//StockGroup)"
+# Map the separate values; the loader will combine these to "AxB" and drop the separate 'down'
+special.imposition_across:  "number((//Imposition//AcrossX | //AcrossX)[1])"
+special.imposition_down:    "number((//Imposition//AcrossY | //AcrossY)[1])"
+special.imposition_up:      "number((//Imposition//NumberUp | //NumberUp)[1])"
+special.artwork_file:       "normalize-space(string((//ArtworkFile | //FileName)[1]))"
+special.machine:            "normalize-space(string((//Printing//Machine | //Machine)[1]))"

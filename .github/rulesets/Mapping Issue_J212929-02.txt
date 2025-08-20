@@ -1,0 +1,7 @@
+### Mapping issue 1
+- XML file: samples/J212597.xml
+- Target field (dotted): special.imposition_across
+- Expected value: __________
+- Actual value (from app): __________
+- Suggested XPath (if you know it): _________________________________
+- XML snippet (node/attrs): (paste the element that should feed this)

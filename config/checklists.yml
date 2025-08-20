@@ -1,0 +1,36 @@
+version: 1
+sections:
+  - name: Intake
+    items:
+      - id: art_present
+        label: "Artwork file present: {special.artwork_file}"
+        show_if: "special.artwork_file"     # truthy if value exists
+        default_checked: false
+        help: "Verify filename matches ticket and revision."
+
+      - id: size_matches
+        label: "Trim {trim_size.w_in}×{trim_size.h_in} in, bleed ≥ {shop.policies.bleed_min_in} in"
+        help: "Confirm doc trim/bleed match XML + policy."
+
+  - name: Color
+    items:
+      - id: doc_cmyk
+        label: "Document is CMYK; TAC ≤ {shop.policies.tac_max_percent}%"
+        help: "Check color settings and ink coverage."
+
+      - id: rich_black
+        label: "Rich black swatch available (sheet-fed: {shop.policies.rich_black.sheet_fed})"
+        help: "Large solids, headlines; not for small text."
+
+  - name: Imposition
+    items:
+      - id: impose_across_down
+        label: "Imposition across/down: {special.imposition_across}"
+        show_if: "special.imposition_across"
+
+  - name: Wide Format (if applicable)
+    items:
+      - id: grommet_margins
+        label: "Grommet margin ≥ {shop.products.banner.grommet_margin_in} in; spacing {shop.products.banner.grommet_spacing_in} in"
+        show_if: "special.machine"   # visible when a machine is set
+        help: "Match finishing spec for banners."

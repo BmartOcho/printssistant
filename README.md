@@ -24,6 +24,19 @@ cd "C:\Users\Benjamin\Desktop\Python Apps\printssistant"
 powershell -ExecutionPolicy Bypass -File .\dev-up.ps1
 
 
+PUSH TO GITHUB FROM POWERSHELL
+    git add .
+This command stages all modified and new files in your current directory for the next commit. You can also specify individual files or folders instead of . to stage only specific changes. Commit your staged changes.
+Code
+
+    git commit -m "Your descriptive commit message"
+Replace "Your descriptive commit message" with a concise and meaningful message describing the changes you made.
+Push your committed changes to the remote GitHub repository:
+Code
+
+    git push origin main
+
+
 1) Environment
 
 Python 3.11–3.12 recommended.

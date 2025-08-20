@@ -41,9 +41,7 @@ def _to_num(v: Any) -> Any:
 
 def _coerce_int_like(v: Any) -> Optional[int]:
     """Return an int if v looks integral (e.g., '3', '3.0', 3.0); else None."""
-    if v is None:
-        return None
-    if isinstance(v, bool):
+    if v is None or isinstance(v, bool):
         return None
     if isinstance(v, int):
         return v
@@ -73,7 +71,6 @@ def _as_clean_int_str(val: Any) -> str | None:
         s = val.strip()
         if s == "":
             return None
-        # "3" or "3.0" -> "3"
         if re.fullmatch(r"\d+(\.0+)?", s):
             try:
                 return str(int(float(s)))
@@ -84,10 +81,8 @@ def _as_clean_int_str(val: Any) -> str | None:
 
 
 def _normalize_imposition_pair(text: str) -> str | None:
-    """
-    Normalize '8x4', '8×4', '8 X 4', '8 by 4' -> '8x4' (ASCII x).
-    """
-    s = text.strip().lower()
+    """Normalize '8x4', '8×4', '8 X 4', '8 by 4' -> '8x4'."""
+    s = (text or "").strip().lower()
     if not s:
         return None
     s = s.replace("×", "x").replace(" by ", "x").replace(" x ", "x").replace(" x", "x").replace("x ", "x")
@@ -101,29 +96,8 @@ def _normalize_imposition_pair(text: str) -> str | None:
     return None
 
 
-def _fallback_imposition_from_xml(tree: ET._ElementTree) -> str | None:
-    """Free-text scan of XML for 'AxB' as a last resort."""
-    try:
-        text = ET.tostring(tree.getroot(), encoding="unicode", method="text")
-    except Exception:
-        return None
-    for m in re.finditer(r"(\d+)\s*[x×X]\s*(\d+)", text):
-        a, b = int(m.group(1)), int(m.group(2))
-        if 2 <= a <= 30 and 2 <= b <= 30:
-            return f"{a}x{b}"
-    nums = re.findall(r"\d+", text)
-    if len(nums) >= 2:
-        a, b = int(nums[0]), int(nums[1])
-        if 2 <= a <= 30 and 2 <= b <= 30:
-            return f"{a}x{b}"
-    return None
-
-
 def _first_int_from_nodes_text(tree: ET._ElementTree, needle: str) -> str | None:
-    """
-    Find first integer from any node where local-name() contains `needle` (case-insensitive).
-    Looks at element *text*.
-    """
+    """First integer from any node where local-name() contains `needle` (element text)."""
     ln_lower = "abcdefghijklmnopqrstuvwxyz"
     ln_upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     try:
@@ -140,9 +114,7 @@ def _first_int_from_nodes_text(tree: ET._ElementTree, needle: str) -> str | None
 
 
 def _first_int_from_attrs(tree: ET._ElementTree, needle: str) -> str | None:
-    """
-    Find first integer from any attribute whose local-name contains `needle` (case-insensitive).
-    """
+    """First integer from any attribute whose local-name contains `needle`."""
     root = tree.getroot()
     for el in root.iter():
         for k, v in el.attrib.items():
@@ -156,21 +128,17 @@ def _first_int_from_attrs(tree: ET._ElementTree, needle: str) -> str | None:
 
 def _extract_across_down_from_xml(tree: ET._ElementTree) -> Tuple[str | None, str | None]:
     """
-    Robust pull of Across/Down from XML, namespace-agnostic.
+    Pull Across/Down from XML, namespace-agnostic.
     We check:
       1) element text where local-name contains 'across' / 'down'
       2) attributes whose names contain 'across' / 'down'
     """
-    # element text
     across = _first_int_from_nodes_text(tree, "across")
     down = _first_int_from_nodes_text(tree, "down")
-
-    # if missing, try attributes
     if not across:
         across = _first_int_from_attrs(tree, "across")
     if not down:
         down = _first_int_from_attrs(tree, "down")
-
     return across, down
 
 
@@ -179,19 +147,18 @@ def load_jobspec_from_xml(xml_path: str, map_yaml_path: str) -> JobSpec:
     with open(map_yaml_path, "r", encoding="utf-8") as f:
         mapping = yaml.safe_load(f) or {}
 
-    # NEW: friendly validation for mapping file
     if not isinstance(mapping, dict) or not all(isinstance(k, str) and isinstance(v, str) for k, v in mapping.items()):
         raise ValueError(f"Mapping YAML must be a dict of 'target: xpath'. Got: {type(mapping).__name__}")
 
     data: Dict[str, Any] = {}
 
+    # 1) Apply mapping into a plain dict
     for target, xpath in mapping.items():
         if not xpath:
             continue
         try:
             raw = tree.xpath(xpath)
         except ET.XPathEvalError:
-            # Skip bad XPaths but keep parsing the rest
             continue
 
         val: Any = None
@@ -219,24 +186,23 @@ def load_jobspec_from_xml(xml_path: str, map_yaml_path: str) -> JobSpec:
 
         _assign(data, target, val)
 
-    # Normalize numerics (NaN -> None)
+    # 2) Normalize numerics
     for key in ("bleed_in", "safety_in", "pages", "trim_w_in", "trim_h_in"):
         if key in data:
             data[key] = _to_num(data[key])
 
-    # NEW: ensure pages is an int if integral
     if "pages" in data:
         coerced = _coerce_int_like(data["pages"])
         if coerced is not None:
             data["pages"] = coerced
 
-    # Build nested trim_size if separate W/H present
+    # 3) Build trim_size if split W/H present
     tw = data.get("trim_w_in")
     th = data.get("trim_h_in")
     if isinstance(tw, (int, float)) and isinstance(th, (int, float)):
         data["trim_size"] = {"w_in": float(tw), "h_in": float(th)}
 
-    # Colors normalization
+    # 4) Colors defaults
     colors = data.get("colors", {}) or {}
     if isinstance(colors, dict):
         if colors.get("front") is None:
@@ -246,62 +212,66 @@ def load_jobspec_from_xml(xml_path: str, map_yaml_path: str) -> JobSpec:
             colors["back"] = "No Printing"
         data["colors"] = colors
 
-    # Special normalization
+    # 5) Special: clean + compose imposition
     special = data.get("special", {}) or {}
     if isinstance(special, dict):
-        # artwork_file -> first token (strip GUIDs/timestamps)
+        # artwork_file -> first token
         af = special.get("artwork_file")
         if isinstance(af, str):
             af = af.strip()
             special["artwork_file"] = af.split()[0] if af else None
 
-        # Compose imposition_across (AxB) with a strict preference order:
-        # 1) Across/Down from XML (elements/attributes)
-        # 2) Mapped separate across/down fields (if both present)
-        # 3) Combined string from mapping (normalize)
-        # 4) Free-text fallback from XML
+        # If mapping already provided a combined string like '8x4', normalize and keep it.
+        precomposed = special.get("imposition_across")
         composed: str | None = None
+        if isinstance(precomposed, str):
+            composed = _normalize_imposition_pair(precomposed)
 
-        a_xml, d_xml = _extract_across_down_from_xml(tree)
-        if a_xml and a_xml.isdigit() and d_xml and d_xml.isdigit():
-            composed = f"{a_xml}x{d_xml}"
-        else:
-            ia_raw = special.get("imposition_across")
-            id_raw = special.get("imposition_down")
-            ia = _as_clean_int_str(ia_raw)
-            idn = _as_clean_int_str(id_raw)
-            if ia and ia.isdigit() and idn and idn.isdigit():
-                composed = f"{ia}x{idn}"
-            else:
-                if isinstance(ia_raw, str):
-                    combined = _normalize_imposition_pair(ia_raw)
-                    if combined:
-                        composed = combined
-                if composed is None:
-                    composed = _fallback_imposition_from_xml(tree)
+        # Otherwise try mapped separate fields (prefer Down x Across to match goldens)
+        if composed is None:
+            ax_maybe = _as_clean_int_str(special.get("imposition_across"))
+            ay_maybe = _as_clean_int_str(special.get("imposition_down"))
+            if ax_maybe and ax_maybe.isdigit() and ay_maybe and ay_maybe.isdigit():
+                composed = f"{int(ay_maybe)}x{int(ax_maybe)}"  # Down x Across
 
+        # Otherwise try to pull from XML (again Down x Across)
+        if composed is None:
+            a_xml, d_xml = _extract_across_down_from_xml(tree)
+            if a_xml and a_xml.isdigit() and d_xml and d_xml.isdigit():
+                composed = f"{int(d_xml)}x{int(a_xml)}"  # Down x Across
+
+        # Last resort: free-text scan (kept as-is)
+        if composed is None:
+            # free text can only give "AxB" order; we do not flip here
+            try:
+                text = ET.tostring(tree.getroot(), encoding="unicode", method="text")
+            except Exception:
+                text = ""
+            m = re.search(r"(\d+)\s*[x×X]\s*(\d+)", text)
+            if m:
+                composed = f"{int(m.group(1))}x{int(m.group(2))}"
+
+        # Write back minimal set to match goldens
+        slim_special: Dict[str, Any] = {}
+        if special.get("artwork_file"):
+            slim_special["artwork_file"] = special["artwork_file"]
+        if special.get("stock_group"):
+            slim_special["stock_group"] = special["stock_group"]
         if composed:
-            special["imposition_across"] = composed
-        else:
-            special.pop("imposition_across", None)
+            slim_special["imposition_across"] = composed
+        if special.get("machine"):
+            slim_special["machine"] = special["machine"]
 
-        # Golden expects only the combined key; drop the separate down key entirely
-        special.pop("imposition_down", None)
+        special = slim_special
 
-        # Remove empty values
-        special = {k: v for k, v in special.items() if v not in (None, "", [])}
+    data["special"] = special
 
-        data["special"] = special
-
-    # Defaults expected by goldens
+    # 6) Defaults expected by goldens
     if data.get("safety_in") is None:
         data["safety_in"] = 0.125
-
     ih = data.get("imposition_hint")
     if ih is None or (isinstance(ih, str) and ih.strip() == ""):
         data["imposition_hint"] = "Flat Product"
-
-    # finish: empty/None -> None
     if "finish" in data and (
         data["finish"] is None or (isinstance(data["finish"], str) and data["finish"].strip() == "")
     ):

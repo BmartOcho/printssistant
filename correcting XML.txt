@@ -1,0 +1,91 @@
+XML: samples\J208823.xml
+MAP: config\xml_map.yml
+
+[product]
+  xpath: string((//Job | //Title)[1])
+  raw_value: Cairn Business Card (Single Community)
+  picked: Cairn Business Card (Single Community)
+  final_jobspec_value: Cairn Business Card (Single Community)
+
+[job_number]
+  xpath: string{{//Job | //JobNumber)[1])
+  raw_value: J208823
+
+[trim_w_in]
+  xpath: float((//Product | //Sections | //Section | //FinishedWidth)[1])
+  raw_value: 3.5000
+
+[trim_h_in]
+  xpath: float((//Product | //Sections | //Section | //FinishedHeight)[1])
+  raw_value: 2.0000
+
+[bleed_in]
+  xpath: float((//Sections | //Section | //Printing | //Imposition | //Bleed)[1])
+  raw_value: 0.125
+  picked: 0.125
+  final_jobspec_value: 0.125
+
+[pages]
+  xpath: number((//Sections | //Section | //Pages)[1])
+  raw_value: 2
+
+[colors.front]
+  xpath: string((//Sections | //Section | //Printing | //ProcessFront)[1])
+  raw_value: CMYK
+  picked: CMYK
+  final_jobspec_value: CMYK
+
+[colors.back]
+  xpath: string((//Sections | //Section | //Printing | //ProcessReverse)[1])
+  raw_value:CMYK
+  picked: None
+  final_jobspec_value: No Printing
+
+[stock]
+  xpath: string((//Sections | //Section | //Printing | //Stock)[1])
+  raw_value: 130# Pro Digital Silk Cover
+  picked: 130# Pro Digital Silk Cover
+  final_jobspec_value: 130# Pro Digital Silk Cover
+
+##### This Imposition Section below should be mapped to these locations and should be separately parsed #####
+
+[special.imposition_across]
+  xpath: number((//Sections | //Section | //Printing | //Imposition | //AcrossX)[1])
+  raw_value:3
+  picked: None
+  final_jobspec_value: 4x5 # This is wrong
+
+[special.imposition_down]
+  xpath: number((//Sections | //Section | //Printing | //Imposition | //AcrossY)[1])
+  raw_value:8
+  picked: None
+  final_jobspec_value: None # This is wrong
+
+##### I am adding this special section for imposition to check against the two above values. <AcrossX> multiplied by <AcrossY> should equal <NumberUp> within the XML file. #####
+
+[special.imposition_up]
+  xpath: number((//Sections | //Section | //Printing | //NumberUp)[1])
+  raw_value: 24
+
+[special.machine]
+  xpath: number((//Sections | //Section | //Printing | //Machine)[1])
+  raw_value: HP Indigo 7800
+  picked: HP Indigo 7800
+  final_jobspec_value: HP Indigo 7800
+
+(.venv) PS C:\Users\Benjamin\Desktop\Python Apps\printssistant> python scripts\inspect_mapping.py -x samples\J208819.xml -m config\xml_map.yml -f "special.imposition_across,colors.back"
+
+XML: samples\J208819.xml
+MAP: config\xml_map.yml
+
+[colors.back]
+  xpath: string((//Sections | //Section | //Printing | //ProcessReverse)[1])
+  raw_value: No Printing
+  picked: None
+  final_jobspec_value: No Printing
+
+[special.imposition_across]
+  xpath: number((//Sections | //Section | //Printing | //Imposition | //AcrossX)[1])
+  raw_value:3
+  picked: None
+  final_jobspec_value: 4x5 # This is wrong
