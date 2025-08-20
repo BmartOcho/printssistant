@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Job>
+   <Config>
+      <ProductionIntegrationPath>https://voomgroup.printiq.com/WebService/ProductionIntegration.asmx</ProductionIntegrationPath>
+      <MeasurementType>Imperial</MeasurementType>
+   </Config>
+   <JobNumber>J212853-01</JobNumber>
+   <SeriesNumber/>
+   <QQADKey>18436</QQADKey>
+   <IsPriority>False</IsPriority>
+   <NumberOfSections>1</NumberOfSections>
+   <QuotedDateUTC>2025-08-01T16:14:26.7320560Z</QuotedDateUTC>
+   <Workflow>Create Job</Workflow>
+   <AcceptedDateUTC>2025-08-01T14:05:48.8200000Z</AcceptedDateUTC>
+   <Title>Symphony Risk - Notecards</Title>
+   <JobType/>
+   <ProductCode>Symphony Risk Notecards</ProductCode>
+   <PONum/>
+   <CourierRef> Voom Truck</CourierRef>
+   <Metadata>
+      <Field>
+         <Name/>
+         <Value>There is no additional information for this product</Value>
+      </Field>
+   </Metadata>
+   <AcceptanceUserType>Staff</AcceptanceUserType>
+   <AcceptanceKey>12904</AcceptanceKey>
+   <SpecialInstructions/>
+   <HasSpecialInstructions>0</HasSpecialInstructions>
+   <AccountManager>
+      <FullName>Erich Schlarb</FullName>
+      <Email>eschlarb@voomgroup.com</Email>
+      <Phone>972-200-9300</Phone>
+   </AccountManager>
+   <Customer>
+      <Number>SymphonyRiskSolutions</Number>
+      <Name>Symphony Risk Solutions</Name>
+      <Address>
+         <Name>Symphony Risk Solutions</Name>
+         <Address1>2425 N. Central Expy</Address1>
+         <Address2>Ste 900</Address2>
+         <Address3/>
+         <City>Richardson</City>
+         <PostCode>75080</PostCode>
+         <State>Texas</State>
+         <Country>United States</Country>
+         <ExternalNote/>
+         <InternalNote/>
+      </Address>
+      <Contact>
+         <Name>Melissa Abreu</Name>
+         <Phone>9724248887</Phone>
+         <Mobile/>
+         <Email>mabreu@symphonyrisk.com</Email>
+         <CreditTerms>COD</CreditTerms>
+      </Contact>
+   </Customer>
+   <Product>
+      <Status>Print Ready</Status>
+      <CustomerExpectedDateUTC/>
+      <ArtworkThumbnail>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</ArtworkThumbnail>
+      <CostPrice>81.1500</CostPrice>
+      <WholesalePrice>81.1500</WholesalePrice>
+      <TotalSalePrice>109.5600</TotalSalePrice>
+      <Description>Notecards - Printed CMYK x 1 side  on 120# Uncoated Cover
+Size: 5.5"x4"
+Packaging: Shrink-Wrap / 100</Description>
+      <FinishedSize>5.5"x4"</FinishedSize>
+      <FinishedWidth>5.5000</FinishedWidth>
+      <FinishedHeight>4.0000</FinishedHeight>
+      <SummedSpineWidth/>
+      <Quantity>250</Quantity>
+      <Kinds>1</Kinds>
+      <HasAdvancedKinds>False</HasAdvancedKinds>
+      <DueDateUTC>2025-08-06T19:03:51.0000000Z</DueDateUTC>
+      <FactoryLocationKey>1</FactoryLocationKey>
+      <FactoryLocationName>VG</FactoryLocationName>
+      <FactoryLocationDescription>Voom Group</FactoryLocationDescription>
+      <Weight>3.1384615384615390052747139464</Weight>
+      <Deliveries>
+         <Delivery>
+            <Status>Pending</Status>
+            <Quantity>250</Quantity>
+            <Boxes>1</Boxes>
+            <Connote/>
+            <DelNum>0</DelNum>
+            <DeliveryInstructions/>
+            <Address>
+               <AddressKey>49033</AddressKey>
+               <AddressLine1>2425 N. Central Expy</AddressLine1>
+               <AddressLine2>Suite 900</AddressLine2>
+               <AddressLine3/>
+               <City>Richardson</City>
+               <StateID>-1</StateID>
+               <State>Texas</State>
+               <Country>United States</Country>
+               <PostCode>75080</PostCode>
+               <Name/>
+               <DisplayString>2425 N. Central Expy, Suite 900, Richardson, Texas, 75080, United States</DisplayString>
+            </Address>
+            <Contact>
+               <ContactKey>15948</ContactKey>
+               <Title/>
+               <FirstName>Cammy</FirstName>
+               <Surname>Hatzenbuehler</Surname>
+               <Phone>972-202-3921</Phone>
+               <Fax/>
+               <Mobile/>
+               <Email>mabreu@symphonyrisk.com</Email>
+               <AddressKey>49033</AddressKey>
+               <IsAddressSpecific>True</IsAddressSpecific>
+               <DisplayString>2425 N. Central Expy, Suite 900, Richardson, Texas, 75080, United States</DisplayString>
+            </Contact>
+         </Delivery>
+      </Deliveries>
+      <Sections>
+         <Section>
+            <Key>80723</Key>
+            <Name>Single-Section_0</Name>
+            <Description>5.5"x4"  Printed CMYK x 1 side on 120# Uncoated Cover
+</Description>
+            <ImpositionWidth>5.5000</ImpositionWidth>
+            <ImpositionHeight>4.0000</ImpositionHeight>
+            <FinishedWidth>5.5000</FinishedWidth>
+            <FinishedHeight>4.0000</FinishedHeight>
+            <SpineWidth/>
+            <Pages>1</Pages>
+            <SectionTypeTotalPages>1</SectionTypeTotalPages>
+            <Type>Single-Section</Type>
+            <IsSubsequent>False</IsSubsequent>
+            <Status>Print Ready</Status>
+            <Printing>
+               <OperationKey>1646206</OperationKey>
+               <Machine>HP Indigo 7800</Machine>
+               <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+               <EstRunTimeHHMM>00:   01</EstRunTimeHHMM>
+               <Stock>120# Uncoated Cover</Stock>
+               <StockCode>526706</StockCode>
+               <SheetWidth>13.0000</SheetWidth>
+               <SheetDepth>19.0000</SheetDepth>
+               <NumberUp>8</NumberUp>
+               <InternalNumberUp>1</InternalNumberUp>
+               <SheetsRequired>32</SheetsRequired>
+               <MRSheets>5</MRSheets>
+               <Spoils>1</Spoils>
+               <TotalSheets>38</TotalSheets>
+               <ProcessFront>CMYK</ProcessFront>
+               <ProcessReverse>No Printing</ProcessReverse>
+               <StockWeightValue>119.99999999999998663184673069</StockWeightValue>
+               <StockWeightUnit>120lb Cover</StockWeightUnit>
+               <StockThicknessValue>0.016</StockThicknessValue>
+               <StockThicknessUnit>in</StockThicknessUnit>
+               <Cost>23.2778</Cost>
+               <CostPlus>23.2778</CostPlus>
+               <NoAcross>2</NoAcross>
+               <NoAround>4</NoAround>
+               <GapAcross/>
+               <GapAround/>
+               <Imposition>
+                  <AcrossX>2</AcrossX>
+                  <AcrossY>4</AcrossY>
+                  <SheetX>13</SheetX>
+                  <SheetY>19</SheetY>
+                  <PrintableX>12.5</PrintableX>
+                  <PrintableY>18.5</PrintableY>
+                  <SizeX>5.75</SizeX>
+                  <SizeY>4.25</SizeY>
+                  <Bleed>0.125</Bleed>
+                  <GripX1>0.25</GripX1>
+                  <GripX2>0.25</GripX2>
+                  <GripY1>0.375</GripY1>
+                  <GripY2>0.125</GripY2>
+                  <HasDigitalFrame>False</HasDigitalFrame>
+                  <DigitalFrameLength/>
+                  <DigitalFrameTotalBlocksUp/>
+                  <DigitalFrameTotalNUp/>
+                  <DigitalFrameUsedLength/>
+                  <NumChannels/>
+                  <MaxChannelWidth/>
+                  <IsWorkAndTurn>False</IsWorkAndTurn>
+                  <IsWorkAndTumble>False</IsWorkAndTumble>
+                  <CylinderCircumference/>
+                  <CylinderGapAcross/>
+                  <CylinderGapAround/>
+                  <CylinderWidth/>
+               </Imposition>
+               <Runs>
+                  <Run>
+                     <RunNumber>1</RunNumber>
+                     <Kinds/>
+                  </Run>
+               </Runs>
+            </Printing>
+            <Guillotine>
+               <OperationKey>1646209</OperationKey>
+               <Machine>Polar 115</Machine>
+               <EstMRTimeHHMM>00:   02</EstMRTimeHHMM>
+               <EstRunTimeHHMM>00:   08</EstRunTimeHHMM>
+               <CutsPerSheet>12</CutsPerSheet>
+               <InputSheets>33</InputSheets>
+               <OutputSheets>264</OutputSheets>
+               <NumberOut>8</NumberOut>
+               <Cost>19.1659</Cost>
+               <CostPlus>19.1659</CostPlus>
+            </Guillotine>
+            <Operations>
+               <Operation>
+                  <OperationKey>1646207</OperationKey>
+                  <Name>Imposition</Name>
+                  <Machine>Prepress</Machine>
+                  <EstMRTimeHHMM>00:   00</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Imposition Type</ComponentReferenceName>
+                  <ComponentReferenceValue>Standard Imposition</ComponentReferenceValue>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>0.0000</Cost>
+                  <CostPlus>0.0000</CostPlus>
+               </Operation>
+               <Operation>
+                  <OperationKey>1646208</OperationKey>
+                  <Name>Job Planning</Name>
+                  <Machine>No Machine</Machine>
+                  <EstMRTimeHHMM>00:   10</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Select Admin Time</ComponentReferenceName>
+                  <ComponentReferenceValue>Job Planning with Admin - 10 Min</ComponentReferenceValue>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>18.3337</Cost>
+                  <CostPlus>18.3337</CostPlus>
+               </Operation>
+            </Operations>
+            <Artwork>
+               <Files>
+                  <File>
+                     <Name>J212853-01_1.pdf</Name>
+                     <OriginalName>86ed5362-7da7-43b8-bea9-4942ed74634a.pdf</OriginalName>
+                     <UploadDateTimeUTC>2025-08-01T14:06:02.1366667Z</UploadDateTimeUTC>
+                  </File>
+               </Files>
+            </Artwork>
+            <StockGroups>
+               <StockGroup>Uncoated Cover</StockGroup>
+            </StockGroups>
+            <ExpectedPDFPages>1</ExpectedPDFPages>
+            <ImpositionFoldCatalog>Flat Product</ImpositionFoldCatalog>
+         </Section>
+      </Sections>
+      <Operations>
+         <Operation>
+            <OperationKey>1646207</OperationKey>
+            <Name>Imposition</Name>
+            <Machine>Prepress</Machine>
+            <EstMRTimeHHMM>00:   00</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Imposition Type</ComponentReferenceName>
+            <ComponentReferenceValue>Standard Imposition</ComponentReferenceValue>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>0.0000</Cost>
+            <CostPlus>0.0000</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1646208</OperationKey>
+            <Name>Job Planning</Name>
+            <Machine>No Machine</Machine>
+            <EstMRTimeHHMM>00:   10</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Select Admin Time</ComponentReferenceName>
+            <ComponentReferenceValue>Job Planning with Admin - 10 Min</ComponentReferenceValue>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>18.3337</Cost>
+            <CostPlus>18.3337</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1646214</OperationKey>
+            <Name>Shrink-Wrap</Name>
+            <Machine>Handwork</Machine>
+            <EstMRTimeHHMM>00:   03</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   01</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters>
+               <Parameter>
+                  <ParameterKey>1</ParameterKey>
+                  <Name>Shrink-Wrap</Name>
+                  <Question>How many per package</Question>
+                  <Value/>
+                  <QuotedValue>100</QuotedValue>
+               </Parameter>
+            </Parameters>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Reference</ComponentReferenceName>
+            <ComponentReferenceValue/>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>5.1113</Cost>
+            <CostPlus>5.1113</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1646212</OperationKey>
+            <Name>Box Job</Name>
+            <Machine>Handwork</Machine>
+            <EstMRTimeHHMM>00:   02</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   02</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>11 1/4 x 8 3/4 x 8" Corrugated Boxes</Name>
+                  <Code>S-12591</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Reference</ComponentReferenceName>
+            <ComponentReferenceValue/>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>5.0229</Cost>
+            <CostPlus>5.0229</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1646213</OperationKey>
+            <Name>Dispatch Prep</Name>
+            <Machine>Handwork</Machine>
+            <EstMRTimeHHMM>00:   02</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Reference</ComponentReferenceName>
+            <ComponentReferenceValue/>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>2.0665</Cost>
+            <CostPlus>2.0665</CostPlus>
+         </Operation>
+      </Operations>
+      <JobArtwork>
+         <ArtworkFile>
+            <FileName>J212853-01_1.pdf</FileName>
+            <FileOriginalName>86ed5362-7da7-43b8-bea9-4942ed74634a.pdf</FileOriginalName>
+            <FileUploadDateTimeUTC>2025-08-01T14:06:02.1366667Z</FileUploadDateTimeUTC>
+         </ArtworkFile>
+      </JobArtwork>
+   </Product>
+   <Operations/>
+   <IntegrationOperations/>
+   <Kinds/>
+   <References/>
+</Job>

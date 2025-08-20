@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Job>
+   <Config>
+      <ProductionIntegrationPath>https://voomgroup.printiq.com/WebService/ProductionIntegration.asmx</ProductionIntegrationPath>
+      <MeasurementType>Imperial</MeasurementType>
+   </Config>
+   <JobNumber>J213064-01</JobNumber>
+   <SeriesNumber/>
+   <QQADKey>18728</QQADKey>
+   <IsPriority>False</IsPriority>
+   <NumberOfSections>1</NumberOfSections>
+   <QuotedDateUTC>2025-08-18T18:15:47.2384610Z</QuotedDateUTC>
+   <Workflow>Create Job</Workflow>
+   <AcceptedDateUTC>2025-08-18T15:19:55.6600000Z</AcceptedDateUTC>
+   <Title>Oxea - 10 x 13 Envelope</Title>
+   <JobType/>
+   <ProductCode>10 x 13 Envelopes</ProductCode>
+   <PONum/>
+   <CourierRef> FedEx</CourierRef>
+   <Metadata>
+      <Field>
+         <Name/>
+         <Value>There is no additional information for this product</Value>
+      </Field>
+   </Metadata>
+   <AcceptanceUserType>Staff</AcceptanceUserType>
+   <AcceptanceKey>13115</AcceptanceKey>
+   <SpecialInstructions/>
+   <HasSpecialInstructions>0</HasSpecialInstructions>
+   <AccountManager>
+      <FullName>Alison Schlarb</FullName>
+      <Email>aschlarb@voomgroup.com</Email>
+      <Phone>9723799930</Phone>
+   </AccountManager>
+   <Customer>
+      <Number>OQChemicalsCorporation</Number>
+      <Name>OQ Chemicals Corporation</Name>
+      <Address>
+         <Name>OQ Chemicals - Houston</Name>
+         <Address1>15375 Memorial Drive</Address1>
+         <Address2>Suite 300</Address2>
+         <Address3/>
+         <City>Houston</City>
+         <PostCode>77079</PostCode>
+         <State>Texas</State>
+         <Country>United States</Country>
+         <ExternalNote/>
+         <InternalNote/>
+      </Address>
+      <Contact>
+         <Name>Gavanda Cadena</Name>
+         <Phone>3612465807</Phone>
+         <Mobile/>
+         <Email>gavanda.cadena@oxea.com</Email>
+         <CreditTerms>COD</CreditTerms>
+      </Contact>
+   </Customer>
+   <Product>
+      <Status>Print Ready</Status>
+      <CustomerExpectedDateUTC>2025-08-22T05:00:00.0000000Z</CustomerExpectedDateUTC>
+      <ArtworkThumbnail>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</ArtworkThumbnail>
+      <CostPrice>126.0600</CostPrice>
+      <WholesalePrice>126.0600</WholesalePrice>
+      <TotalSalePrice>170.1800</TotalSalePrice>
+      <Description>10 x 13 Envelopes - Printed CMYK x 1 side
+Stock: 24# 10 x 13 Catalog Envelope
+Size: 10"x13"
+Packaging: Shrink-Wrap / 250</Description>
+      <FinishedSize>10"x13"</FinishedSize>
+      <FinishedWidth>10.0000</FinishedWidth>
+      <FinishedHeight>13.0000</FinishedHeight>
+      <SummedSpineWidth/>
+      <Quantity>300</Quantity>
+      <Kinds>1</Kinds>
+      <HasAdvancedKinds>False</HasAdvancedKinds>
+      <DueDateUTC>2025-08-21T20:17:00.0000000Z</DueDateUTC>
+      <FactoryLocationKey>1</FactoryLocationKey>
+      <FactoryLocationName>VG</FactoryLocationName>
+      <FactoryLocationDescription>Voom Group</FactoryLocationDescription>
+      <Weight>6.1553475935829068288780959874</Weight>
+      <Deliveries>
+         <Delivery>
+            <Status>Pending</Status>
+            <Quantity>300</Quantity>
+            <Boxes>2</Boxes>
+            <Connote/>
+            <DelNum>0</DelNum>
+            <DeliveryInstructions/>
+            <Address>
+               <AddressKey>51990</AddressKey>
+               <AddressLine1>5738 County Road 4 Bishop</AddressLine1>
+               <AddressLine2/>
+               <AddressLine3/>
+               <City>Bishop</City>
+               <StateID>-1</StateID>
+               <State>Texas</State>
+               <Country>United States</Country>
+               <PostCode>78343</PostCode>
+               <Name>Oxea Bishop LLC</Name>
+               <DisplayString>Oxea Bishop LLC, 5738 County Road 4 Bishop, Bishop, Texas, 78343, United States</DisplayString>
+            </Address>
+            <Contact>
+               <ContactKey>18577</ContactKey>
+               <Title/>
+               <FirstName>Gavanda</FirstName>
+               <Surname>Cadena</Surname>
+               <Phone>3612465807</Phone>
+               <Fax/>
+               <Mobile/>
+               <Email>gavanda.cadena@oxea.com</Email>
+               <AddressKey>51990</AddressKey>
+               <IsAddressSpecific>True</IsAddressSpecific>
+               <DisplayString>Oxea Bishop LLC, 5738 County Road 4 Bishop, Bishop, Texas, 78343, United States</DisplayString>
+            </Contact>
+         </Delivery>
+      </Deliveries>
+      <Sections>
+         <Section>
+            <Key>81907</Key>
+            <Name>Single-Section_0</Name>
+            <Description>10"x13"  Printed CMYK x 1 side on 24# 10 x 13 Catalog Envelope
+Artwork: Customer to furnish print ready PDF</Description>
+            <ImpositionWidth>10.0000</ImpositionWidth>
+            <ImpositionHeight>13.0000</ImpositionHeight>
+            <FinishedWidth>10.0000</FinishedWidth>
+            <FinishedHeight>13.0000</FinishedHeight>
+            <SpineWidth/>
+            <Pages>1</Pages>
+            <SectionTypeTotalPages>1</SectionTypeTotalPages>
+            <Type>Single-Section</Type>
+            <IsSubsequent>False</IsSubsequent>
+            <Status>Print Ready</Status>
+            <Printing>
+               <OperationKey>1668763</OperationKey>
+               <Machine>Fujifilm EC1100</Machine>
+               <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+               <EstRunTimeHHMM>00:   09</EstRunTimeHHMM>
+               <Stock>24# 10 x 13 Catalog Envelope</Stock>
+               <StockCode>10x13CatalogEnvelope</StockCode>
+               <SheetWidth>10.0000</SheetWidth>
+               <SheetDepth>13.0000</SheetDepth>
+               <NumberUp>1</NumberUp>
+               <InternalNumberUp>1</InternalNumberUp>
+               <SheetsRequired>300</SheetsRequired>
+               <MRSheets>6</MRSheets>
+               <Spoils>0</Spoils>
+               <TotalSheets>306</TotalSheets>
+               <ProcessFront>CMYK</ProcessFront>
+               <ProcessReverse>No Printing</ProcessReverse>
+               <StockWeightValue>24.000000000000076977358662260</StockWeightValue>
+               <StockWeightUnit>24lb Bond</StockWeightUnit>
+               <StockThicknessValue>0.0048</StockThicknessValue>
+               <StockThicknessUnit>in</StockThicknessUnit>
+               <Cost>57.7604</Cost>
+               <CostPlus>57.7604</CostPlus>
+               <NoAcross>1</NoAcross>
+               <NoAround>1</NoAround>
+               <GapAcross/>
+               <GapAround/>
+               <Imposition>
+                  <AcrossX>1</AcrossX>
+                  <AcrossY>1</AcrossY>
+                  <SheetX>13</SheetX>
+                  <SheetY>10</SheetY>
+                  <PrintableX>13</PrintableX>
+                  <PrintableY>10</PrintableY>
+                  <SizeX>13</SizeX>
+                  <SizeY>10</SizeY>
+                  <Bleed>0</Bleed>
+                  <GripX1>0</GripX1>
+                  <GripX2>0</GripX2>
+                  <GripY1>0</GripY1>
+                  <GripY2>0</GripY2>
+                  <HasDigitalFrame>False</HasDigitalFrame>
+                  <DigitalFrameLength/>
+                  <DigitalFrameTotalBlocksUp/>
+                  <DigitalFrameTotalNUp/>
+                  <DigitalFrameUsedLength/>
+                  <NumChannels/>
+                  <MaxChannelWidth/>
+                  <IsWorkAndTurn>False</IsWorkAndTurn>
+                  <IsWorkAndTumble>False</IsWorkAndTumble>
+                  <CylinderCircumference/>
+                  <CylinderGapAcross/>
+                  <CylinderGapAround/>
+                  <CylinderWidth/>
+               </Imposition>
+               <Runs>
+                  <Run>
+                     <RunNumber>1</RunNumber>
+                     <Kinds/>
+                  </Run>
+               </Runs>
+            </Printing>
+            <Guillotine/>
+            <Operations>
+               <Operation>
+                  <OperationKey>1668761</OperationKey>
+                  <Name>Preflight</Name>
+                  <Machine>Prepress</Machine>
+                  <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Select Prepress options</ComponentReferenceName>
+                  <ComponentReferenceValue>Online Order - 5min</ComponentReferenceValue>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>9.1663</Cost>
+                  <CostPlus>9.1663</CostPlus>
+               </Operation>
+               <Operation>
+                  <OperationKey>1668762</OperationKey>
+                  <Name>Job Planning</Name>
+                  <Machine>No Machine</Machine>
+                  <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Select Admin Time</ComponentReferenceName>
+                  <ComponentReferenceValue>Job Planning with Admin - 5 Min</ComponentReferenceValue>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>9.1663</Cost>
+                  <CostPlus>9.1663</CostPlus>
+               </Operation>
+               <Operation>
+                  <OperationKey>1668759</OperationKey>
+                  <Name>Artwork</Name>
+                  <Machine>No Machine</Machine>
+                  <EstMRTimeHHMM>00:   00</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Artwork</ComponentReferenceName>
+                  <ComponentReferenceValue>Customer to furnish print ready PDF</ComponentReferenceValue>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>0.0000</Cost>
+                  <CostPlus>0.0000</CostPlus>
+               </Operation>
+            </Operations>
+            <Artwork>
+               <Files>
+                  <File>
+                     <Name>J213064-01_1.pdf</Name>
+                     <OriginalName>007c0a6f-ff10-490a-bd10-6e8f1af568d6.pdf</OriginalName>
+                     <UploadDateTimeUTC>2025-08-18T15:20:07.8100000Z</UploadDateTimeUTC>
+                  </File>
+               </Files>
+            </Artwork>
+            <StockGroups>
+               <StockGroup>Envelopes</StockGroup>
+            </StockGroups>
+            <ExpectedPDFPages>1</ExpectedPDFPages>
+            <ImpositionFoldCatalog>Flat Product</ImpositionFoldCatalog>
+         </Section>
+      </Sections>
+      <Operations>
+         <Operation>
+            <OperationKey>1668761</OperationKey>
+            <Name>Preflight</Name>
+            <Machine>Prepress</Machine>
+            <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Select Prepress options</ComponentReferenceName>
+            <ComponentReferenceValue>Online Order - 5min</ComponentReferenceValue>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>9.1663</Cost>
+            <CostPlus>9.1663</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1668762</OperationKey>
+            <Name>Job Planning</Name>
+            <Machine>No Machine</Machine>
+            <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Select Admin Time</ComponentReferenceName>
+            <ComponentReferenceValue>Job Planning with Admin - 5 Min</ComponentReferenceValue>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>9.1663</Cost>
+            <CostPlus>9.1663</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1668759</OperationKey>
+            <Name>Artwork</Name>
+            <Machine>No Machine</Machine>
+            <EstMRTimeHHMM>00:   00</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Artwork</ComponentReferenceName>
+            <ComponentReferenceValue>Customer to furnish print ready PDF</ComponentReferenceValue>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>0.0000</Cost>
+            <CostPlus>0.0000</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1668768</OperationKey>
+            <Name>Shrink-Wrap</Name>
+            <Machine>Handwork</Machine>
+            <EstMRTimeHHMM>00:   03</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters>
+               <Parameter>
+                  <ParameterKey>1</ParameterKey>
+                  <Name>Shrink-Wrap</Name>
+                  <Question>How many per package</Question>
+                  <Value/>
+                  <QuotedValue>250</QuotedValue>
+               </Parameter>
+            </Parameters>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Reference</ComponentReferenceName>
+            <ComponentReferenceValue/>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>4.5337</Cost>
+            <CostPlus>4.5337</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1668766</OperationKey>
+            <Name>Box Job</Name>
+            <Machine>Handwork</Machine>
+            <EstMRTimeHHMM>00:   02</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   02</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>17 1/4 x 11 1/4 x 11 1/2" Corrugated Boxes</Name>
+                  <Code>S-4177</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Reference</ComponentReferenceName>
+            <ComponentReferenceValue/>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>5.6329</Cost>
+            <CostPlus>5.6329</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1668767</OperationKey>
+            <Name>Dispatch Prep</Name>
+            <Machine>Handwork</Machine>
+            <EstMRTimeHHMM>00:   02</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Reference</ComponentReferenceName>
+            <ComponentReferenceValue/>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>2.0665</Cost>
+            <CostPlus>2.0665</CostPlus>
+         </Operation>
+      </Operations>
+      <JobArtwork>
+         <ArtworkFile>
+            <FileName>J213064-01_1.pdf</FileName>
+            <FileOriginalName>007c0a6f-ff10-490a-bd10-6e8f1af568d6.pdf</FileOriginalName>
+            <FileUploadDateTimeUTC>2025-08-18T15:20:07.8100000Z</FileUploadDateTimeUTC>
+         </ArtworkFile>
+      </JobArtwork>
+   </Product>
+   <Operations/>
+   <IntegrationOperations/>
+   <Kinds/>
+   <References/>
+</Job>

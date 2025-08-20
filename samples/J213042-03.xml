@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Job>
+   <Config>
+      <ProductionIntegrationPath>https://voomgroup.printiq.com/WebService/ProductionIntegration.asmx</ProductionIntegrationPath>
+      <MeasurementType>Imperial</MeasurementType>
+   </Config>
+   <JobNumber>J213042-03</JobNumber>
+   <SeriesNumber/>
+   <QQADKey>18701</QQADKey>
+   <IsPriority>False</IsPriority>
+   <NumberOfSections>2</NumberOfSections>
+   <QuotedDateUTC>2025-08-14T20:32:31.8068940Z</QuotedDateUTC>
+   <Workflow>Create Job</Workflow>
+   <AcceptedDateUTC>2025-08-14T20:24:37.8000000Z</AcceptedDateUTC>
+   <Title>Toyota 360 Target Kit</Title>
+   <JobType/>
+   <ProductCode>Toyota 360 Kit</ProductCode>
+   <PONum>Hybrid Calibration Inventory</PONum>
+   <CourierRef> Voom Truck</CourierRef>
+   <Metadata>
+      <Field>
+         <Name/>
+         <Value>There is no additional information for this product</Value>
+      </Field>
+   </Metadata>
+   <AcceptanceUserType>Staff</AcceptanceUserType>
+   <AcceptanceKey>13093</AcceptanceKey>
+   <SpecialInstructions/>
+   <HasSpecialInstructions>0</HasSpecialInstructions>
+   <AccountManager>
+      <FullName>Alison Schlarb</FullName>
+      <Email>aschlarb@voomgroup.com</Email>
+      <Phone>9723799930</Phone>
+   </AccountManager>
+   <Customer>
+      <Number>Repairify/Astech</Number>
+      <Name>Repairify/Astech</Name>
+      <Address>
+         <Name>Repairify/Astech</Name>
+         <Address1>5700 Tennyson Parkway</Address1>
+         <Address2>Suite 600</Address2>
+         <Address3/>
+         <City>Plano</City>
+         <PostCode>75024</PostCode>
+         <State>Texas</State>
+         <Country>United States</Country>
+         <ExternalNote/>
+         <InternalNote/>
+      </Address>
+      <Contact>
+         <Name>Dylan Sipple</Name>
+         <Phone>5128718870</Phone>
+         <Mobile/>
+         <Email>dsipple@astech.com</Email>
+         <CreditTerms>Net 30 Days</CreditTerms>
+      </Contact>
+   </Customer>
+   <Product>
+      <Status>Print Ready</Status>
+      <CustomerExpectedDateUTC>2025-08-22T05:00:00.0000000Z</CustomerExpectedDateUTC>
+      <ArtworkThumbnail>iVBORw0KGgoAAAANSUhEUgAAAMgAAAAaAQMAAADIYIH5AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAdnJLH8AAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZQTFRFAAAA////pdmf3QAAAAFiS0dEAf8CLd4AAAAJcEhZcwAACxMAAAsTAQCanBgAAAAPSURBVCjPY2AYBaNgcAMAAqQAAeDK7rAAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjUtMDgtMTRUMjA6MjQ6NDUrMDA6MDB7uPc4AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI1LTA4LTE0VDIwOjI0OjQ1KzAwOjAwCuVPhAAAAEZ0RVh0c29mdHdhcmUASW1hZ2VNYWdpY2sgNi44LjEtNiAyMDEyLTEyLTI5IFExNiBodHRwOi8vd3d3LmltYWdlbWFnaWNrLm9yZ3wxup4AAAAYdEVYdFRodW1iOjpEb2N1bWVudDo6UGFnZXMAMaf/uy8AAAAYdEVYdFRodW1iOjpJbWFnZTo6aGVpZ2h0ADM4N2X1YyUAAAAYdEVYdFRodW1iOjpJbWFnZTo6V2lkdGgAMzAwMG09arQAAAAZdEVYdFRodW1iOjpNaW1ldHlwZQBpbWFnZS9wbmc/slZOAAAAF3RFWHRUaHVtYjo6TVRpbWUAMTc1NTIwMzA4NehiOoEAAAATdEVYdFRodW1iOjpTaXplADMuNTNLQkI5q7EGAAAAbXRFWHRUaHVtYjo6VVJJAGZpbGU6Ly9DOlxQREZIZWxwZXJzXDIxZTcxNzk3LTRiNWUtNGIyYy1hOThkLTAwMWY4ZGZiOWQ0M1wxNTFlMWYyZS0zMTE0LTQ5ZGUtYTcyYi05ZTdjYjc1NzUxMDAucG5nuEGgpgAAAABJRU5ErkJggg==</ArtworkThumbnail>
+      <CostPrice>564.7500</CostPrice>
+      <WholesalePrice>1422.2200</WholesalePrice>
+      <TotalSalePrice>1920.0000</TotalSalePrice>
+      <Description>Vinyl Set - 6 Pieces
+(2) Large Crosses
+(2) Small Crosses
+(2) Strips
+Printed CMYK x 1 side  on 13oz. Matte Banner
+Finishing: CNC Contour Cut
+
+PVC Set -
+(4) Rectangles
+Printed CMYK x 1 side  on PVC 3mm White
+Finishing: CNC Finishing Square
+
+
+QTY = Number Of Kits
+Each Kits Contains (6) Vinyl Pieces &amp; (4) PVC Pieces
+
+File Location: quoteartwork &gt; Repairify Target Kits &gt; Toyota 360 Kit</Description>
+      <FinishedSize>2x3.5</FinishedSize>
+      <FinishedWidth>2.0000</FinishedWidth>
+      <FinishedHeight>3.5000</FinishedHeight>
+      <SummedSpineWidth/>
+      <Quantity>12</Quantity>
+      <Kinds>1</Kinds>
+      <HasAdvancedKinds>False</HasAdvancedKinds>
+      <DueDateUTC>2025-08-22T01:23:00.0000000Z</DueDateUTC>
+      <FactoryLocationKey>1</FactoryLocationKey>
+      <FactoryLocationName>VG</FactoryLocationName>
+      <FactoryLocationDescription>Voom Group</FactoryLocationDescription>
+      <Weight>57.938399999999994006182246849</Weight>
+      <Deliveries>
+         <Delivery>
+            <Status>Pending</Status>
+            <Quantity>12</Quantity>
+            <Boxes>3</Boxes>
+            <Connote/>
+            <DelNum>0</DelNum>
+            <DeliveryInstructions/>
+            <Address>
+               <AddressKey>51207</AddressKey>
+               <AddressLine1>3241 Story Rd W</AddressLine1>
+               <AddressLine2/>
+               <AddressLine3/>
+               <City>Irving</City>
+               <StateID>-1</StateID>
+               <State>Texas</State>
+               <Country>United States</Country>
+               <PostCode>75038</PostCode>
+               <Name>asTech</Name>
+               <DisplayString>asTech, 3241 Story Rd W, Irving, Texas, 75038, United States</DisplayString>
+            </Address>
+            <Contact>
+               <ContactKey>15750</ContactKey>
+               <Title/>
+               <FirstName>Dylan</FirstName>
+               <Surname>Sipple</Surname>
+               <Phone>5128718870</Phone>
+               <Fax/>
+               <Mobile/>
+               <Email>dsipple@astech.com</Email>
+               <AddressKey>51207</AddressKey>
+               <IsAddressSpecific>True</IsAddressSpecific>
+               <DisplayString>asTech, 3241 Story Rd W, Irving, Texas, 75038, United States</DisplayString>
+            </Contact>
+         </Delivery>
+      </Deliveries>
+      <Sections>
+         <Section>
+            <Key>81733</Key>
+            <Name>Single-Section_0</Name>
+            <Description>108"x52"  Printed CMYK x 1 side on 13oz. Matte Banner
+Finishing: CNC Contour Cut</Description>
+            <ImpositionWidth>108.0000</ImpositionWidth>
+            <ImpositionHeight>52.0000</ImpositionHeight>
+            <FinishedWidth>108.0000</FinishedWidth>
+            <FinishedHeight>52.0000</FinishedHeight>
+            <SpineWidth/>
+            <Pages>1</Pages>
+            <SectionTypeTotalPages>2</SectionTypeTotalPages>
+            <Type>Single-Section</Type>
+            <IsSubsequent>False</IsSubsequent>
+            <Status>Print Ready</Status>
+            <Printing>
+               <OperationKey>1665606</OperationKey>
+               <Machine>HP Latex 800/570</Machine>
+               <EstMRTimeHHMM>00:   10</EstMRTimeHHMM>
+               <EstRunTimeHHMM>02:   -7</EstRunTimeHHMM>
+               <Stock>13oz. Matte Banner</Stock>
+               <StockCode>6973.M138050</StockCode>
+               <SheetWidth>54.0000</SheetWidth>
+               <SheetDepth>0.0000</SheetDepth>
+               <NumberUp>1</NumberUp>
+               <InternalNumberUp>1</InternalNumberUp>
+               <SheetsRequired>12</SheetsRequired>
+               <MRSheets>0</MRSheets>
+               <Spoils>0</Spoils>
+               <TotalSheets>12</TotalSheets>
+               <ProcessFront>CMYK</ProcessFront>
+               <ProcessReverse>No Printing</ProcessReverse>
+               <StockWeightValue>0.1077999999999999905555102334</StockWeightValue>
+               <StockWeightUnit>0.11lb/sqft</StockWeightUnit>
+               <StockThicknessValue>0.013</StockThicknessValue>
+               <StockThicknessUnit>in</StockThicknessUnit>
+               <Cost>215.4621</Cost>
+               <CostPlus>215.4621</CostPlus>
+               <NoAcross>1</NoAcross>
+               <NoAround>1</NoAround>
+               <GapAcross>0</GapAcross>
+               <GapAround>0</GapAround>
+               <Imposition>
+                  <AcrossX>1</AcrossX>
+                  <AcrossY>1</AcrossY>
+                  <SheetX>54</SheetX>
+                  <SheetY>0</SheetY>
+                  <PrintableX>52.5</PrintableX>
+                  <PrintableY>108.5</PrintableY>
+                  <SizeX>52.25</SizeX>
+                  <SizeY>108.25</SizeY>
+                  <Bleed>0.125</Bleed>
+                  <GripX1>0.75</GripX1>
+                  <GripX2>0.75</GripX2>
+                  <GripY1>0.125</GripY1>
+                  <GripY2>0.125</GripY2>
+                  <HasDigitalFrame>False</HasDigitalFrame>
+                  <DigitalFrameLength/>
+                  <DigitalFrameTotalBlocksUp/>
+                  <DigitalFrameTotalNUp/>
+                  <DigitalFrameUsedLength/>
+                  <NumChannels/>
+                  <MaxChannelWidth/>
+                  <IsWorkAndTurn>False</IsWorkAndTurn>
+                  <IsWorkAndTumble>False</IsWorkAndTumble>
+                  <CylinderCircumference/>
+                  <CylinderGapAcross>0</CylinderGapAcross>
+                  <CylinderGapAround>0</CylinderGapAround>
+                  <CylinderWidth/>
+               </Imposition>
+               <Runs>
+                  <Run>
+                     <RunNumber>1</RunNumber>
+                     <Kinds/>
+                  </Run>
+               </Runs>
+            </Printing>
+            <Guillotine/>
+            <Operations>
+               <Operation>
+                  <OperationKey>1665603</OperationKey>
+                  <Name>Job Planning</Name>
+                  <Machine>No Machine</Machine>
+                  <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Select Admin Time</ComponentReferenceName>
+                  <ComponentReferenceValue>Job Planning with Admin - 5 Min</ComponentReferenceValue>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>9.1663</Cost>
+                  <CostPlus>9.1663</CostPlus>
+               </Operation>
+               <Operation>
+                  <OperationKey>1665604</OperationKey>
+                  <Name>Automation</Name>
+                  <Machine>No Machine</Machine>
+                  <EstMRTimeHHMM>00:   01</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Select Automation</ComponentReferenceName>
+                  <ComponentReferenceValue>Infigo - Run Immediately</ComponentReferenceValue>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>1.8337</Cost>
+                  <CostPlus>1.8337</CostPlus>
+               </Operation>
+               <Operation>
+                  <OperationKey>1665609</OperationKey>
+                  <Name>Zund Contour Cut</Name>
+                  <Machine>Zund G3</Machine>
+                  <EstMRTimeHHMM>00:   03</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   11</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName/>
+                  <ComponentReferenceValue/>
+                  <ComponentGroupName>pick group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>22.7780</Cost>
+                  <CostPlus>22.7780</CostPlus>
+               </Operation>
+               <Operation>
+                  <OperationKey>1665611</OperationKey>
+                  <Name>Large Format Finishing</Name>
+                  <Machine>Handwork</Machine>
+                  <EstMRTimeHHMM>00:   02</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>01:   00</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters>
+                     <Parameter>
+                        <ParameterKey>9</ParameterKey>
+                        <Name>Large Format Finishing</Name>
+                        <Question>Time per unit in Seconds</Question>
+                        <Value/>
+                        <QuotedValue>300</QuotedValue>
+                     </Parameter>
+                  </Parameters>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Reference</ComponentReferenceName>
+                  <ComponentReferenceValue/>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>72.2631</Cost>
+                  <CostPlus>72.2631</CostPlus>
+               </Operation>
+            </Operations>
+            <Artwork>
+               <Files>
+                  <File>
+                     <Name>J213042-03_1.pdf</Name>
+                     <OriginalName>4a26fe8c-1d58-42d7-921c-525ba7fc26a7.pdf</OriginalName>
+                     <UploadDateTimeUTC>2025-08-14T20:24:52.5600000Z</UploadDateTimeUTC>
+                  </File>
+               </Files>
+            </Artwork>
+            <StockGroups>
+               <StockGroup>Latex 6 pass</StockGroup>
+               <StockGroup>WF - Rolls</StockGroup>
+            </StockGroups>
+            <ExpectedPDFPages>1</ExpectedPDFPages>
+            <ImpositionFoldCatalog>Flat Product</ImpositionFoldCatalog>
+         </Section>
+         <Section>
+            <Key>81734</Key>
+            <Name>Single-Section_1</Name>
+            <Description>12"x20"  Printed CMYK x 1 side on PVC 3mm White
+Finishing: CNC Finishing Square</Description>
+            <ImpositionWidth>12.0000</ImpositionWidth>
+            <ImpositionHeight>20.0000</ImpositionHeight>
+            <FinishedWidth>12.0000</FinishedWidth>
+            <FinishedHeight>20.0000</FinishedHeight>
+            <SpineWidth/>
+            <Pages>1</Pages>
+            <SectionTypeTotalPages>2</SectionTypeTotalPages>
+            <Type>Single-Section</Type>
+            <IsSubsequent>True</IsSubsequent>
+            <Status>Print Ready</Status>
+            <Printing>
+               <OperationKey>1665605</OperationKey>
+               <Machine>DigiTech LT/X2</Machine>
+               <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+               <EstRunTimeHHMM>00:   03</EstRunTimeHHMM>
+               <Stock>PVC 3mm White</Stock>
+               <StockCode>P1053MW</StockCode>
+               <SheetWidth>48.0000</SheetWidth>
+               <SheetDepth>96.0000</SheetDepth>
+               <NumberUp>15</NumberUp>
+               <InternalNumberUp>1</InternalNumberUp>
+               <SheetsRequired>1</SheetsRequired>
+               <MRSheets>0</MRSheets>
+               <Spoils>0</Spoils>
+               <TotalSheets>1</TotalSheets>
+               <ProcessFront>CMYK</ProcessFront>
+               <ProcessReverse>No Printing</ProcessReverse>
+               <StockWeightValue>0.3744000000000000583966412362</StockWeightValue>
+               <StockWeightUnit>0.37lb/sqft</StockWeightUnit>
+               <StockThicknessValue>0.117</StockThicknessValue>
+               <StockThicknessUnit>in</StockThicknessUnit>
+               <Cost>30.0260</Cost>
+               <CostPlus>30.0260</CostPlus>
+               <NoAcross>6</NoAcross>
+               <NoAround>2</NoAround>
+               <GapAcross/>
+               <GapAround/>
+               <Imposition>
+                  <AcrossX>6</AcrossX>
+                  <AcrossY>2</AcrossY>
+                  <SheetX>96</SheetX>
+                  <SheetY>48</SheetY>
+                  <PrintableX>96</PrintableX>
+                  <PrintableY>48</PrintableY>
+                  <SizeX>12.25</SizeX>
+                  <SizeY>20.25</SizeY>
+                  <Bleed>0.125</Bleed>
+                  <GripX1>0</GripX1>
+                  <GripX2>0</GripX2>
+                  <GripY1>0</GripY1>
+                  <GripY2>0</GripY2>
+                  <HasDigitalFrame>False</HasDigitalFrame>
+                  <DigitalFrameLength/>
+                  <DigitalFrameTotalBlocksUp/>
+                  <DigitalFrameTotalNUp/>
+                  <DigitalFrameUsedLength/>
+                  <NumChannels/>
+                  <MaxChannelWidth/>
+                  <IsWorkAndTurn>False</IsWorkAndTurn>
+                  <IsWorkAndTumble>False</IsWorkAndTumble>
+                  <CylinderCircumference/>
+                  <CylinderGapAcross/>
+                  <CylinderGapAround/>
+                  <CylinderWidth/>
+               </Imposition>
+               <Runs>
+                  <Run>
+                     <RunNumber>1</RunNumber>
+                     <Kinds/>
+                  </Run>
+               </Runs>
+            </Printing>
+            <Guillotine/>
+            <Operations>
+               <Operation>
+                  <OperationKey>1665610</OperationKey>
+                  <Name>Zund Perimeter Cut</Name>
+                  <Machine>Zund G3</Machine>
+                  <EstMRTimeHHMM>00:   10</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   07</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Select Options</ComponentReferenceName>
+                  <ComponentReferenceValue>Simple Perimeter Cut</ComponentReferenceValue>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>28.3030</Cost>
+                  <CostPlus>28.3030</CostPlus>
+               </Operation>
+            </Operations>
+            <Artwork>
+               <Files>
+                  <File>
+                     <Name>J213042-03_1.pdf</Name>
+                     <OriginalName>4a26fe8c-1d58-42d7-921c-525ba7fc26a7.pdf</OriginalName>
+                     <UploadDateTimeUTC>2025-08-14T20:24:52.5600000Z</UploadDateTimeUTC>
+                  </File>
+               </Files>
+            </Artwork>
+            <StockGroups>
+               <StockGroup>Digitech 7 pass (high quality)</StockGroup>
+               <StockGroup>WF - Rigid Substrates</StockGroup>
+            </StockGroups>
+            <ExpectedPDFPages>1</ExpectedPDFPages>
+            <ImpositionFoldCatalog>Flat Product</ImpositionFoldCatalog>
+         </Section>
+      </Sections>
+      <Operations>
+         <Operation>
+            <OperationKey>1665603</OperationKey>
+            <Name>Job Planning</Name>
+            <Machine>No Machine</Machine>
+            <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Select Admin Time</ComponentReferenceName>
+            <ComponentReferenceValue>Job Planning with Admin - 5 Min</ComponentReferenceValue>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>9.1663</Cost>
+            <CostPlus>9.1663</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1665604</OperationKey>
+            <Name>Automation</Name>
+            <Machine>No Machine</Machine>
+            <EstMRTimeHHMM>00:   01</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Select Automation</ComponentReferenceName>
+            <ComponentReferenceValue>Infigo - Run Immediately</ComponentReferenceValue>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>1.8337</Cost>
+            <CostPlus>1.8337</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1665609</OperationKey>
+            <Name>Zund Contour Cut</Name>
+            <Machine>Zund G3</Machine>
+            <EstMRTimeHHMM>00:   03</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   11</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName/>
+            <ComponentReferenceValue/>
+            <ComponentGroupName>pick group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>22.7780</Cost>
+            <CostPlus>22.7780</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1665611</OperationKey>
+            <Name>Large Format Finishing</Name>
+            <Machine>Handwork</Machine>
+            <EstMRTimeHHMM>00:   02</EstMRTimeHHMM>
+            <EstRunTimeHHMM>01:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters>
+               <Parameter>
+                  <ParameterKey>9</ParameterKey>
+                  <Name>Large Format Finishing</Name>
+                  <Question>Time per unit in Seconds</Question>
+                  <Value/>
+                  <QuotedValue>300</QuotedValue>
+               </Parameter>
+            </Parameters>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Reference</ComponentReferenceName>
+            <ComponentReferenceValue/>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>72.2631</Cost>
+            <CostPlus>72.2631</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1665610</OperationKey>
+            <Name>Zund Perimeter Cut</Name>
+            <Machine>Zund G3</Machine>
+            <EstMRTimeHHMM>00:   10</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   07</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Select Options</ComponentReferenceName>
+            <ComponentReferenceValue>Simple Perimeter Cut</ComponentReferenceValue>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>28.3030</Cost>
+            <CostPlus>28.3030</CostPlus>
+         </Operation>
+      </Operations>
+      <JobArtwork>
+         <ArtworkFile>
+            <FileName>J213042-03_1.pdf</FileName>
+            <FileOriginalName>4a26fe8c-1d58-42d7-921c-525ba7fc26a7.pdf</FileOriginalName>
+            <FileUploadDateTimeUTC>2025-08-14T20:24:52.5600000Z</FileUploadDateTimeUTC>
+         </ArtworkFile>
+      </JobArtwork>
+   </Product>
+   <Operations/>
+   <IntegrationOperations/>
+   <Kinds/>
+   <References/>
+</Job>

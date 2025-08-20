@@ -13,7 +13,7 @@ ASCII-only tips (no more mojibake in PowerShell).
 
 Imposition mapping fixed: map ImposeAcross/ImposeDown separately; loader recombines to "AxB" and drops imposition_down.
 
-Wide-format detection improved (treats max_width_in and substrates as wide signals).
+Wide-format detection improved (treats max_width_in and substrates as wide please advise on setupsignals).
 
 24/24 tests passing on Windows (Py 3.11/3.12).
 

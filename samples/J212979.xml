@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Job>
+   <Config>
+      <ProductionIntegrationPath>https://voomgroup.printiq.com/WebService/ProductionIntegration.asmx</ProductionIntegrationPath>
+      <MeasurementType>Imperial</MeasurementType>
+   </Config>
+   <JobNumber>J212979</JobNumber>
+   <SeriesNumber/>
+   <QQADKey>18624</QQADKey>
+   <IsPriority>False</IsPriority>
+   <NumberOfSections>1</NumberOfSections>
+   <QuotedDateUTC>2025-08-11T18:31:35.5940136Z</QuotedDateUTC>
+   <Workflow>Create Job</Workflow>
+   <AcceptedDateUTC>2025-08-11T18:23:51.6100000Z</AcceptedDateUTC>
+   <Title>Barry Bobbitt - #10 Window Envelopes</Title>
+   <JobType/>
+   <ProductCode>Barry Bobbitt #10 Window Envelope</ProductCode>
+   <PONum/>
+   <CourierRef> Voom Truck</CourierRef>
+   <Metadata>
+      <Field>
+         <Name/>
+         <Value>There is no additional information for this product</Value>
+      </Field>
+   </Metadata>
+   <AcceptanceUserType>Staff</AcceptanceUserType>
+   <AcceptanceKey>13030</AcceptanceKey>
+   <SpecialInstructions/>
+   <HasSpecialInstructions>0</HasSpecialInstructions>
+   <AccountManager>
+      <FullName>Erich Schlarb</FullName>
+      <Email>eschlarb@voomgroup.com</Email>
+      <Phone>972-200-9300</Phone>
+   </AccountManager>
+   <Customer>
+      <Number>TexasCriminalDefenseGroup</Number>
+      <Name>Texas Criminal Defense Group</Name>
+      <Address>
+         <Name>Texas Criminal Defense Group</Name>
+         <Address1>812 Main Street</Address1>
+         <Address2/>
+         <Address3/>
+         <City>Lubbock</City>
+         <PostCode>79401</PostCode>
+         <State>Texas</State>
+         <Country>United States</Country>
+         <ExternalNote/>
+         <InternalNote/>
+      </Address>
+      <Contact>
+         <Name>Stephen Hamilton</Name>
+         <Phone>806-535-2913	</Phone>
+         <Mobile/>
+         <Email>stephen@voomgroup.com</Email>
+         <CreditTerms>COD</CreditTerms>
+      </Contact>
+   </Customer>
+   <Product>
+      <Status>Print Ready</Status>
+      <CustomerExpectedDateUTC>2025-08-19T05:00:00.0000000Z</CustomerExpectedDateUTC>
+      <ArtworkThumbnail>iVBORw0KGgoAAAANSUhEUgAAAMgAAABXCAYAAABBaAoIAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAdnJLH8AAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAD6tJREFUeNrt3VtwG9d9x/Hv2V1gcScICLyApCiJomNdYk/k2HVsJ/HUydRpnGQmzqRp3E4mjicPbTKddto+9DK9TGfaPPShzUsv0zadaZppc3HaJhm7iZV4Yvkmx7JjSbSkkBIpkSIJUQABAlwssHv6AAKCaHJFJ1FFJf/PAwHsLg52l+cH7DlY7FFaa40QYkPGjV4BIbYzCYgQASQgQgSQgAgRQAIiRAAJiBABrK0stFlPsFKKrfYSr1+2/bg9TSkVWGZ7fvf6tKdtVO5Gr91dhhBbsaWAbLVidVfY9c9pT1tfmTe7vz4E3XzfxzCMNyzfHbKNXvunQXf+3uxha23Dzb4V11tgQNoVa2Z6GrfRwLIsTNNkcWGBZDLJYD7PhQsXKBVLZLIZspksr78+gVKKPWNjZDIZXNfF931s22ZudpZMJkvTaxIOh1lcWKRQWATAMAz6+vtJp9PUajVOHD/B6K5R8vk8C/Pz7B0fB2B1dZX/evzr3Hb77ew/sJ96vc7U5BSDgwNEYzFs22Z2dpbVWg3P96mUy6RSKarVKm87dOgnDovq+ntz+1nYhutvS58gpmVRLZbIZjO8/vrrKKWIRqMYyuCF554nnojzox+d4aGHHuKVY8dIJJI0Gg1Onz6N1/RIJBNYpkk4HCaeSOC6Lrfu20elXObJJ54gl+tjaWmJ226/jTvuuIOlpSWOvfwDlILCYoG643QC0mw2sSyL6elzxBNxpiYnOf7aa4yM7OQHL73Eb372M8SiUc6cPk3dqTMyupNyuUxff/9PvLM0sNyor3263ewVrPVG0ROyb/otuZ4CA9J+p81ms2itSafT7D9wgIkTJ6lWq8QTcfr6+9i1axfnZ87Tk05z2+23M5jPMzU5CVqTz+fJZDMUCgV6enowTROAVCpFLBZjbGyM3kyGTKaXHTt2EIvHqbsuD7znPVhWiFKxiGEaXLx4kXq9ztDQEJFohEQiycz0DKVSiV27d2PbNjtHR4lGY8QTcfaOjzM3O0thcZFkMsmOHTuu2qY3ox2H5UadQ09+kUt1h5BhoLk5z9JRKBq+zw47wsu/9AjpkP0zcdB4PaitnIu1vt3QbDYxDAPDMPB9vzOv3S7QWuN7HqqrnaB9jeZKO6QdlPVth+62iu/7aK0xDAPP82g2m0SjUer1OqFQqDMPwPM8LMu6qszu57fL/3FoNApF0XUY+59/plivoUxrbb+sr1rtx93T19/v7M2A5TZ6zCbLd992l73xOilA+x69dozJDzxKbzjS2UZxtS0dYq23vnJv1CNlrC3TabirK/O6Q2AYxoYNbKXUVRXbMAxCoRAAtm2/oS1hmuZV69N+XvfjH5/q3CrDAKXA8wCNYVr4vtearUGZJrr95qB9tAYMA9aWUabVqqDaB+2DMtC+D2iUYQK683xlGPjelXla+yh1dbnK91Cmhe81u8rWaN+jHQrDtK68Yfk+hmniqbVt6do28UZbCki1WmX63DkOHDzI3OwcoMkPDdFsNgFwHIdqtUomk8E0TRprDXrDMJidneXs5BQDgwOYlkU0EiXXl+PE8eMkEgkcxyGdTjM7O8v4+C0US0V27NjB8vIyw8PDgV3M1/LT7tZVQFP7JMNRxpNptNZMlAqMpLKYa0GfqhQZ781xyamSDNmYhsmiU2NnPIlC8aNKEddrkIuliClFudkgG4mRsEKcrZYxlGJ3PMVy3WHRqdKfSmIpg4JTpSccoVhfJRkKYxoml+qr5CMxJitFxjIDnKlcRmlNPBxhVzxFzWtiKoPzKyVGerLMr67QF4mxtFplFWhoX2JxDYEBaXenvj4xwTPff4Zyucyxl4/Rm+nFMi3siE06nWZiYoLlYol3vvtdOI5DpVzhrrt/gYGBAWKxGGfOnOHtd93JH//BH/Jbv/PbmKaJ5/kcffEojuOQy+XID+U5+uKLLCwu8IsPPMDU5FQnINvl+wulwPU9RmMpHh4ZZ6Za5v35PSSsEPNOlX2pDJZh8PULk7x3YJRUKMyh3j7+/Pjz3N8/Qtmt4zQb/MrOW/iriaN84e4H+dzEUUxl8Bt7b+dTR7/NB/J7eEuyl1QozPcLs+xNpPG0JhkKMV2tMBCJkQ7bHOjJ8q9nT/LI6K08XZhlTzzF3515lcfG3sof/fAIf3Hbvfz37CTvyg1RaTaYKC/xQP9ObMPEVIq/PPE8vZH4jd6l217gN+ntinn58mXufsfdvHT0JQ4cPEjDbRCPx6mUy0yfO4cdthkcyrNSWcF1XQ4cPEh5eRloHQ4N5gcpFAocevsdnenNZoO3HXob6XSaulvn0qUl9uwdI5fLkcvl6B/ov2odtoO1g0TqvofSmq/OnGYoGmel6RIxTP53fobvzM8QNS087dPwPLLhCJ72WWnUmauVCRkGd2UHGYwm+OuJl7gnO8jFWoWSu4pfKeJrTbXp8rmTL3IglcEyFNPVZc5WiigFvtY0fJ9MOIKhFN+cO8t4Ms1yw6U3EuVQpp/BaJyF1SrnV5apNRtYSlFpNMiEI3z+9MvETIuMHcP1PTmyuoZrNtK11jiOg23b1Ko1wna41XZQCtOyePp73yMeT3DnXXdSKBRIpVLYtk2pVCISiRCNRmm4Lo217tlGo0EsFuschpWKReKJBJVyhUw2Q6PR6DTA222dG63dxC25dXZ945+oeU12x3tYWF3B9ZoMxJL4QMV1KLkOe1NZLjlVbNMiYpg00Pha09Qap9kgZlokwhEuVIoYysCyQuwIR5iqXCYTidMbjjBfq9D0m/TFe1ht1FsdBMlMp9ywMohYIS7WKphKkYsmmF9dIWmFaAK2YXLZdcjZMS6trtAXS1BpuDheE7/ZpKYgaYU5+9Cj9IalF2szW+vF8nWrgWgYV7+ja9067niT1h82dTfat9MnRmf9aFWeoltn7Jv/QtGptiqTMkCx1sim1YBWqtPI1lqjOp3BXZ0Qax0ahmmi0a0Gt/bBtFqNeV+jTBMF+L7Xeo4y3liubjfsW71SyjBbZbfXeq1Br5TR+v+hQCkMpfB8j95InMn3f1ICEmBLjXSn7lAsFslms5w7e5ZkKkVvby9es0mhUCASjWLbNtWVFeLxOEtLS9i2TTKZolqrEo1GQWvcRoNms0kmk2G5VMIKhfA9DysUIhqJ4GvN3Ows8USC4eHhG71vNmQowDCwDBO/3WvX9Umn0SgrtGm3aff0zn0FChMfjWFYYNCJlWWGAsvV7a5bw+zMu9Kpq1GYndurXtPQrW0RgbbUSJ+anOTp7z3Ng7/8Pnytee7IETLZLKZh8sILz/PBD32IU6dOceb0ad5xz70sLMwzPDzMc88+h9aaW/fdSqlUIj80xNe/9jj79u/j1Vde5c477+Qtt76FI995inK5zIcffphXjr3C/gP7t1kD/UqV8xsNcF2ahnFdvib0f/IirkkB+D6+YXHluxP5DNnIlr5JP3/+PPl8ntOnTjE2Nsbort0cf+2HJFMpRkdHMQwT0zCJxxP09KRw63VSqRSe75FOpzn+2msMj4xg2zbDw8NMnDxJT08PViiEbdsMDA5QKBSYnj5H/0A/iUTiRu+X9XuitbOUwR25IYqug3WdAvL/tTVN36c3HMFSRtdUsd412yC+71MqlUgmkywtLVFeLpMfylNdWWkdIvk+q7Ua0ViMRCJB3XFaX+qFw9SdOtPT50gmk2snIa4Si0VxHIewbeN5Hp7nEY/H8TwPwzAwTZNQKEQkErnR+0aIrZ9q0n3KRnsaXN0Nu/409KDyrucp6dfTzXr+1Wbk9JJgWw5I9+kk7dND3lDYut9xtJd/sxX/ZgiK+PmwpYAI8fNKfpMuRAAJiBABJCBCBJCACBFAAiJEAAmIEAEkIEIEkIAIEUACIkQACYgQASQgQgSQgAgRQAIiRAAJiBABJCBCBJCACBFAAiJEAAmIEAG2bUDavwTuvl0/bf39zcoIKnv9MhuVvX75zdZps8dBryG2t5v2N+nrLw7R2aCAS5iuH0h0/aCjG83fbNDRjdajbbOruwQNTCq2p20ZEMdxqDsO8USCcrmMZZqtwWR8n56eHlzXBaDhumhag+f4vo9lWViW1amAtVqNWCzWuQpLe9SqarXauai24zgkkkls28Z13c483/dpNpuEQqHOBbdd18V1XQylsCMR6vU6nufRk0pRWl7ujBGSSCapVCr4nte6zlc4TMS2UWujctWqVaxQiHA4fKN3tbiGH2uEqevFW6tQ337ySV544UVuuWWcC+cv8IlHP8njX/0a1eoKBw++lUJhkcHBPHW3DrQG+jx37iwf+OCH2LNnN49/7XEefexTfP5v/pbf/f3fwzAMHMfhH//+H/jMZz/Dn/3Jn/KxX/0YWmuePXKEnp40jz72Kf79377IPffdy9zsLGdOn2H8lnGWS8tMTJzkPe99L6dOnaLhNohEI/ieT61WIxQKkUwlOXniBI99+tM88a1v0Wx63P2Ou/nql7/Chz/yMN89/F0+/muP8OQTT/Dgg+/j8FNPMZjPc98779vytcTEjbGt/jPtD7P5+QV2797FPffex8WLF8nlclxeWuKHr77KyM4RHMfh8OGnsCyLWq1GrVbj3fffz3986UusVKs8e+QILx09iuu6LC0tobWmVCwxMXGSw4cP8/FHPs4z33+Gubk5ItEoU1NTVCoVTp44wfDwML29vSwuLhAKhXAch4989KN85T+/TMNtoLVPuifN5eLl1lAN4RBnTp2m4baGc/j1T3yCV145hmGaRKIR+vr6qDsOF+fmmJme5pvf+Aa+9pmfv4izdhXKbfghLtZsq0Osdhtg4uRJkqkU2WyWZ585Qn4oz6rjtIZ1U4pcLke9Xu9cLb59adPFhQXCtk3dcSiXy7iui2WF2Ld/H5VKhbrjcOHCBQ4cPIjveRQKl5iZmWbv+Dijo6OcPXsWt15n5+goM9MzaFoj+/akUlQqKywsLJDdkcU0TS4VCtRqNQzDYOfoKCeOH6c3k2Hnzp14nkfICjE1NcXuPbs5PzNDJBIl3ZtmanKSVCrF/Pw84+PjDI+M3DRXlfx5tK0C0i2oQbvZpUs3W/7NlH2t5a9VmbXWoPVVI/yKm9e2DIjv+53RadsXtd6sN2n9SLvd09u6n7/Z4D3re6/a69B+vP4yqhv1nG32WkHPk0+O7W1bBkSI7UKOA4QIIAERIoAERIgAEhAhAkhAhAggAREigAREiAASECECSECECCABESKABESIABIQIQJIQIQIIAERIoAERIgAEhAhAkhAhAggAREigAREiAASECECSECECCABESKABESIABIQIQJIQIQIIAERIoAERIgAEhAhAkhAhAggAREigAREiAASECECSECECCABESLA/wEFdZlM9Ru+CAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyNS0wOC0xMVQxODoyMzo1MyswMDowMGol8kUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjUtMDgtMTFUMTg6MjM6NTQrMDA6MDDe33R3AAAARnRFWHRzb2Z0d2FyZQBJbWFnZU1hZ2ljayA2LjguMS02IDIwMTItMTItMjkgUTE2IGh0dHA6Ly93d3cuaW1hZ2VtYWdpY2sub3JnfDG6ngAAABh0RVh0VGh1bWI6OkRvY3VtZW50OjpQYWdlcwAxp/+7LwAAABl0RVh0VGh1bWI6OkltYWdlOjpoZWlnaHQAMTMwM8+uHhIAAAAYdEVYdFRodW1iOjpJbWFnZTo6V2lkdGgAMzAwMG09arQAAAAZdEVYdFRodW1iOjpNaW1ldHlwZQBpbWFnZS9wbmc/slZOAAAAF3RFWHRUaHVtYjo6TVRpbWUAMTc1NDkzNjYzNMTS3vsAAAATdEVYdFRodW1iOjpTaXplADQ1LjJLQkI6kbwmAAAAbXRFWHRUaHVtYjo6VVJJAGZpbGU6Ly9DOlxQREZIZWxwZXJzXDc0MzcwY2Q2LTFhMmMtNGVjNC1iNjFkLTJiZDhiY2EzZTZhNVw3OTFlY2ZhOC03MThlLTQxNzgtOTBhOS05OTRhNGNmZTA4YmEucG5nv/JzKQAAAABJRU5ErkJggg==</ArtworkThumbnail>
+      <CostPrice>2694.2600</CostPrice>
+      <WholesalePrice>2694.2600</WholesalePrice>
+      <TotalSalePrice>4073.7300</TotalSalePrice>
+      <Description>Barry Bobbitt #10 Window Envelope
+#10 Window Envelope Printed CMYK x 1 side
+Size: 4.125 x 9.5
+</Description>
+      <FinishedSize>Env#10</FinishedSize>
+      <FinishedWidth>9.5000</FinishedWidth>
+      <FinishedHeight>4.1250</FinishedHeight>
+      <SummedSpineWidth/>
+      <Quantity>40000</Quantity>
+      <Kinds>1</Kinds>
+      <HasAdvancedKinds>False</HasAdvancedKinds>
+      <DueDateUTC>2025-08-18T23:23:00.0000000Z</DueDateUTC>
+      <FactoryLocationKey>1</FactoryLocationKey>
+      <FactoryLocationName>VG</FactoryLocationName>
+      <FactoryLocationDescription>Voom Group</FactoryLocationDescription>
+      <Weight>201.17647058823599999323180855</Weight>
+      <Deliveries>
+         <Delivery>
+            <Status>Pending</Status>
+            <Quantity>40000</Quantity>
+            <Boxes>2</Boxes>
+            <Connote/>
+            <DelNum>0</DelNum>
+            <DeliveryInstructions/>
+            <Address>
+               <AddressKey>51645</AddressKey>
+               <AddressLine1>110 West Randol Mill Road</AddressLine1>
+               <AddressLine2/>
+               <AddressLine3/>
+               <City>Arlington</City>
+               <StateID>-1</StateID>
+               <State>Texas</State>
+               <Country>United States</Country>
+               <PostCode>76011</PostCode>
+               <Name>Dirtect Marketing</Name>
+               <DisplayString>Dirtect Marketing, 110 West Randol Mill Road, Arlington, Texas, 76011, United States</DisplayString>
+            </Address>
+            <Contact>
+               <ContactKey>18205</ContactKey>
+               <Title/>
+               <FirstName>Marlene</FirstName>
+               <Surname>Marquez</Surname>
+               <Phone>817 538-9636</Phone>
+               <Fax/>
+               <Mobile/>
+               <Email>stephen@voomgroup.com</Email>
+               <AddressKey>51645</AddressKey>
+               <IsAddressSpecific>True</IsAddressSpecific>
+               <DisplayString>Dirtect Marketing, 110 West Randol Mill Road, Arlington, Texas, 76011, United States</DisplayString>
+            </Contact>
+         </Delivery>
+      </Deliveries>
+      <Sections>
+         <Section>
+            <Key>81376</Key>
+            <Name>Single-Section_0</Name>
+            <Description>#10 Envelope 9.5 x 4.125  Printed CMYK x 1 side on #10 Window Envelopes
+</Description>
+            <ImpositionWidth>9.5000</ImpositionWidth>
+            <ImpositionHeight>4.1250</ImpositionHeight>
+            <FinishedWidth>9.5000</FinishedWidth>
+            <FinishedHeight>4.1250</FinishedHeight>
+            <SpineWidth/>
+            <Pages>1</Pages>
+            <SectionTypeTotalPages>1</SectionTypeTotalPages>
+            <Type>Single-Section</Type>
+            <IsSubsequent>False</IsSubsequent>
+            <Status>Print Ready</Status>
+            <Printing>
+               <OperationKey>1659145</OperationKey>
+               <Machine>DI 5634 Sheetwise</Machine>
+               <EstMRTimeHHMM>00:   20</EstMRTimeHHMM>
+               <EstRunTimeHHMM>07:   28</EstRunTimeHHMM>
+               <Stock>#10 Window Envelope - White Wove</Stock>
+               <StockCode>E11001</StockCode>
+               <SheetWidth>9.5000</SheetWidth>
+               <SheetDepth>4.1250</SheetDepth>
+               <NumberUp>1</NumberUp>
+               <InternalNumberUp>1</InternalNumberUp>
+               <SheetsRequired>40000</SheetsRequired>
+               <MRSheets>1275</MRSheets>
+               <Spoils>0</Spoils>
+               <TotalSheets>41275</TotalSheets>
+               <ProcessFront>CMYK</ProcessFront>
+               <ProcessReverse>No Printing</ProcessReverse>
+               <StockWeightValue>24.000000000000076977358662260</StockWeightValue>
+               <StockWeightUnit>24lb Bond</StockWeightUnit>
+               <StockThicknessValue>0.0096</StockThicknessValue>
+               <StockThicknessUnit>in</StockThicknessUnit>
+               <Cost>897.4508</Cost>
+               <CostPlus>897.4508</CostPlus>
+               <NoAcross>1</NoAcross>
+               <NoAround>1</NoAround>
+               <GapAcross/>
+               <GapAround/>
+               <Imposition>
+                  <AcrossX>1</AcrossX>
+                  <AcrossY>1</AcrossY>
+                  <SheetX>9.75</SheetX>
+                  <SheetY>4.375</SheetY>
+                  <PrintableX>9.75</PrintableX>
+                  <PrintableY>4.375</PrintableY>
+                  <SizeX>9.75</SizeX>
+                  <SizeY>4.375</SizeY>
+                  <Bleed>0.125</Bleed>
+                  <GripX1/>
+                  <GripX2/>
+                  <GripY1/>
+                  <GripY2/>
+                  <HasDigitalFrame>False</HasDigitalFrame>
+                  <DigitalFrameLength/>
+                  <DigitalFrameTotalBlocksUp/>
+                  <DigitalFrameTotalNUp/>
+                  <DigitalFrameUsedLength/>
+                  <NumChannels/>
+                  <MaxChannelWidth/>
+                  <IsWorkAndTurn>False</IsWorkAndTurn>
+                  <IsWorkAndTumble>False</IsWorkAndTumble>
+                  <CylinderCircumference/>
+                  <CylinderGapAcross/>
+                  <CylinderGapAround/>
+                  <CylinderWidth/>
+               </Imposition>
+               <Runs>
+                  <Run>
+                     <RunNumber>1</RunNumber>
+                     <Kinds/>
+                  </Run>
+               </Runs>
+            </Printing>
+            <Guillotine/>
+            <Operations>
+               <Operation>
+                  <OperationKey>1659143</OperationKey>
+                  <Name>Preflight</Name>
+                  <Machine>Prepress</Machine>
+                  <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Select Prepress options</ComponentReferenceName>
+                  <ComponentReferenceValue>Print Ready Files Furnished - 5min</ComponentReferenceValue>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>9.1663</Cost>
+                  <CostPlus>9.1663</CostPlus>
+               </Operation>
+               <Operation>
+                  <OperationKey>1659144</OperationKey>
+                  <Name>Job Planning</Name>
+                  <Machine>No Machine</Machine>
+                  <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>No Material used</Name>
+                        <Code>NoMaterial</Code>
+                        <Units>Each</Units>
+                        <Quantity>1</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Select Admin Time</ComponentReferenceName>
+                  <ComponentReferenceValue>Job Planning with Admin - 5 Min</ComponentReferenceValue>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>9.1663</Cost>
+                  <CostPlus>9.1663</CostPlus>
+               </Operation>
+               <Operation>
+                  <OperationKey>1659148</OperationKey>
+                  <Name>DI Plates</Name>
+                  <Machine>Platemaker</Machine>
+                  <EstMRTimeHHMM>00:   00</EstMRTimeHHMM>
+                  <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+                  <Materials>
+                     <Material>
+                        <Name>DI Plates</Name>
+                        <Code>DI Plates</Code>
+                        <Units>Each</Units>
+                        <Quantity>8</Quantity>
+                     </Material>
+                  </Materials>
+                  <Parameters/>
+                  <ComponentsDesc1/>
+                  <ComponentsDesc2/>
+                  <ComponentsImage1/>
+                  <ComponentsImage2/>
+                  <ImpoComponentsDesc1/>
+                  <ImpoComponentsDesc2/>
+                  <ImpoComponentsImage1/>
+                  <ImpoComponentsImage2/>
+                  <ComponentReferenceName>Reference</ComponentReferenceName>
+                  <ComponentReferenceValue/>
+                  <ComponentGroupName>Group</ComponentGroupName>
+                  <ComponentGroupValue/>
+                  <Cost>104.0000</Cost>
+                  <CostPlus>104.0000</CostPlus>
+               </Operation>
+            </Operations>
+            <Artwork>
+               <Files>
+                  <File>
+                     <Name>J212979_1.pdf</Name>
+                     <OriginalName>1d6dfdc0-c310-4401-91ad-d094b953e9b7.pdf</OriginalName>
+                     <UploadDateTimeUTC>2025-08-11T18:24:02.2933333Z</UploadDateTimeUTC>
+                  </File>
+               </Files>
+            </Artwork>
+            <StockGroups>
+               <StockGroup>Envelopes</StockGroup>
+            </StockGroups>
+            <ExpectedPDFPages>1</ExpectedPDFPages>
+            <ImpositionFoldCatalog>Flat Product</ImpositionFoldCatalog>
+         </Section>
+      </Sections>
+      <Operations>
+         <Operation>
+            <OperationKey>1659143</OperationKey>
+            <Name>Preflight</Name>
+            <Machine>Prepress</Machine>
+            <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Select Prepress options</ComponentReferenceName>
+            <ComponentReferenceValue>Print Ready Files Furnished - 5min</ComponentReferenceValue>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>9.1663</Cost>
+            <CostPlus>9.1663</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1659144</OperationKey>
+            <Name>Job Planning</Name>
+            <Machine>No Machine</Machine>
+            <EstMRTimeHHMM>00:   05</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Select Admin Time</ComponentReferenceName>
+            <ComponentReferenceValue>Job Planning with Admin - 5 Min</ComponentReferenceValue>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>9.1663</Cost>
+            <CostPlus>9.1663</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1659148</OperationKey>
+            <Name>DI Plates</Name>
+            <Machine>Platemaker</Machine>
+            <EstMRTimeHHMM>00:   00</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>DI Plates</Name>
+                  <Code>DI Plates</Code>
+                  <Units>Each</Units>
+                  <Quantity>8</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Reference</ComponentReferenceName>
+            <ComponentReferenceValue/>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>104.0000</Cost>
+            <CostPlus>104.0000</CostPlus>
+         </Operation>
+         <Operation>
+            <OperationKey>1659149</OperationKey>
+            <Name>Dispatch Prep</Name>
+            <Machine>Handwork</Machine>
+            <EstMRTimeHHMM>00:   02</EstMRTimeHHMM>
+            <EstRunTimeHHMM>00:   00</EstRunTimeHHMM>
+            <Materials>
+               <Material>
+                  <Name>No Material used</Name>
+                  <Code>NoMaterial</Code>
+                  <Units>Each</Units>
+                  <Quantity>1</Quantity>
+               </Material>
+            </Materials>
+            <Parameters/>
+            <ComponentsDesc1/>
+            <ComponentsDesc2/>
+            <ComponentsImage1/>
+            <ComponentsImage2/>
+            <ImpoComponentsDesc1/>
+            <ImpoComponentsDesc2/>
+            <ImpoComponentsImage1/>
+            <ImpoComponentsImage2/>
+            <ComponentReferenceName>Reference</ComponentReferenceName>
+            <ComponentReferenceValue/>
+            <ComponentGroupName>Group</ComponentGroupName>
+            <ComponentGroupValue/>
+            <Cost>2.0665</Cost>
+            <CostPlus>2.0665</CostPlus>
+         </Operation>
+      </Operations>
+      <JobArtwork>
+         <ArtworkFile>
+            <FileName>J212979_1.pdf</FileName>
+            <FileOriginalName>1d6dfdc0-c310-4401-91ad-d094b953e9b7.pdf</FileOriginalName>
+            <FileUploadDateTimeUTC>2025-08-11T18:24:02.2933333Z</FileUploadDateTimeUTC>
+         </ArtworkFile>
+      </JobArtwork>
+   </Product>
+   <Operations/>
+   <IntegrationOperations/>
+   <Kinds/>
+   <References/>
+   <CustomFields/>
+   <CustomFieldsErrors/>
+</Job>
