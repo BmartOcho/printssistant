@@ -1,165 +1,147 @@
+# src/prepress_helper/router.py
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Tuple
+import re
+from typing import Any, Dict, Tuple
 
-# Module-level cache, populated by set_shop_cfg() from the API on startup.
+# Global shop config injected by the app/tests
 SHOP_CFG: Dict[str, Any] = {}
 
 
-def set_shop_cfg(cfg: Dict[str, Any]) -> None:
-    """Inject shop config after load_shop_config() runs in the API."""
+def set_shop_cfg(cfg: Dict[str, Any] | None) -> None:
+    """Set global shop configuration used by detection helpers."""
     global SHOP_CFG
     SHOP_CFG = cfg or {}
 
 
-def _norm(s: Optional[str]) -> str:
+def _normalize(s: str | None) -> str:
     return (s or "").strip().lower()
 
 
-# --- add near top-level (helpers) ---
-def _current_cfg() -> dict:
-    cfg = {}
-    # prefer public SHOP_CFG if present (tests poke this)
-    try:
-        if isinstance(SHOP_CFG, dict):
-            cfg.update(SHOP_CFG)
-    except NameError:
-        pass
-    # merge any private store too
-    try:
-        if isinstance(_SHOP_CFG, dict):
-            cfg.update(_SHOP_CFG)
-    except NameError:
-        pass
-    return cfg
+def _is_wide_format_machine(name: str | None) -> bool:
+    """
+    Heuristics + config-driven detection for wide-format printers.
+    Returns True for roll/flatbed wide-format devices.
+    """
+    machine = _normalize(name)
+    if not machine:
+        return False
 
+    # Obvious keyword hints
+    keyword_hits = ("latex", "flatbed", "arizona", "oce", "mimaki", "roland", "vutek")
+    if any(k in machine for k in keyword_hits):
+        return True
 
-def _is_wide_format_machine(name: str) -> bool:
-    """True for LF/roll/flatbed devices, False for sheet-fed like Indigo."""
-    n = (name or "").lower().strip()
-    cfg = _current_cfg()
+    cfg = SHOP_CFG or {}
+
+    # press_capabilities from tests (roll/flatbed lists)
+    caps = cfg.get("press_capabilities") or {}
+    roll = [(_normalize(p)) for p in (caps.get("roll_printers") or [])]
+    flat = [(_normalize(p)) for p in (caps.get("flatbed_printers") or [])]
+    if machine in roll or machine in flat:
+        return True
+
+    # presses section with width hints
     presses = cfg.get("presses") or {}
-    p = presses.get(name, {}) if isinstance(presses, dict) else {}
+    for pname, meta in presses.items():
+        if _normalize(pname) == machine:
+            max_w = (meta or {}).get("max_width_in", 0) or 0
+            try:
+                return float(max_w) >= 24.0
+            except Exception:
+                return False
 
-    # 1) Explicit allow-lists from press_capabilities
-    pc = cfg.get("press_capabilities") or {}
-    flatbeds = [s.lower() for s in pc.get("flatbed_printers", []) if isinstance(s, str)]
-    rolls = [s.lower() for s in pc.get("roll_printers", []) if isinstance(s, str)]
-    if n in flatbeds or n in rolls:
+    return False
+
+
+def _maybe_color_policy(js) -> bool:
+    # Very light heuristic; always safe to include color policy unless truly unknown.
+    cols = js.colors or {}
+    front = _normalize(cols.get("front"))
+    back = _normalize(cols.get("back"))
+    return bool(front or back)
+
+
+def _maybe_fold_math(message: str) -> bool:
+    msg = _normalize(message)
+    return any(k in msg for k in ("fold", "panel", "score", "crease"))
+
+
+def _maybe_wide_format(js) -> bool:
+    # Prefer explicit machine hint
+    machine = (js.special or {}).get("machine")
+    if _is_wide_format_machine(machine):
         return True
 
-    # 2) Width threshold (roll/flatbed devices are typically ≥ 24")
-    width = 0.0
-    for k in ("max_width_in", "max_width"):
+    # Fallback on product/stock hints
+    product = _normalize(getattr(js, "product", None))
+    stock = _normalize(getattr(js, "stock", None))
+    if any(k in product for k in ("banner", "poster", "sign", "wide")):
+        return True
+    if any(k in stock for k in ("banner", "poly", "sav", "vinyl")):
+        return True
+
+    return False
+
+
+def fold_preferences_from_message(message: str) -> Tuple[str | None, float | None]:
+    """
+    Extract a fold 'style' and an inside panel allowance ('fold_in' in inches) from free text.
+    Examples:
+      "roll fold with 0.125 fold-in" -> ("roll", 0.125)
+      "z fold 1/8 in" -> ("z", 0.125)
+    """
+    msg = _normalize(message)
+    style = None
+    for s in ("roll", "z", "gate", "half", "tri", "accordion"):
+        if re.search(rf"\b{s}\b", msg):
+            style = s
+            break
+
+    # find something like "0.125", "1/8", "1/4", followed by in/inch
+    fold_in = None
+    frac = re.search(r"(\d+)\s*/\s*(\d+)\s*(in|inch|inches)?", msg)
+    dec = re.search(r"(\d*\.\d+|\d+)\s*(in|inch|inches)", msg)
+    if frac:
         try:
-            width = float(p.get(k, 0) or 0)
-            if width:
-                break
+            num = float(frac.group(1))
+            den = float(frac.group(2))
+            fold_in = round(num / den, 4)
         except Exception:
-            pass
-    if width >= 24:
-        return True
+            fold_in = None
+    elif dec:
+        try:
+            fold_in = round(float(dec.group(1)), 4)
+        except Exception:
+            fold_in = None
 
-    # 3) Substrate hints
-    subs = [str(s).lower() for s in p.get("substrates", []) if isinstance(s, str)]
-    if any(s in {"banner_13oz", "banner", "sav", "vinyl", "polyester", "fabric"} for s in subs):
-        return True
-
-    # 4) Name hints
-    if any(tag in n for tag in ("latex", "flatbed", "wide", "roll")):
-        return True
-
-    return False
-
-    # --- A) legacy grouped lists
-    caps = SHOP_CFG.get("press_capabilities") or {}
-    rolls = [_norm(x) for x in (caps.get("roll_printers") or [])]
-    flats = [_norm(x) for x in (caps.get("flatbed_printers") or [])]
-    if m in rolls or m in flats:
-        return True
-
-    # --- B) normalized presses dict
-    presses: Dict[str, Any] = SHOP_CFG.get("presses") or {}
-    candidate: Optional[Dict[str, Any]] = None
-
-    # try exact key match, then case-insensitive
-    if m in presses:
-        candidate = presses[m] if isinstance(presses[m], dict) else None
-    else:
-        for k, v in presses.items():
-            if _norm(k) == m and isinstance(v, dict):
-                candidate = v
-                break
-
-    if isinstance(candidate, dict):
-        # signal via fields even if no tag says "wide"
-        if any(k in candidate for k in ("max_width_in", "substrates")):
-            return True
-        for field in ("category", "type", "format", "family", "tags"):
-            val = candidate.get(field)
-            if isinstance(val, str):
-                low = val.lower()
-                if any(tok in low for tok in ("roll", "flatbed", "wide")):
-                    return True
-            elif isinstance(val, list):
-                lowlist = [str(x).lower() for x in val]
-                if any(any(tok in item for tok in ("roll", "flatbed", "wide")) for item in lowlist):
-                    return True
-
-    return False
+    return style, fold_in
 
 
-def fold_preferences_from_message(msg: str) -> Tuple[str | None, str | None]:
-    text = (msg or "").lower()
-    style: Optional[str] = None
-    fin: Optional[str] = None
+def detect_intents(js, message: str) -> list[str]:
+    """
+    Decide which skills/modules to run for a given JobSpec + free-text message.
+    Always includes 'doc_setup'.
+    """
+    intents: list[str] = ["doc_setup"]
 
-    if "roll" in text:
-        style = "roll"
-    if "z-fold" in text or "z fold" in text or "zfold" in text:
-        style = "z"
-    if "left panel in" in text or "folds in left" in text:
-        fin = "left"
-    if "right panel in" in text or "folds in right" in text:
-        fin = "right"
-    return style, fin
-
-
-def detect_intents(js, message: str) -> List[str]:
-    intents: List[str] = ["doc_setup"]
-    text = (message or "").lower()
-
-    # Color policy cues
-    if any(k in text for k in ("color policy", "rich black", "tac", "ink coverage", "cmyk", "rgb")):
+    if _maybe_color_policy(js):
         intents.append("color_policy")
 
-    # Fold cues
-    if any(k in text for k in ("trifold", "tri-fold", "z-fold", "z fold", "roll fold")):
+    if _maybe_fold_math(message):
         intents.append("fold_math")
 
-    # Spot color cues
-    if any(k in text for k in ("pantone", "spot", "white ink")):
-        intents.append("spot")
-
-    # Minimum spec cues
-    if any(k in text for k in ("hairline", "small text", "tiny type", "min spec", "minimum spec")):
-        intents.append("min_specs")
-
-    # Wide-format by machine name (from XML → special.machine)
-    machine = ""
-    try:
-        if js.special and isinstance(js.special, dict):
-            machine = str(js.special.get("machine") or "")
-    except Exception:
-        machine = ""
-    if _is_wide_format_machine(machine):
+    if _maybe_wide_format(js):
         intents.append("wide_format")
 
-    # De-dupe
+    # policy enforcer is useful on most sheet-fed/wide jobs
+    intents.append("policy_enforcer")
+
+    # de-dup while preserving order
     seen = set()
-    out: List[str] = []
-    for i in intents:
-        if i not in seen:
-            out.append(i)
-            seen.add(i)
-    return out
+    result = []
+    for it in intents:
+        if it not in seen:
+            seen.add(it)
+            result.append(it)
+    return result
